@@ -1,0 +1,43 @@
+:host {
+  display: grid;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+}
+
+.title {
+  width: 100%;
+  text-align: center;
+}
+
+.text-container {
+  width: 315px;
+  display: flex;
+  flex-direction: column;
+  margin: auto;
+}
+
+.logo {
+  margin: auto;
+}
+
+.sub-title {
+  line-height: 1.7;
+  font-size: 1rem;
+  font-weight: 300;
+  width: 100%;
+  text-align: center;
+}
+
+.divider {
+  width: 100%;
+}
+
+.container {
+  display: flex;
+  flex-direction: column;
+}
+
+.upload-button {
+  margin: auto;
+}
