@@ -1,4 +1,7 @@
 import { Component } from '@angular/core';
+import { Store } from '@ngrx/store';
+import { State } from './connect-model.reducer';
+import { modelSelected } from './connect-model.actions';
 
 @Component({
   selector: 'rai-connect-model',
@@ -27,7 +30,9 @@ import { Component } from '@angular/core';
   styleUrls: ['connect-model.component.scss'],
 })
 export class ConnectModelComponent {
+  constructor(private store: Store<State>) {}
+
   fileUploaded(file: File) {
-    console.log(file);
+    this.store.dispatch(modelSelected({ file }));
   }
 }
