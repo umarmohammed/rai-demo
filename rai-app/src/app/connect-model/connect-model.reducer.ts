@@ -5,23 +5,38 @@ import {
   createFeatureSelector,
   createSelector,
 } from '@ngrx/store';
-import { modelSelected } from './connect-model.actions';
+import { modelSelected, featuresLoadedSuccess } from './connect-model.actions';
 
 export interface State {
   file: File;
+  features: string[];
+  loading: boolean;
+  loaded: boolean;
 }
 
 export const initialState: State = {
   file: null,
+  features: null,
+  loading: false,
+  loaded: false,
 };
 
 export const connectModelFeatureKey = 'connectModel';
 
 const connectModelReducer = createReducer(
   initialState,
-  on(modelSelected, (state, { file }) => {
-    return { ...state, file };
-  })
+  on(modelSelected, (state, { file }) => ({
+    ...state,
+    file,
+    loaded: false,
+    loading: true,
+  })),
+  on(featuresLoadedSuccess, (state, { features }) => ({
+    ...state,
+    features,
+    loading: false,
+    loaded: true,
+  }))
 );
 
 export function reducer(state: State | undefined, action: Action) {

@@ -1,5 +1,5 @@
-export function fileToFormData(file: File) {
+export function fileToFormData(props: { file: File }) {
   const formData = new FormData();
-  formData.append('file', file);
+  formData.append('file', props.file);
   return formData;
 }
