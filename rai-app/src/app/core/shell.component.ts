@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { ShellService } from './shell.service';
 
 @Component({
   selector: 'rai-shell',
@@ -11,7 +12,10 @@ import { Component } from '@angular/core';
         <a mat-button routerLinkActive="active" routerLink="/options"
           >Options</a
         >
-
+        <rai-shell-title
+          [groupNames]="groupNames$ | async"
+          class="title"
+        ></rai-shell-title>
         <button mat-icon-button [matMenuTriggerFor]="menu">
           <mat-icon>more_vert</mat-icon>
         </button>
@@ -31,4 +35,8 @@ import { Component } from '@angular/core';
     <router-outlet></router-outlet>`,
   styleUrls: ['shell.component.scss'],
 })
-export class ShellComponent {}
+export class ShellComponent {
+  groupNames$ = this.shellService.groupNames$;
+
+  constructor(private shellService: ShellService) {}
+}

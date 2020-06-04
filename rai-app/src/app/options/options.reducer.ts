@@ -9,12 +9,12 @@ import { gminChanged, gmajChanged } from './options.actions';
 
 export interface State {
   gmin: string | null;
-  gmax: string | null;
+  gmaj: string | null;
 }
 
 export const initialState: State = {
   gmin: null,
-  gmax: null,
+  gmaj: null,
 };
 
 const optionsReducer = createReducer(
@@ -31,11 +31,11 @@ export function reducer(state: State | undefined, action: Action) {
 }
 
 const selectGmin = (state: State) => state.gmin;
-const selectGmax = (state: State) => state.gmax;
+const selectGmaj = (state: State) => state.gmaj;
 
 export const optionsFetureKey = 'options';
 
 export const selectOptionsState = createFeatureSelector(optionsFetureKey);
 
 export const selectOptionsGmin = createSelector(selectOptionsState, selectGmin);
-export const selectOptionsGmaj = createSelector(selectOptionsState, selectGmax);
+export const selectOptionsGmaj = createSelector(selectOptionsState, selectGmaj);

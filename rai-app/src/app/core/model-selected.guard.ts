@@ -12,9 +12,7 @@ export class ModelSelectedGuard implements CanLoad {
   constructor(
     private store: Store<fromConnectModel.State>,
     private router: Router
-  ) {
-    this.file$.subscribe(console.log);
-  }
+  ) {}
 
   canLoad(_route: Route, _segments: UrlSegment[]): Observable<boolean> {
     return this.file$.pipe(
