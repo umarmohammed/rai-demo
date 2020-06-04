@@ -1,6 +1,8 @@
 import { Component } from '@angular/core';
 import * as fromConnectModel from '../connect-model/store/connect-model.reducer';
+import * as fromOptions from './options.reducer';
 import { Store } from '@ngrx/store';
+import { gminChanged, gmajChanged } from './options.actions';
 
 @Component({
   selector: 'rai-options',
@@ -12,10 +14,12 @@ import { Store } from '@ngrx/store';
         <rai-select-protected-feaure
           [features]="features$ | async"
           label="Unpriveleged Group"
+          (selectionChange)="onGminChanged($event)"
         ></rai-select-protected-feaure>
         <rai-select-protected-feaure
           [features]="features$ | async"
           label="Priveleged Group"
+          (selectionChange)="onGmajChanged($event)"
         ></rai-select-protected-feaure>
       </div>
     </div>
@@ -31,6 +35,18 @@ export class OptionsComponent {
   featuresLoading$ = this.store.select(
     fromConnectModel.selectConnectModelLoading
   );
+  gmin$ = this.store.select(fromOptions.selectOptionsGmin);
+  gmaj$ = this.store.select(fromOptions.selectOptionsGmaj);
 
-  constructor(private store: Store<fromConnectModel.State>) {}
+  constructor(
+    private store: Store<fromConnectModel.State | fromOptions.State>
+  ) {}
+
+  onGminChanged(gmin: string) {
+    this.store.dispatch(gminChanged({ gmin }));
+  }
+
+  onGmajChanged(gmaj: string) {
+    this.store.dispatch(gmajChanged({ gmaj }));
+  }
 }
