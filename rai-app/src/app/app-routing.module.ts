@@ -9,7 +9,13 @@ const routes: Routes = [
         (m) => m.ConnectModelModule
       ),
   },
+  {
+    path: 'options',
+    loadChildren: () =>
+      import('./options/options.module').then((m) => m.OptionsModule),
+  },
   { path: '', redirectTo: 'connect', pathMatch: 'full' },
+  { path: '**', redirectTo: 'connect' },
 ];
 
 @NgModule({

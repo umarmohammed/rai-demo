@@ -1,0 +1,24 @@
+:host {
+  display: grid;
+  justify-items: center;
+}
+.container {
+  display: flex;
+  flex-direction: column;
+  border: 1px solid #f0f0f0;
+  padding: 10px;
+  border-radius: 5px;
+  width: 600px;
+  grid-template-rows: 1fr 1fr;
+  grid-template-columns: 1fr 1fr;
+  grid-template-areas: "header header";
+  column-gap: 10px;
+  margin: 10px;
+}
+
+.header {
+  grid-area: header;
+}
+fai-select-protected-feaure {
+  width: 100%;
+}

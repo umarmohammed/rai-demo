@@ -44,11 +44,24 @@ export function reducer(state: State | undefined, action: Action) {
 }
 
 const selectFile = (state: State) => state.file;
+const selectFeatures = (state: State) => state.features;
+const selectLoading = (state: State) => state.loading;
 
 export const selectConnectModelState = createFeatureSelector(
   connectModelFeatureKey
 );
-export const selectFileState = createSelector(
+
+export const selectConnectModelFile = createSelector(
   selectConnectModelState,
   selectFile
+);
+
+export const selectConnectModelFeatures = createSelector(
+  selectConnectModelState,
+  selectFeatures
+);
+
+export const selectConnectModelLoading = createSelector(
+  selectConnectModelState,
+  selectLoading
 );

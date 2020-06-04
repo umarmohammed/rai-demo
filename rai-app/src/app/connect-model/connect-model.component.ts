@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { State } from './connect-model.reducer';
 import { modelSelected } from './connect-model.actions';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'rai-connect-model',
@@ -30,9 +31,10 @@ import { modelSelected } from './connect-model.actions';
   styleUrls: ['connect-model.component.scss'],
 })
 export class ConnectModelComponent {
-  constructor(private store: Store<State>) {}
+  constructor(private store: Store<State>, private router: Router) {}
 
   fileUploaded(file: File) {
     this.store.dispatch(modelSelected({ file }));
+    this.router.navigate(['/options']);
   }
 }
