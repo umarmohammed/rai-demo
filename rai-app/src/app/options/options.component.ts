@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import * as fromConnectModel from '../connect-model/connect-model.reducer';
+import * as fromConnectModel from '../connect-model/store/connect-model.reducer';
 import { Store } from '@ngrx/store';
 
 @Component({

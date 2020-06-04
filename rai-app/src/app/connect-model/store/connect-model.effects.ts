@@ -1,8 +1,8 @@
 import { createEffect, Actions, ofType } from '@ngrx/effects';
-import { modelSelected, featuresLoadedSuccess } from './connect-model.actions';
-import { ConnectModelService } from './connect-model.service';
+import { modelSelected, featuresLoadedSuccess } from '../connect-model.actions';
+import { ConnectModelService } from '../connect-model.service';
 import { switchMap, map } from 'rxjs/operators';
-import { fileToFormData } from './form-data';
+import { fileToFormData } from '../form-data';
 import { Injectable } from '@angular/core';
 
 @Injectable()

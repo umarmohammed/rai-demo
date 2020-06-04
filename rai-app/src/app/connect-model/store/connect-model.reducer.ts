@@ -5,7 +5,7 @@ import {
   createFeatureSelector,
   createSelector,
 } from '@ngrx/store';
-import { modelSelected, featuresLoadedSuccess } from './connect-model.actions';
+import { modelSelected, featuresLoadedSuccess } from '../connect-model.actions';
 
 export interface State {
   file: File;
