@@ -43,7 +43,7 @@ export function reducer(state: State | undefined, action: Action) {
   return connectModelReducer(state, action);
 }
 
-const selectFile = (state: State) => state.file;
+const selectFile = (state: State) => state && state.file;
 const selectFeatures = (state: State) => state.features;
 const selectLoading = (state: State) => state.loading;
 

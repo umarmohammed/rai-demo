@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { ShellComponent } from './core/shell.component';
+import { ModelSelectedGuard } from './core/model-selected.guard';
 
 const routes: Routes = [
   {
@@ -11,6 +12,7 @@ const routes: Routes = [
         path: 'options',
         loadChildren: () =>
           import('./options/options.module').then((m) => m.OptionsModule),
+        canLoad: [ModelSelectedGuard],
       },
       {
         path: '',
