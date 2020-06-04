@@ -1,7 +1,24 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
+import { ShellComponent } from './core/shell.component';
 
 const routes: Routes = [
+  {
+    path: '',
+    component: ShellComponent,
+    children: [
+      {
+        path: 'options',
+        loadChildren: () =>
+          import('./options/options.module').then((m) => m.OptionsModule),
+      },
+      {
+        path: '',
+        redirectTo: 'options',
+        pathMatch: 'full',
+      },
+    ],
+  },
   {
     path: 'connect',
     loadChildren: () =>
@@ -10,12 +27,9 @@ const routes: Routes = [
       ),
   },
   {
-    path: 'options',
-    loadChildren: () =>
-      import('./options/options.module').then((m) => m.OptionsModule),
+    path: '**',
+    redirectTo: 'connect',
   },
-  { path: '', redirectTo: 'connect', pathMatch: 'full' },
-  { path: '**', redirectTo: 'connect' },
 ];
 
 @NgModule({

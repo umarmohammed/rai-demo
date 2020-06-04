@@ -10,6 +10,7 @@ import { StoreModule } from '@ngrx/store';
 import { EffectsModule } from '@ngrx/effects';
 import { HttpClientModule } from '@angular/common/http';
 import { CommonModule } from '@angular/common';
+import { CoreModule } from './core/core.module';
 
 @NgModule({
   declarations: [AppComponent],
@@ -25,6 +26,7 @@ import { CommonModule } from '@angular/common';
     }),
     EffectsModule.forRoot([]),
     HttpClientModule,
+    CoreModule,
   ],
   providers: [],
   bootstrap: [AppComponent],
