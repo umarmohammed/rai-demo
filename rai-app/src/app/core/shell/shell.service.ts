@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import * as fromOptions from '../../options/options.reducer';
+import * as fromOptions from '../options/options.reducer';
 import { Store } from '@ngrx/store';
 import { combineLatest } from 'rxjs';
 import { filter } from 'rxjs/operators';

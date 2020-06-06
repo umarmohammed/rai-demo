@@ -7,19 +7,7 @@ const routes: Routes = [
   {
     path: '',
     component: ShellComponent,
-    children: [
-      {
-        path: 'options',
-        loadChildren: () =>
-          import('./options/options.module').then((m) => m.OptionsModule),
-        canLoad: [ModelSelectedGuard],
-      },
-      {
-        path: '',
-        redirectTo: 'options',
-        pathMatch: 'full',
-      },
-    ],
+    canActivate: [ModelSelectedGuard],
   },
   {
     path: 'connect',

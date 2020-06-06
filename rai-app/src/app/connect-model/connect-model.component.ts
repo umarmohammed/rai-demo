@@ -35,6 +35,6 @@ export class ConnectModelComponent {
 
   fileUploaded(file: File) {
     this.store.dispatch(modelSelected({ file }));
-    this.router.navigate(['/options']);
+    this.router.navigate(['/']);
   }
 }

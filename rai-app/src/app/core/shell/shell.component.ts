@@ -9,13 +9,7 @@ import { ShellService } from './shell.service';
           <mat-icon>menu</mat-icon>
         </button>
         <a mat-button routerLink="/home">Robustness Demo</a>
-        <a mat-button routerLinkActive="active" routerLink="/options"
-          >Options</a
-        >
-        <rai-shell-title
-          [groupNames]="groupNames$ | async"
-          class="title"
-        ></rai-shell-title>
+        <div class="spacer"></div>
         <button mat-icon-button [matMenuTriggerFor]="menu">
           <mat-icon>more_vert</mat-icon>
         </button>
@@ -32,7 +26,14 @@ import { ShellService } from './shell.service';
         </mat-menu>
       </mat-toolbar-row>
     </mat-toolbar>
-    <router-outlet></router-outlet>`,
+    <mat-sidenav-container>
+      <mat-sidenav #sidenav mode="side" [opened]="true">
+        <rai-options></rai-options>
+      </mat-sidenav>
+      <mat-sidenav-content>
+        <router-outlet></router-outlet>
+      </mat-sidenav-content>
+    </mat-sidenav-container>`,
   styleUrls: ['shell.component.scss'],
 })
 export class ShellComponent {
