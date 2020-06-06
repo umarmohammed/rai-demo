@@ -9,6 +9,9 @@ import { ShellService } from './shell.service';
           <mat-icon>menu</mat-icon>
         </button>
         <a mat-button routerLink="/home">Robustness Demo</a>
+        <a mat-button routerLinkActive="active" routerLink="/overview"
+          >Overview</a
+        >
         <div class="spacer"></div>
         <button mat-icon-button [matMenuTriggerFor]="menu">
           <mat-icon>more_vert</mat-icon>
