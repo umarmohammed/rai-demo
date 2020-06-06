@@ -8,6 +8,14 @@ const routes: Routes = [
     path: '',
     component: ShellComponent,
     canActivate: [ModelSelectedGuard],
+    canActivateChild: [ModelSelectedGuard],
+    children: [
+      {
+        path: 'overview',
+        loadChildren: () =>
+          import('./overview/overview.module').then((m) => m.OverviewModule),
+      },
+    ],
   },
   {
     path: 'connect',
@@ -18,7 +26,7 @@ const routes: Routes = [
   },
   {
     path: '**',
-    redirectTo: 'connect',
+    redirectTo: '/connect',
   },
 ];
 
