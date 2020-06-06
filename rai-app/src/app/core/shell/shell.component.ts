@@ -5,7 +5,7 @@ import { ShellService } from './shell.service';
   selector: 'rai-shell',
   template: ` <mat-toolbar>
       <mat-toolbar-row>
-        <button mat-icon-button class="nav-menu">
+        <button mat-icon-button class="nav-menu" (click)="opened = !opened">
           <mat-icon>menu</mat-icon>
         </button>
         <a mat-button routerLink="/home">Robustness Demo</a>
@@ -27,7 +27,7 @@ import { ShellService } from './shell.service';
       </mat-toolbar-row>
     </mat-toolbar>
     <mat-sidenav-container>
-      <mat-sidenav #sidenav mode="side" [opened]="true">
+      <mat-sidenav #sidenav mode="side" [opened]="opened">
         <rai-options></rai-options>
       </mat-sidenav>
       <mat-sidenav-content>
@@ -37,6 +37,7 @@ import { ShellService } from './shell.service';
   styleUrls: ['shell.component.scss'],
 })
 export class ShellComponent {
+  opened = true;
   groupNames$ = this.shellService.groupNames$;
 
   constructor(private shellService: ShellService) {}
