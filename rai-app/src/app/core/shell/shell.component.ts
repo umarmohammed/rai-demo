@@ -37,7 +37,7 @@ import { ShellService } from './shell.service';
   styleUrls: ['shell.component.scss'],
 })
 export class ShellComponent {
-  opened = true;
+  opened = false;
   groupNames$ = this.shellService.groupNames$;
 
   constructor(private shellService: ShellService) {}
