@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { ShellComponent } from './core/shell.component';
+import { ShellComponent } from './core/shell/shell.component';
 import { ModelSelectedGuard } from './core/model-selected.guard';
 
 const routes: Routes = [
