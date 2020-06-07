@@ -7,6 +7,10 @@ import {
   createFeatureSelector,
   createSelector,
 } from '@ngrx/store';
+import {
+  filterOverviewMetrics,
+  isPerformanceMetric,
+} from 'src/app/core/models/overview-metric';
 
 export const modelFeatureKey = 'model';
 
@@ -77,6 +81,11 @@ export const selectOverviewState = createSelector(
 export const selectOverviewItems = createSelector(
   selectOverviewState,
   fromOverview.selectItems
+);
+
+export const selectOverviewPerformanceItems = createSelector(
+  selectOverviewItems,
+  filterOverviewMetrics(isPerformanceMetric)
 );
 
 export const selectOverviewHistograms = createSelector(

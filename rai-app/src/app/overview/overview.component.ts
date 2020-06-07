@@ -9,6 +9,9 @@ import { Store } from '@ngrx/store';
       <rai-metric-histogram
         [histogram]="histogram$ | async"
       ></rai-metric-histogram>
+      <rai-metric-aggregates
+        [overviewMetrics]="performanceItems$ | async"
+      ></rai-metric-aggregates>
     </div>
     <mat-spinner class="spinner" [class.show]="loading$ | async"></mat-spinner>
   `,
@@ -16,6 +19,9 @@ import { Store } from '@ngrx/store';
 export class OverviewComponent {
   histogram$ = this.store.select(fromModel.selectOverviewHistograms);
   loading$ = this.store.select(fromModel.selectOverviewLoading);
+  performanceItems$ = this.store.select(
+    fromModel.selectOverviewPerformanceItems
+  );
 
   constructor(private store: Store<fromModel.State>) {}
 }

@@ -154,7 +154,7 @@ def boostrap_metrics(c):
             "frequency": int(metricHistogram[0][0]),
             "interval": float(metricHistogram[1][0])
         }] + getHistogram((metricHistogram[0][1:], metricHistogram[1][1:]))
-    return [{"name": i, "histogram": getHistogram(getMetricHistogram(i))} for i in list(perf_metrics.keys())]
+    return [{"name": i, "histogram": getHistogram(getMetricHistogram(i)), "type": "performance"} for i in list(perf_metrics.keys())]
 
 
 def getStuffNeededForMetrics(modelAndData):
