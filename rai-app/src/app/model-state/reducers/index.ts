@@ -1,5 +1,6 @@
 import * as fromFile from './file.reducer';
 import * as fromFeatures from './features.reducer';
+import * as fromOverview from './overview.reducer';
 import {
   Action,
   combineReducers,
@@ -12,6 +13,7 @@ export const modelFeatureKey = 'model';
 export interface ModelState {
   [fromFeatures.featuresFeatureKey]: fromFeatures.State;
   [fromFile.fileFeatureKey]: fromFile.State;
+  [fromOverview.overviewFeatureKey]: fromOverview.State;
 }
 
 export interface State {
@@ -22,6 +24,7 @@ export function reducers(state: ModelState | undefined, action: Action) {
   return combineReducers({
     [fromFile.fileFeatureKey]: fromFile.reducer,
     [fromFeatures.featuresFeatureKey]: fromFeatures.reducer,
+    [fromOverview.overviewFeatureKey]: fromOverview.reducer,
   })(state, action);
 }
 

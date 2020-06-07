@@ -3,6 +3,7 @@ import { Actions, ofType, createEffect } from '@ngrx/effects';
 import {
   modelSelected,
   featuresLoadedSuccess,
+  bootstrapLoadedSuccess,
 } from '../connect-model/connect-model.actions';
 import { map, switchMap } from 'rxjs/operators';
 import { fileToFormData } from '../connect-model/form-data';
@@ -20,6 +21,18 @@ export class ModelEffects {
         this.modelService
           .getFeatures(form)
           .pipe(map((features) => featuresLoadedSuccess({ features })))
+      )
+    )
+  );
+
+  loadBootstrap$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(modelSelected),
+      map(fileToFormData),
+      switchMap((form) =>
+        this.modelService
+          .getBootstrap(form)
+          .pipe(map((overview) => bootstrapLoadedSuccess({ overview })))
       )
     )
   );
