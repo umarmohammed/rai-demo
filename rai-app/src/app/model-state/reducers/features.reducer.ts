@@ -1,9 +1,9 @@
 import {
   featuresLoadedSuccess,
   modelSelected,
-} from '../connect-model/connect-model.actions';
+} from '../../connect-model/connect-model.actions';
 import { createReducer, on, Action } from '@ngrx/store';
-import { gminChanged, gmajChanged } from '../core/options/options.actions';
+import { gminChanged, gmajChanged } from '../../core/options/options.actions';
 
 export const featuresFeatureKey = 'features';
 

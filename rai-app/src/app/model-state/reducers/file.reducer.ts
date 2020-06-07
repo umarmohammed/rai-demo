@@ -1,5 +1,5 @@
 import { createReducer, on, Action } from '@ngrx/store';
-import { modelSelected } from '../connect-model/connect-model.actions';
+import { modelSelected } from '../../connect-model/connect-model.actions';
 
 export const fileFeatureKey = 'file';
 
