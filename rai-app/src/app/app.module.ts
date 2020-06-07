@@ -11,6 +11,7 @@ import { EffectsModule } from '@ngrx/effects';
 import { HttpClientModule } from '@angular/common/http';
 import { CommonModule } from '@angular/common';
 import { CoreModule } from './core/core.module';
+import { ModelStateModule } from './model-state/model-state.module';
 
 @NgModule({
   declarations: [AppComponent],
@@ -27,6 +28,7 @@ import { CoreModule } from './core/core.module';
     EffectsModule.forRoot([]),
     HttpClientModule,
     CoreModule,
+    ModelStateModule,
   ],
   providers: [],
   bootstrap: [AppComponent],
