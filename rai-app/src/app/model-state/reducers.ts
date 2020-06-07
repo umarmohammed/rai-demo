@@ -49,6 +49,16 @@ export const selectFeaturesLoaded = createSelector(
   fromFeatures.selectLoaded
 );
 
+export const selectGmin = createSelector(
+  selectFeaturesState,
+  fromFeatures.selectGmin
+);
+
+export const selectGmaj = createSelector(
+  selectFeaturesState,
+  fromFeatures.selectGmaj
+);
+
 export const selectFileState = createSelector(
   selectModelState,
   (state) => state.file

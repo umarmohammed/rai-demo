@@ -1,6 +1,5 @@
 import { Component } from '@angular/core';
 import * as fromModel from '../../model-state/reducers';
-import * as fromOptions from './options.reducer';
 import { Store } from '@ngrx/store';
 import { gminChanged, gmajChanged } from './options.actions';
 
@@ -33,10 +32,10 @@ import { gminChanged, gmajChanged } from './options.actions';
 export class OptionsComponent {
   features$ = this.store.select(fromModel.selectAllFeatures);
   featuresLoading$ = this.store.select(fromModel.selectFeaturesLoading);
-  gmin$ = this.store.select(fromOptions.selectOptionsGmin);
-  gmaj$ = this.store.select(fromOptions.selectOptionsGmaj);
+  gmin$ = this.store.select(fromModel.selectGmin);
+  gmaj$ = this.store.select(fromModel.selectGmaj);
 
-  constructor(private store: Store<fromModel.State | fromOptions.State>) {}
+  constructor(private store: Store<fromModel.State>) {}
 
   onGminChanged(gmin: string) {
     this.store.dispatch(gminChanged({ gmin }));

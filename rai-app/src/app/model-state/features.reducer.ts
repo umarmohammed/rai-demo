@@ -3,6 +3,7 @@ import {
   modelSelected,
 } from '../connect-model/connect-model.actions';
 import { createReducer, on, Action } from '@ngrx/store';
+import { gminChanged, gmajChanged } from '../core/options/options.actions';
 
 export const featuresFeatureKey = 'features';
 
@@ -30,7 +31,12 @@ const featuresReducer = createReducer(
     features,
     loading: false,
     loaded: true,
-  }))
+  })),
+  on(gminChanged, (state, { gmin }) => ({
+    ...state,
+    gmin,
+  })),
+  on(gmajChanged, (state, { gmaj }) => ({ ...state, gmaj }))
 );
 
 export function reducer(state: State | undefined, action: Action) {
