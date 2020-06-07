@@ -7,18 +7,15 @@ import {
 } from '@angular/router';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import * as fromConnectModel from '../connect-model/store/connect-model.reducer';
+import * as fromModel from '../model-state/reducers';
 import { Store } from '@ngrx/store';
 import { tap, map, take } from 'rxjs/operators';
 
 @Injectable({ providedIn: 'root' })
 export class ModelSelectedGuard implements CanActivate, CanActivateChild {
-  file$ = this.store.select(fromConnectModel.selectConnectModelFile);
+  file$ = this.store.select(fromModel.selectFile);
 
-  constructor(
-    private store: Store<fromConnectModel.State>,
-    private router: Router
-  ) {}
+  constructor(private store: Store<fromModel.State>, private router: Router) {}
   canActivateChild(
     childRoute: ActivatedRouteSnapshot,
     state: RouterStateSnapshot

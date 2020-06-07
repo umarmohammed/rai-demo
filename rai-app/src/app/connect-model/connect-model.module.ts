@@ -2,10 +2,6 @@ import { NgModule } from '@angular/core';
 import { ConnectModelComponent } from './connect-model.component';
 import { Routes, RouterModule } from '@angular/router';
 import { MaterialModule } from '../material/material.module';
-import { StoreModule } from '@ngrx/store';
-import { reducer, connectModelFeatureKey } from './store/connect-model.reducer';
-import { EffectsModule } from '@ngrx/effects';
-import { ConnectModelEffects } from './store/connect-model.effects';
 
 const routes: Routes = [
   {
@@ -16,12 +12,6 @@ const routes: Routes = [
 
 @NgModule({
   declarations: [ConnectModelComponent],
-  imports: [
-    RouterModule.forChild(routes),
-
-    MaterialModule,
-    StoreModule.forFeature(connectModelFeatureKey, reducer),
-    EffectsModule.forFeature([ConnectModelEffects]),
-  ],
+  imports: [RouterModule.forChild(routes), MaterialModule],
 })
 export class ConnectModelModule {}

@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import * as fromConnectModel from '../../connect-model/store/connect-model.reducer';
+import * as fromModel from '../../model-state/reducers';
 import * as fromOptions from './options.reducer';
 import { Store } from '@ngrx/store';
 import { gminChanged, gmajChanged } from './options.actions';
@@ -31,16 +31,12 @@ import { gminChanged, gmajChanged } from './options.actions';
   styleUrls: ['options.component.scss'],
 })
 export class OptionsComponent {
-  features$ = this.store.select(fromConnectModel.selectConnectModelFeatures);
-  featuresLoading$ = this.store.select(
-    fromConnectModel.selectConnectModelLoading
-  );
+  features$ = this.store.select(fromModel.selectAllFeatures);
+  featuresLoading$ = this.store.select(fromModel.selectFeaturesLoading);
   gmin$ = this.store.select(fromOptions.selectOptionsGmin);
   gmaj$ = this.store.select(fromOptions.selectOptionsGmaj);
 
-  constructor(
-    private store: Store<fromConnectModel.State | fromOptions.State>
-  ) {}
+  constructor(private store: Store<fromModel.State | fromOptions.State>) {}
 
   onGminChanged(gmin: string) {
     this.store.dispatch(gminChanged({ gmin }));

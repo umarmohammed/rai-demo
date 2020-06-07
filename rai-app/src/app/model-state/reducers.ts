@@ -1,6 +1,11 @@
 import * as fromFile from './file.reducer';
 import * as fromFeatures from './features.reducer';
-import { Action, combineReducers } from '@ngrx/store';
+import {
+  Action,
+  combineReducers,
+  createFeatureSelector,
+  createSelector,
+} from '@ngrx/store';
 
 export const modelFeatureKey = 'model';
 
@@ -19,3 +24,34 @@ export function reducers(state: ModelState | undefined, action: Action) {
     [fromFeatures.featuresFeatureKey]: fromFeatures.reducer,
   })(state, action);
 }
+
+export const selectModelState = createFeatureSelector<State, ModelState>(
+  modelFeatureKey
+);
+
+export const selectFeaturesState = createSelector(
+  selectModelState,
+  (state) => state.features
+);
+
+export const selectAllFeatures = createSelector(
+  selectFeaturesState,
+  fromFeatures.selectFeatures
+);
+
+export const selectFeaturesLoading = createSelector(
+  selectFeaturesState,
+  fromFeatures.selectLoading
+);
+
+export const selectFeaturesLoaded = createSelector(
+  selectFeaturesState,
+  fromFeatures.selectLoaded
+);
+
+export const selectFileState = createSelector(
+  selectModelState,
+  (state) => state.file
+);
+
+export const selectFile = createSelector(selectFileState, fromFile.selectFile);

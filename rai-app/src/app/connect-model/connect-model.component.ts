@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { Store } from '@ngrx/store';
-import { State } from './store/connect-model.reducer';
+import { State } from '../model-state/reducers';
 import { modelSelected } from './connect-model.actions';
 import { Router } from '@angular/router';
 
