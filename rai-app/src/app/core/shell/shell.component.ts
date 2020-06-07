@@ -1,5 +1,4 @@
 import { Component } from '@angular/core';
-import { ShellService } from './shell.service';
 
 @Component({
   selector: 'rai-shell',
@@ -41,7 +40,6 @@ import { ShellService } from './shell.service';
 })
 export class ShellComponent {
   opened = false;
-  groupNames$ = this.shellService.groupNames$;
 
-  constructor(private shellService: ShellService) {}
+  constructor() {}
 }
