@@ -83,3 +83,8 @@ export const selectOverviewHistograms = createSelector(
   selectOverviewItems,
   (items) => items && items[0].histogram
 );
+
+export const selectOverviewLoading = createSelector(
+  selectOverviewState,
+  fromOverview.selectLoading
+);
