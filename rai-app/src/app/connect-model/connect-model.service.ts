@@ -8,8 +8,6 @@ export class ConnectModelService {
 
   constructor(private http: HttpClient) {}
 
-  features$ = this.http.get<string[]>(this.featuresUrl);
-
   getFeatures(formData: FormData) {
     return this.http.post<string[]>(this.featuresUrl, formData);
   }
