@@ -68,3 +68,18 @@ export const selectFileState = createSelector(
 );
 
 export const selectFile = createSelector(selectFileState, fromFile.selectFile);
+
+export const selectOverviewState = createSelector(
+  selectModelState,
+  (state) => state.overview
+);
+
+export const selectOverviewItems = createSelector(
+  selectOverviewState,
+  fromOverview.selectItems
+);
+
+export const selectOverviewHistograms = createSelector(
+  selectOverviewItems,
+  (items) => items && items[0].histogram
+);
