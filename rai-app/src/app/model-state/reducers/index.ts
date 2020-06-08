@@ -9,6 +9,7 @@ import {
 } from '@ngrx/store';
 import { filterOverviewMetricsByType } from 'src/app/core/models/overview-metric';
 import { fileToFormData } from 'src/app/connect-model/form-data';
+import { protectedFeaturesSet } from 'src/app/core/models/selected-features';
 
 export const modelFeatureKey = 'model';
 
@@ -68,6 +69,11 @@ export const selectProtectedFeatures = createSelector(
   selectGmin,
   selectGmaj,
   (gmin, gmaj) => ({ gmin, gmaj })
+);
+
+export const selectProtectedFeaturesSet = createSelector(
+  selectProtectedFeatures,
+  protectedFeaturesSet
 );
 
 export const selectFileState = createSelector(

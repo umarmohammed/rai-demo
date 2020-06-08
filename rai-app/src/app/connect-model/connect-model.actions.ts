@@ -15,3 +15,8 @@ export const bootstrapLoadedSuccess = createAction(
   '[Bootstrap API] Bootstrap Loaded Success',
   props<{ overview: OverviewMetric[] }>()
 );
+
+export const bootstrapLoadedWithFairnessSuccess = createAction(
+  '[Bootstrap API] Bootstrap Loaded With Fairness Success',
+  props<{ overview: OverviewMetric[] }>()
+);

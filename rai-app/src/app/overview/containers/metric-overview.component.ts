@@ -1,7 +1,6 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnInit, Output, EventEmitter } from '@angular/core';
 import * as fromModel from '../../model-state/reducers';
 import { Store } from '@ngrx/store';
-import { performanceMetricSelected } from '../overview.actions';
 import {
   overviewMetricToHistogramChart,
   OverviewMetric,
@@ -20,7 +19,7 @@ import { Observable } from 'rxjs';
       ></rai-metric-histogram>
       <rai-metric-aggregates
         class="aggregates"
-        (metricSelected)="onPerformanceMetricSelected($event)"
+        (metricSelected)="metricSelected.emit($event)"
         [selected]="selected$ | async"
         [overviewMetrics]="items$ | async"
       ></rai-metric-aggregates>
@@ -30,6 +29,7 @@ import { Observable } from 'rxjs';
 })
 export class MetricOverviewComponent implements OnInit {
   @Input() type: string;
+  @Output() metricSelected: EventEmitter<string> = new EventEmitter();
 
   selected$: Observable<OverviewMetric>;
   histogram$: Observable<HistogramChart>;
@@ -45,9 +45,5 @@ export class MetricOverviewComponent implements OnInit {
       fromModel.selectOverviewSelectedByType(this.type)
     );
     this.histogram$ = this.selected$.pipe(map(overviewMetricToHistogramChart));
-  }
-
-  onPerformanceMetricSelected(selectedPerformance: string) {
-    this.store.dispatch(performanceMetricSelected({ selectedPerformance }));
   }
 }

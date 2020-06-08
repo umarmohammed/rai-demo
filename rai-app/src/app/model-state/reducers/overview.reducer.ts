@@ -3,9 +3,14 @@ import { createReducer, on, Action } from '@ngrx/store';
 import {
   modelSelected,
   bootstrapLoadedSuccess,
+  bootstrapLoadedWithFairnessSuccess,
 } from 'src/app/connect-model/connect-model.actions';
 import { protectedFeatureChanged } from 'src/app/core/options/options.actions';
-import { performanceMetricSelected } from 'src/app/overview/overview.actions';
+import {
+  performanceMetricSelected,
+  fairnessMetricSelected,
+} from 'src/app/overview/overview.actions';
+import { protectedFeaturesSet } from 'src/app/core/models/selected-features';
 
 export const overviewFeatureKey = 'overview';
 
@@ -14,6 +19,7 @@ export interface State {
   loading: boolean;
   loaded: boolean;
   selectedPerformance: string;
+  selectedFairness: string;
 }
 
 export const initialState: State = {
@@ -21,6 +27,7 @@ export const initialState: State = {
   loaded: false,
   loading: false,
   selectedPerformance: null,
+  selectedFairness: null,
 };
 
 const overviewReducer = createReducer(
@@ -31,10 +38,18 @@ const overviewReducer = createReducer(
     loaded: true,
     loading: false,
     items: overview,
-    selectedPerformance: overview[0].name,
+    selectedPerformance: overview.find((o) => o.type === 'performance').name,
   })),
-  on(protectedFeatureChanged, (state, { gmin, gmaj }) =>
-    !!gmin && !!gmaj
+  on(bootstrapLoadedWithFairnessSuccess, (state, { overview }) => ({
+    ...state,
+    loaded: true,
+    loading: false,
+    items: overview,
+    selectedPerformance: overview.find((o) => o.type === 'performance').name,
+    selectedFairness: overview.find((o) => o.type === 'fairness').name,
+  })),
+  on(protectedFeatureChanged, (state, protectedFeatures) =>
+    protectedFeaturesSet(protectedFeatures)
       ? {
           ...state,
           loaded: false,
@@ -45,6 +60,10 @@ const overviewReducer = createReducer(
   on(performanceMetricSelected, (state, { selectedPerformance }) => ({
     ...state,
     selectedPerformance,
+  })),
+  on(fairnessMetricSelected, (state, { selectedFairness }) => ({
+    ...state,
+    selectedFairness,
   }))
 );
 
@@ -59,5 +78,7 @@ export const selectSelectedByType = (type: string) => (state: State) =>
   state.items.find((i) => i.name === typeToSelected(type, state));
 
 function typeToSelected(type: string, state: State) {
-  return type === 'performance' ? state.selectedPerformance : '';
+  return type === 'performance'
+    ? state.selectedPerformance
+    : state.selectedFairness;
 }

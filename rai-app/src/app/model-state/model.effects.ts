@@ -4,6 +4,7 @@ import {
   modelSelected,
   featuresLoadedSuccess,
   bootstrapLoadedSuccess,
+  bootstrapLoadedWithFairnessSuccess,
 } from '../connect-model/connect-model.actions';
 import { map, switchMap, withLatestFrom, tap, filter } from 'rxjs/operators';
 import { fileToFormData } from '../connect-model/form-data';
@@ -55,7 +56,9 @@ export class ModelEffects {
       switchMap(([features, formData]) =>
         this.modelService
           .getBootstrap(formData, features)
-          .pipe(map((overview) => bootstrapLoadedSuccess({ overview })))
+          .pipe(
+            map((overview) => bootstrapLoadedWithFairnessSuccess({ overview }))
+          )
       )
     )
   );

@@ -1,0 +1,20 @@
+.container {
+  height: 100%;
+  display: flex;
+  width: 100%;
+}
+
+/* only needed because flex:1 doesn't work
+with ngx charts */
+.half-width {
+  width: 50%;
+  margin: 10px;
+}
+
+.performance {
+  width: 100%;
+
+  &.half-width {
+    width: 50%;
+  }
+}
