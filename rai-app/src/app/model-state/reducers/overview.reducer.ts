@@ -5,6 +5,7 @@ import {
   bootstrapLoadedSuccess,
 } from 'src/app/connect-model/connect-model.actions';
 import { protectedFeatureChanged } from 'src/app/core/options/options.actions';
+import { performanceMetricSelected } from 'src/app/overview/overview.actions';
 
 export const overviewFeatureKey = 'overview';
 
@@ -40,7 +41,11 @@ const overviewReducer = createReducer(
           loading: true,
         }
       : state
-  )
+  ),
+  on(performanceMetricSelected, (state, { selectedPerformance }) => ({
+    ...state,
+    selectedPerformance,
+  }))
 );
 
 export function reducer(state: State | undefined, action: Action) {

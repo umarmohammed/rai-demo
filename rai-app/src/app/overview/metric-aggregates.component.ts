@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, Output, EventEmitter } from '@angular/core';
 import { OverviewMetric } from '../core/models/overview-metric';
 
 @Component({
@@ -17,6 +17,7 @@ import { OverviewMetric } from '../core/models/overview-metric';
       *ngFor="let metric of overviewMetrics"
       class="data-row"
       [class.selected-row]="metric.name === selected.name"
+      (click)="metricSelected.emit(metric.name)"
     >
       <td>{{ metric.name }}</td>
       <td *ngFor="let aggregate of metric.aggregates">
@@ -30,4 +31,6 @@ export class MetricAggregatesComponent {
   @Input() overviewMetrics: OverviewMetric[];
   @Input() headings: string[];
   @Input() selected: OverviewMetric;
+
+  @Output() metricSelected = new EventEmitter<string>();
 }

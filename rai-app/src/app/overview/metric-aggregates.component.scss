@@ -21,6 +21,6 @@ tr:nth-child(even) {
 }
 
 tr.selected-row {
-  background-color: darkblue;
+  background-color: darkblue !important;
   color: white;
 }

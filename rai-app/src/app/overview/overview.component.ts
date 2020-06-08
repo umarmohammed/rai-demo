@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import * as fromModel from '../model-state/reducers';
 import { Store } from '@ngrx/store';
+import { performanceMetricSelected } from './overview.actions';
 
 @Component({
   selector: 'rai-overview',
@@ -10,6 +11,7 @@ import { Store } from '@ngrx/store';
         [metric]="selectedPerformanceMetric$ | async"
       ></rai-metric-histogram>
       <rai-metric-aggregates
+        (metricSelected)="onPerformanceMetricSelected($event)"
         [selected]="selectedPerformanceMetric$ | async"
         [overviewMetrics]="performanceItems$ | async"
       ></rai-metric-aggregates>
@@ -37,4 +39,8 @@ export class OverviewComponent {
   );
 
   constructor(private store: Store<fromModel.State>) {}
+
+  onPerformanceMetricSelected(selectedPerformance: string) {
+    this.store.dispatch(performanceMetricSelected({ selectedPerformance }));
+  }
 }
