@@ -8,9 +8,11 @@ import { performanceMetricSelected } from './overview.actions';
   template: `
     <div *ngIf="!(loading$ | async)" class="container">
       <rai-metric-histogram
+        class="histogram"
         [metric]="selectedPerformanceMetric$ | async"
       ></rai-metric-histogram>
       <rai-metric-aggregates
+        class="aggregates"
         (metricSelected)="onPerformanceMetricSelected($event)"
         [selected]="selectedPerformanceMetric$ | async"
         [overviewMetrics]="performanceItems$ | async"
@@ -18,15 +20,7 @@ import { performanceMetricSelected } from './overview.actions';
     </div>
     <mat-spinner class="spinner" [class.show]="loading$ | async"></mat-spinner>
   `,
-  styles: [
-    `
-      .container {
-        display: flex;
-        flex-direction: column;
-        height: 100%;
-      }
-    `,
-  ],
+  styleUrls: ['overview.component.scss'],
 })
 export class OverviewComponent {
   selectedPerformanceMetric$ = this.store.select(
