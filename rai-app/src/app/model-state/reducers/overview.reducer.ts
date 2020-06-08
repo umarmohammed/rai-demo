@@ -33,20 +33,25 @@ export const initialState: State = {
 const overviewReducer = createReducer(
   initialState,
   on(modelSelected, (state) => ({ ...state, loading: true, loaded: false })),
-  on(bootstrapLoadedSuccess, (state, { overview }) => ({
+  on(bootstrapLoadedSuccess, (state, { bootstrap }) => ({
     ...state,
     loaded: true,
     loading: false,
-    items: overview,
-    selectedPerformance: overview.find((o) => o.type === 'performance').name,
+    items: bootstrap.overview,
+    selectedPerformance: bootstrap.overview.find(
+      (o) => o.type === 'performance'
+    ).name,
   })),
-  on(bootstrapLoadedWithFairnessSuccess, (state, { overview }) => ({
+  on(bootstrapLoadedWithFairnessSuccess, (state, { bootstrap }) => ({
     ...state,
     loaded: true,
     loading: false,
-    items: overview,
-    selectedPerformance: overview.find((o) => o.type === 'performance').name,
-    selectedFairness: overview.find((o) => o.type === 'fairness').name,
+    items: bootstrap.overview,
+    selectedPerformance: bootstrap.overview.find(
+      (o) => o.type === 'performance'
+    ).name,
+    selectedFairness: bootstrap.overview.find((o) => o.type === 'fairness')
+      .name,
   })),
   on(protectedFeatureChanged, (state, protectedFeatures) =>
     protectedFeaturesSet(protectedFeatures)

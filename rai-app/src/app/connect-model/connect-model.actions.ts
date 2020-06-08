@@ -1,5 +1,5 @@
 import { createAction, props } from '@ngrx/store';
-import { OverviewMetric } from '../core/models/overview-metric';
+import { BootstrapResponse } from '../core/models/bootstrap-response';
 
 export const modelSelected = createAction(
   '[Connect Model Page] Model Selected',
@@ -13,10 +13,10 @@ export const featuresLoadedSuccess = createAction(
 
 export const bootstrapLoadedSuccess = createAction(
   '[Bootstrap API] Bootstrap Loaded Success',
-  props<{ overview: OverviewMetric[] }>()
+  props<{ bootstrap: BootstrapResponse }>()
 );
 
 export const bootstrapLoadedWithFairnessSuccess = createAction(
   '[Bootstrap API] Bootstrap Loaded With Fairness Success',
-  props<{ overview: OverviewMetric[] }>()
+  props<{ bootstrap: BootstrapResponse }>()
 );

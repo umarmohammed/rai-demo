@@ -10,11 +10,8 @@ import { map, switchMap, withLatestFrom, tap, filter } from 'rxjs/operators';
 import { fileToFormData } from '../connect-model/form-data';
 import { ModelService } from './model.service';
 import { protectedFeatureChanged } from '../core/options/options.actions';
-import { of } from 'rxjs';
-import { Store, createAction } from '@ngrx/store';
+import { Store } from '@ngrx/store';
 import * as fromModel from './reducers';
-
-const foo = createAction('foo');
 
 @Injectable()
 export class ModelEffects {
@@ -43,11 +40,7 @@ export class ModelEffects {
       switchMap((form) =>
         this.modelService
           .getBootstrap(form)
-          .pipe(
-            map((response) =>
-              bootstrapLoadedSuccess({ overview: response.overview })
-            )
-          )
+          .pipe(map((bootstrap) => bootstrapLoadedSuccess({ bootstrap })))
       )
     )
   );
@@ -58,15 +51,13 @@ export class ModelEffects {
       filter((features) => !!features.gmin && !!features.gmaj),
       withLatestFrom(this.store.select(fromModel.selectFormData)),
       switchMap(([features, formData]) =>
-        this.modelService
-          .getBootstrap(formData, features)
-          .pipe(
-            map((response) =>
-              bootstrapLoadedWithFairnessSuccess({
-                overview: response.overview,
-              })
-            )
+        this.modelService.getBootstrap(formData, features).pipe(
+          map((bootstrap) =>
+            bootstrapLoadedWithFairnessSuccess({
+              bootstrap,
+            })
           )
+        )
       )
     )
   );
