@@ -145,16 +145,17 @@ def boostrap_metrics(c):
         def getMetricPivotTable():
             return c["metrics"].pivot_table(index="Sample", columns="Metric")[
                 "Value"][metric]
-        return np.histogram(getMetricPivotTable())
 
-    def getHistogram(metricHistogram):
-        if(len(metricHistogram[0]) == 0):
-            return []
-        return [{
-            "frequency": int(metricHistogram[0][0]),
-            "interval": float(metricHistogram[1][0])
-        }] + getHistogram((metricHistogram[0][1:], metricHistogram[1][1:]))
-    return [{"name": i, "histogram": getHistogram(getMetricHistogram(i)), "type": "performance"} for i in list(perf_metrics.keys())]
+        def getHistogram(metricHistogram):
+            if(len(metricHistogram[0]) == 0):
+                return []
+            return [{
+                "frequency": int(metricHistogram[0][0]),
+                "interval": float(metricHistogram[1][0])
+            }] + getHistogram((metricHistogram[0][1:], metricHistogram[1][1:]))
+        return getHistogram(np.histogram(getMetricPivotTable()))
+
+    return [{"name": i, "histogram": getMetricHistogram(i), "type": "performance"} for i in list(perf_metrics.keys())]
 
 
 def getStuffNeededForMetrics(modelAndData):
