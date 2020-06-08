@@ -4,7 +4,8 @@ import { HistogramChart, blueScheme } from '../core/models/overview-metric';
 @Component({
   selector: 'rai-metric-histogram',
   template: `
-    <div style="width:calc(100% - 30px); height: 100%">
+    <div class="container">
+      <h4 class="title">{{ histogram.name }}</h4>
       <ngx-charts-bar-vertical
         [results]="histogram.series"
         [xAxis]="true"
@@ -16,6 +17,7 @@ import { HistogramChart, blueScheme } from '../core/models/overview-metric';
       </ngx-charts-bar-vertical>
     </div>
   `,
+  styleUrls: ['metric-histogram.component.scss'],
 })
 export class MetricHistogramComponent {
   @Input() histogram: HistogramChart;
