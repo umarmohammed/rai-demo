@@ -5,7 +5,7 @@ import { Store } from '@ngrx/store';
 @Component({
   selector: 'rai-overview',
   template: `
-    <div [class.hidden]="loading$ | async">
+    <div *ngIf="!(loading$ | async)" class="container">
       <rai-metric-histogram
         [histogram]="histogram$ | async"
       ></rai-metric-histogram>
@@ -15,6 +15,15 @@ import { Store } from '@ngrx/store';
     </div>
     <mat-spinner class="spinner" [class.show]="loading$ | async"></mat-spinner>
   `,
+  styles: [
+    `
+      .container {
+        display: flex;
+        flex-direction: column;
+        height: 100%;
+      }
+    `,
+  ],
 })
 export class OverviewComponent {
   histogram$ = this.store.select(fromModel.selectOverviewHistograms);
