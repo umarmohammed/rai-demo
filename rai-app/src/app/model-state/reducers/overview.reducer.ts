@@ -55,5 +55,9 @@ export function reducer(state: State | undefined, action: Action) {
 export const selectItems = (state: State) => state.items;
 export const selectLoaded = (state: State) => state.loaded;
 export const selectLoading = (state: State) => state.loading;
-export const selectSelectedPerformance = (state: State) =>
-  state.items.find((i) => i.name === state.selectedPerformance);
+export const selectSelectedByType = (type: string) => (state: State) =>
+  state.items.find((i) => i.name === typeToSelected(type, state));
+
+function typeToSelected(type: string, state: State) {
+  return type === 'performance' ? state.selectedPerformance : '';
+}

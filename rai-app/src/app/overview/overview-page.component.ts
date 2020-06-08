@@ -6,7 +6,7 @@ import { Store } from '@ngrx/store';
   selector: 'rai-overview-page',
   template: `
     <div *ngIf="!(loading$ | async)">
-      <rai-metric-overview></rai-metric-overview>
+      <rai-metric-overview type="performance"></rai-metric-overview>
     </div>
     <mat-spinner class="spinner" [class.show]="loading$ | async"></mat-spinner>
   `,

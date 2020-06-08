@@ -6,14 +6,8 @@ import {
   combineReducers,
   createFeatureSelector,
   createSelector,
-  MemoizedSelector,
 } from '@ngrx/store';
-import {
-  filterOverviewMetrics,
-  isPerformanceMetric,
-  OverviewMetric,
-  overviewMetricToHistogramChart,
-} from 'src/app/core/models/overview-metric';
+import { filterOverviewMetricsByType } from 'src/app/core/models/overview-metric';
 import { fileToFormData } from 'src/app/connect-model/form-data';
 
 export const modelFeatureKey = 'model';
@@ -97,21 +91,13 @@ export const selectOverviewItems = createSelector(
   fromOverview.selectItems
 );
 
-export const selectOverviewPerformanceItems = createSelector(
-  selectOverviewItems,
-  filterOverviewMetrics(isPerformanceMetric)
-);
+export const selectOverviewItemsByType = (type: string) =>
+  createSelector(selectOverviewItems, filterOverviewMetricsByType(type));
 
 export const selectOverviewLoading = createSelector(
   selectOverviewState,
   fromOverview.selectLoading
 );
 
-export const selectOverviewSelectedPerformance = createSelector(
-  selectOverviewState,
-  fromOverview.selectSelectedPerformance
-);
-
-export const selectHistogram = (
-  selectOverviewMetric: MemoizedSelector<State, OverviewMetric>
-) => createSelector(selectOverviewMetric, overviewMetricToHistogramChart);
+export const selectOverviewSelectedByType = (type: string) =>
+  createSelector(selectOverviewState, fromOverview.selectSelectedByType(type));

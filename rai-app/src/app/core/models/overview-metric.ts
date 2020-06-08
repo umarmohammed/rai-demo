@@ -22,19 +22,9 @@ export interface HistogramChart {
 
 export const blueScheme = { domain: ['#1f77b4'] };
 
-export function isFairnessMetric(overviewMetric: OverviewMetric) {
-  return overviewMetric.type === 'fairness';
-}
-
-export function isPerformanceMetric(overviewMetric: OverviewMetric) {
-  return overviewMetric.type === 'performance';
-}
-
-export function filterOverviewMetrics(
-  comparator: (o: OverviewMetric) => boolean
-) {
+export function filterOverviewMetricsByType(type: string) {
   return (overviewMetric: OverviewMetric[]) =>
-    overviewMetric && overviewMetric.filter(comparator);
+    overviewMetric && overviewMetric.filter((o) => o.type == type);
 }
 
 export function overviewMetricToHistogramChart(
