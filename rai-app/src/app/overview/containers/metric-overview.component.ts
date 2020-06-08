@@ -13,8 +13,8 @@ import { Observable } from 'rxjs';
   selector: 'rai-metric-overview',
   template: `
     <div class="container">
-      <h2 class="title">{{ title }}</h2>
-      <p class="metric-name">{{ (selected$ | async).name }}</p>
+      <h2 class="center-text">{{ title }}</h2>
+      <p class="center-text">{{ (selected$ | async).name }}</p>
       <rai-metric-histogram
         class="histogram"
         [histogram]="histogram$ | async"
