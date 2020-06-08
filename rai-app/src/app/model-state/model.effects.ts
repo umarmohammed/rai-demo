@@ -54,7 +54,7 @@ export class ModelEffects {
       withLatestFrom(this.store.select(fromModel.selectFormData)),
       switchMap(([features, formData]) =>
         this.modelService
-          .getBootstrap(formData)
+          .getBootstrap(formData, features)
           .pipe(map((overview) => bootstrapLoadedSuccess({ overview })))
       )
     )
