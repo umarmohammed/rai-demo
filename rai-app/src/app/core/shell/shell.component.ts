@@ -4,7 +4,7 @@ import { Component } from '@angular/core';
   selector: 'rai-shell',
   template: ` <mat-toolbar>
       <mat-toolbar-row>
-        <button mat-icon-button class="nav-menu" (click)="opened = !opened">
+        <button mat-icon-button class="nav-menu" (click)="onMenuClicked()">
           <mat-icon>menu</mat-icon>
         </button>
         <a mat-button routerLink="/home">Robustness Demo</a>
@@ -42,4 +42,13 @@ export class ShellComponent {
   opened = false;
 
   constructor() {}
+
+  onMenuClicked() {
+    this.opened = !this.opened;
+    this.triggerWindowChangeForCharts();
+  }
+
+  private triggerWindowChangeForCharts() {
+    window.dispatchEvent(new Event('resize'));
+  }
 }
