@@ -245,13 +245,13 @@ X.loc[(y.values.ravel() - c["instances"].mean(axis=1)).abs()[
 
 # #### Avg case metrics + uncertainty
 
-# c["metrics"].pivot_table(values="Value", index="Metric", aggfunc=[
-#                          "mean", "median", "std", "mad"])
+c["metrics"].pivot_table(values="Value", index="Metric", aggfunc=[
+                         "mean", "median", "std", "mad"])
 
 
 # get_ipython().run_line_magic('matplotlib', 'inline')
-# c["metrics"].pivot_table(index="Sample", columns="Metric")[
-#     "Value"]["DispImpact"].hist()
+c["metrics"].pivot_table(index="Sample", columns="Metric")[
+    "Value"]["DispImpact"]  # .hist()
 print(c["metrics"])
 
 # #### Worst/Best-case metrics
@@ -347,12 +347,12 @@ d = c["metrics"].pivot_table(
     index="Variable", columns="Metric", values="Value", aggfunc="mean")
 
 
-get_ipython().run_line_magic('matplotlib', 'inline')
-d.plot(x="AUC", y="AvgOddsDiff", kind="scatter")
+# get_ipython().run_line_magic('matplotlib', 'inline')
+# d.plot(x="AUC", y="AvgOddsDiff", kind="scatter")
 
 
-get_ipython().run_line_magic('matplotlib', 'inline')
-d.plot(x="F1-Score", y="DispImpact", kind="scatter")
+# get_ipython().run_line_magic('matplotlib', 'inline')
+# d.plot(x="F1-Score", y="DispImpact", kind="scatter")
 
 
 b = c["metrics"].pivot_table(
