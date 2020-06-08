@@ -9,8 +9,13 @@ th {
   border: 1px solid #dddddd;
   text-align: left;
   padding: 8px;
+  user-select: none;
 }
 
 tr:nth-child(even) {
   background-color: #dddddd;
+}
+
+.data-row:hover {
+  background-color: lightblue;
 }

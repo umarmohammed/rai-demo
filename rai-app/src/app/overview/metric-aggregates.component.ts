@@ -13,7 +13,7 @@ import { OverviewMetric } from '../core/models/overview-metric';
       <th>Std</th>
       <th>Mad</th>
     </tr>
-    <tr *ngFor="let metric of overviewMetrics">
+    <tr *ngFor="let metric of overviewMetrics" class="data-row">
       <td>{{ metric.name }}</td>
       <td *ngFor="let aggregate of metric.aggregates">
         {{ aggregate.value | number: '1.1-6' }}
