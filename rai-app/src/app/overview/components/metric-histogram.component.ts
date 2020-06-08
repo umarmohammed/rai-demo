@@ -1,5 +1,5 @@
 import { Component, Input } from '@angular/core';
-import { HistogramChart, blueScheme } from '../core/models/overview-metric';
+import { HistogramChart, blueScheme } from '../../core/models/overview-metric';
 
 @Component({
   selector: 'rai-metric-histogram',

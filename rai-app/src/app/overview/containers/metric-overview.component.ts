@@ -1,12 +1,12 @@
 import { Component, Input, OnInit } from '@angular/core';
-import * as fromModel from '../model-state/reducers';
+import * as fromModel from '../../model-state/reducers';
 import { Store } from '@ngrx/store';
-import { performanceMetricSelected } from './overview.actions';
+import { performanceMetricSelected } from '../overview.actions';
 import {
   overviewMetricToHistogramChart,
   OverviewMetric,
   HistogramChart,
-} from '../core/models/overview-metric';
+} from '../../core/models/overview-metric';
 import { map } from 'rxjs/operators';
 import { Observable } from 'rxjs';
 

@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import * as fromModel from '../model-state/reducers';
+import * as fromModel from '../../model-state/reducers';
 import { Store } from '@ngrx/store';
 
 @Component({
