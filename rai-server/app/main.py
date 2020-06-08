@@ -140,7 +140,7 @@ def bootstrap_magic(X, y, model, n_samples, refit=False, gmaj=None, gmin=None):
     return {"instances": df_instances, "metrics": df_all_metrics}
 
 
-def boostrap_metrics(c):
+def boostrap_metrics(c, computeFairnessMetrics):
     def getMetricHistogram(metric):
         def getMetricPivotTable():
             return c["metrics"].pivot_table(index="Sample", columns="Metric")[
@@ -166,16 +166,28 @@ def boostrap_metrics(c):
 
     def getMetricAggregates(aggregates):
         return [{"name": i[0], "value": aggregates[i]} for i in aggregates.keys()]
+
+    def getMetrics():
+        def metricsToList(metricType, metricDict):
+            return [{"name": i, "type": metricType} for i in list(metricDict.keys())]
+
+        return metricsToList("performance", perf_metrics) + (metricsToList("fairness", fair_metrics) if computeFairnessMetrics else [])
+
     agg = getAggregates()
-    return [{"name": i, "histogram": getMetricHistogram(i), "type": "performance", "aggregates": getMetricAggregates(agg[i])} for i in list(perf_metrics.keys())]
+    return [{**i, "histogram": getMetricHistogram(i["name"]), "aggregates": getMetricAggregates(agg[i["name"]])} for i in getMetrics()]
 
 
-def getStuffNeededForMetrics(modelAndData):
+def getStuffNeededForMetrics(modelAndData, selectedFeatures):
+    def getGroups(X):
+        gminKey = selectedFeatures and selectedFeatures.get('gmin')
+        gmajKey = selectedFeatures and selectedFeatures.get('gmaj')
+        return (gminKey and X[[gminKey]], gmajKey and X[[gmajKey]])
+
     X = modelAndData["X"]
     y = modelAndData["y"]
     model = modelAndData["model"]
-
-    return (X, y, model)
+    (gmin, gmaj) = getGroups(X)
+    return (X, y, model, gmin, gmaj)
 
 
 @app.route("/api/features", methods=["POST"])
@@ -188,9 +200,11 @@ def features():
 @app.route("/api/bootstrap", methods=["POST"])
 def bootstrap():
     file = request.files['file']
-    (X, y, model) = getStuffNeededForMetrics(
-        load(file.stream))
+    (X, y, model, gmin, gmaj) = getStuffNeededForMetrics(
+        load(file.stream), json.loads(request.form['data']))
     c = bootstrap_magic(X=X, y=y, model=model, n_samples=100,
-                        refit=True)
-    print(boostrap_metrics(c))
-    return jsonify(boostrap_metrics(c))
+                        refit=True, gmaj=gmaj, gmin=gmin)
+
+    computeFairnessMetrics = gmin is not None and gmin is not None
+
+    return jsonify(boostrap_metrics(c, computeFairnessMetrics))
