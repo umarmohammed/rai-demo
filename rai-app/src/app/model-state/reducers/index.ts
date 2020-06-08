@@ -12,6 +12,7 @@ import {
   filterOverviewMetrics,
   isPerformanceMetric,
   OverviewMetric,
+  overviewMetricToHistogramChart,
 } from 'src/app/core/models/overview-metric';
 import { fileToFormData } from 'src/app/connect-model/form-data';
 
@@ -110,3 +111,7 @@ export const selectOverviewSelectedPerformance = createSelector(
   selectOverviewState,
   fromOverview.selectSelectedPerformance
 );
+
+export const selectHistogram = (
+  selectOverviewMetric: MemoizedSelector<State, OverviewMetric>
+) => createSelector(selectOverviewMetric, overviewMetricToHistogramChart);

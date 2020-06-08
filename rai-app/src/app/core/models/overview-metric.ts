@@ -15,6 +15,13 @@ export interface AggregateMetric {
   value: number;
 }
 
+export interface HistogramChart {
+  name: string;
+  series: any;
+}
+
+export const blueScheme = { domain: ['#1f77b4'] };
+
 export function isFairnessMetric(overviewMetric: OverviewMetric) {
   return overviewMetric.type === 'fairness';
 }
@@ -28,4 +35,16 @@ export function filterOverviewMetrics(
 ) {
   return (overviewMetric: OverviewMetric[]) =>
     overviewMetric && overviewMetric.filter(comparator);
+}
+
+export function overviewMetricToHistogramChart(
+  metric: OverviewMetric
+): HistogramChart {
+  return {
+    name: metric.name,
+    series: metric.histogram.map((bin) => ({
+      name: bin.interval,
+      value: bin.frequency,
+    })),
+  };
 }

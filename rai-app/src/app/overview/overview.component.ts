@@ -9,7 +9,7 @@ import { performanceMetricSelected } from './overview.actions';
     <div *ngIf="!(loading$ | async)" class="container">
       <rai-metric-histogram
         class="histogram"
-        [metric]="selectedPerformanceMetric$ | async"
+        [histogram]="selectPerformanceHistogram$ | async"
       ></rai-metric-histogram>
       <rai-metric-aggregates
         class="aggregates"
@@ -25,6 +25,10 @@ import { performanceMetricSelected } from './overview.actions';
 export class OverviewComponent {
   selectedPerformanceMetric$ = this.store.select(
     fromModel.selectOverviewSelectedPerformance
+  );
+
+  selectPerformanceHistogram$ = this.store.select(
+    fromModel.selectHistogram(fromModel.selectOverviewSelectedPerformance)
   );
 
   loading$ = this.store.select(fromModel.selectOverviewLoading);
