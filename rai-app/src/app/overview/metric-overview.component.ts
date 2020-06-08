@@ -4,9 +4,9 @@ import { Store } from '@ngrx/store';
 import { performanceMetricSelected } from './overview.actions';
 
 @Component({
-  selector: 'rai-overview',
+  selector: 'rai-metric-overview',
   template: `
-    <div *ngIf="!(loading$ | async)" class="container">
+    <div class="container">
       <rai-metric-histogram
         class="histogram"
         [histogram]="selectPerformanceHistogram$ | async"
@@ -18,11 +18,10 @@ import { performanceMetricSelected } from './overview.actions';
         [overviewMetrics]="performanceItems$ | async"
       ></rai-metric-aggregates>
     </div>
-    <mat-spinner class="spinner" [class.show]="loading$ | async"></mat-spinner>
   `,
-  styleUrls: ['overview.component.scss'],
+  styleUrls: ['metric-overview.component.scss'],
 })
-export class OverviewComponent {
+export class MetricOverviewComponent {
   selectedPerformanceMetric$ = this.store.select(
     fromModel.selectOverviewSelectedPerformance
   );
@@ -31,7 +30,6 @@ export class OverviewComponent {
     fromModel.selectHistogram(fromModel.selectOverviewSelectedPerformance)
   );
 
-  loading$ = this.store.select(fromModel.selectOverviewLoading);
   performanceItems$ = this.store.select(
     fromModel.selectOverviewPerformanceItems
   );
