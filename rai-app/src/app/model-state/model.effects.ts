@@ -43,7 +43,11 @@ export class ModelEffects {
       switchMap((form) =>
         this.modelService
           .getBootstrap(form)
-          .pipe(map((overview) => bootstrapLoadedSuccess({ overview })))
+          .pipe(
+            map((response) =>
+              bootstrapLoadedSuccess({ overview: response.overview })
+            )
+          )
       )
     )
   );
@@ -57,7 +61,11 @@ export class ModelEffects {
         this.modelService
           .getBootstrap(formData, features)
           .pipe(
-            map((overview) => bootstrapLoadedWithFairnessSuccess({ overview }))
+            map((response) =>
+              bootstrapLoadedWithFairnessSuccess({
+                overview: response.overview,
+              })
+            )
           )
       )
     )

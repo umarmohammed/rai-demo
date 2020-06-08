@@ -173,8 +173,10 @@ def boostrap_metrics(c, computeFairnessMetrics):
 
         return metricsToList("performance", perf_metrics) + (metricsToList("fairness", fair_metrics) if computeFairnessMetrics else [])
 
-    agg = getAggregates()
-    return [{**i, "histogram": getMetricHistogram(i["name"]), "aggregates": getMetricAggregates(agg[i["name"]])} for i in getMetrics()]
+    def getOverview():
+        agg = getAggregates()
+        return [{**i, "histogram": getMetricHistogram(i["name"]), "aggregates": getMetricAggregates(agg[i["name"]])} for i in getMetrics()]
+    return {"overview": getOverview()}
 
 
 def getStuffNeededForMetrics(modelAndData, selectedFeatures):

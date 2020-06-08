@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { environment } from 'src/environments/environment';
 import { HttpClient } from '@angular/common/http';
-import { OverviewMetric } from '../core/models/overview-metric';
+import { BootstrapResponse } from '../core/models/bootstrap-response';
 import { SelectedFeatures } from '../core/models/selected-features';
 
 @Injectable({ providedIn: 'root' })
@@ -16,7 +16,7 @@ export class ModelService {
   }
 
   getBootstrap(formData: FormData, features: SelectedFeatures = null) {
-    return this.http.post<OverviewMetric[]>(
+    return this.http.post<BootstrapResponse>(
       this.bootstrapUrl,
       this.createFeaturesToUpload(formData, features)
     );
