@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import * as fromModel from '../../model-state/reducers';
 import { Store } from '@ngrx/store';
-import { gminChanged, gmajChanged } from './options.actions';
+import { protectedFeatureChanged } from './options.actions';
 
 @Component({
   selector: 'rai-options',
@@ -11,14 +11,18 @@ import { gminChanged, gmajChanged } from './options.actions';
         <p class="header">Protected Features</p>
 
         <rai-select-protected-feaure
+          [value]="gmin$ | async"
           [features]="features$ | async"
           label="Unpriveleged Group"
-          (selectionChange)="onGminChanged($event)"
+          (selectionChange)="onGminChanged($event, selectGmaj.value)"
+          #selectGmin
         ></rai-select-protected-feaure>
         <rai-select-protected-feaure
+          [value]="gmaj$ | async"
           [features]="features$ | async"
           label="Priveleged Group"
-          (selectionChange)="onGmajChanged($event)"
+          (selectionChange)="onGmajChanged($event, selectGmin.value)"
+          #selectGmaj
         ></rai-select-protected-feaure>
       </div>
     </div>
@@ -37,11 +41,11 @@ export class OptionsComponent {
 
   constructor(private store: Store<fromModel.State>) {}
 
-  onGminChanged(gmin: string) {
-    this.store.dispatch(gminChanged({ gmin }));
+  onGminChanged(gmin: string, gmaj: string) {
+    this.store.dispatch(protectedFeatureChanged({ gmin, gmaj }));
   }
 
-  onGmajChanged(gmaj: string) {
-    this.store.dispatch(gmajChanged({ gmaj }));
+  onGmajChanged(gmaj: string, gmin: string) {
+    this.store.dispatch(protectedFeatureChanged({ gmin, gmaj }));
   }
 }

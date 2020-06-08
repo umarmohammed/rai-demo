@@ -11,6 +11,7 @@ import {
   filterOverviewMetrics,
   isPerformanceMetric,
 } from 'src/app/core/models/overview-metric';
+import { fileToFormData } from 'src/app/connect-model/form-data';
 
 export const modelFeatureKey = 'model';
 
@@ -66,12 +67,22 @@ export const selectGmaj = createSelector(
   fromFeatures.selectGmaj
 );
 
+export const selectProtectedFeatures = createSelector(
+  selectGmin,
+  selectGmaj,
+  (gmin, gmaj) => ({ gmin, gmaj })
+);
+
 export const selectFileState = createSelector(
   selectModelState,
   (state) => state.file
 );
 
 export const selectFile = createSelector(selectFileState, fromFile.selectFile);
+
+export const selectFormData = createSelector(selectFile, (file) =>
+  fileToFormData({ file })
+);
 
 export const selectOverviewState = createSelector(
   selectModelState,

@@ -4,6 +4,7 @@ import {
   modelSelected,
   bootstrapLoadedSuccess,
 } from 'src/app/connect-model/connect-model.actions';
+import { protectedFeatureChanged } from 'src/app/core/options/options.actions';
 
 export const overviewFeatureKey = 'overview';
 
@@ -27,7 +28,16 @@ const overviewReducer = createReducer(
     loaded: true,
     loading: false,
     items: overview,
-  }))
+  })),
+  on(protectedFeatureChanged, (state, { gmin, gmaj }) =>
+    !!gmin && !!gmaj
+      ? {
+          ...state,
+          loaded: false,
+          loading: true,
+        }
+      : state
+  )
 );
 
 export function reducer(state: State | undefined, action: Action) {
