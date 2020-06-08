@@ -12,12 +12,14 @@ export interface State {
   items: OverviewMetric[];
   loading: boolean;
   loaded: boolean;
+  selectedPerformance: string;
 }
 
 export const initialState: State = {
   items: null,
   loaded: false,
   loading: false,
+  selectedPerformance: null,
 };
 
 const overviewReducer = createReducer(
@@ -28,6 +30,7 @@ const overviewReducer = createReducer(
     loaded: true,
     loading: false,
     items: overview,
+    selectedPerformance: overview[0].name,
   })),
   on(protectedFeatureChanged, (state, { gmin, gmaj }) =>
     !!gmin && !!gmaj
@@ -47,3 +50,5 @@ export function reducer(state: State | undefined, action: Action) {
 export const selectItems = (state: State) => state.items;
 export const selectLoaded = (state: State) => state.loaded;
 export const selectLoading = (state: State) => state.loading;
+export const selectSelectedPerformance = (state: State) =>
+  state.items.find((i) => i.name === state.selectedPerformance);

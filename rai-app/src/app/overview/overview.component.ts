@@ -7,7 +7,7 @@ import { Store } from '@ngrx/store';
   template: `
     <div *ngIf="!(loading$ | async)" class="container">
       <rai-metric-histogram
-        [histogram]="histogram$ | async"
+        [histogram]="performanceMetricHistogram$ | async"
       ></rai-metric-histogram>
       <rai-metric-aggregates
         [overviewMetrics]="performanceItems$ | async"
@@ -26,7 +26,9 @@ import { Store } from '@ngrx/store';
   ],
 })
 export class OverviewComponent {
-  histogram$ = this.store.select(fromModel.selectOverviewHistograms);
+  performanceMetricHistogram$ = this.store.select(
+    fromModel.selectHistogram(fromModel.selectOverviewSelectedPerformance)
+  );
   loading$ = this.store.select(fromModel.selectOverviewLoading);
   performanceItems$ = this.store.select(
     fromModel.selectOverviewPerformanceItems
