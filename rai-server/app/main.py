@@ -155,7 +155,19 @@ def boostrap_metrics(c):
             }] + getHistogram((metricHistogram[0][1:], metricHistogram[1][1:]))
         return getHistogram(np.histogram(getMetricPivotTable()))
 
-    return [{"name": i, "histogram": getMetricHistogram(i), "type": "performance"} for i in list(perf_metrics.keys())]
+    def getAggregates():
+        def q05(x):
+            return np.quantile(x, q=.05)
+
+        def q95(x):
+            return np.quantile(x, q=.95)
+        return c["metrics"].pivot_table(values="Value", index="Metric", aggfunc=[
+            "mean", "median", q05, q95, "std", "mad"]).swapaxes(0, 1).to_dict()
+
+    def getMetricAggregates(aggregates):
+        return [{"name": i[0], "value": aggregates[i]} for i in aggregates.keys()]
+    agg = getAggregates()
+    return [{"name": i, "histogram": getMetricHistogram(i), "type": "performance", "aggregates": getMetricAggregates(agg[i])} for i in list(perf_metrics.keys())]
 
 
 def getStuffNeededForMetrics(modelAndData):
