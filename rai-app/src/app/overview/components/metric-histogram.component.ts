@@ -5,7 +5,6 @@ import { HistogramChart, blueScheme } from '../../core/models/overview-metric';
   selector: 'rai-metric-histogram',
   template: `
     <div class="container">
-      <h4 class="title">{{ histogram.name }}</h4>
       <ngx-charts-bar-vertical
         [results]="histogram.series"
         [xAxis]="true"

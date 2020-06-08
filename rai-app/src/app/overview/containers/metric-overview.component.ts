@@ -13,6 +13,8 @@ import { Observable } from 'rxjs';
   selector: 'rai-metric-overview',
   template: `
     <div class="container">
+      <h2 class="title">{{ title }}</h2>
+      <p class="metric-name">{{ (selected$ | async).name }}</p>
       <rai-metric-histogram
         class="histogram"
         [histogram]="histogram$ | async"
@@ -29,6 +31,8 @@ import { Observable } from 'rxjs';
 })
 export class MetricOverviewComponent implements OnInit {
   @Input() type: string;
+  @Input() title: string;
+
   @Output() metricSelected: EventEmitter<string> = new EventEmitter();
 
   selected$: Observable<OverviewMetric>;

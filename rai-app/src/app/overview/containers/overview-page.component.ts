@@ -15,12 +15,14 @@ import {
         class="performance"
         [class.half-width]="protectedFeaturesSet$ | async"
         (metricSelected)="onPerformanceMetricSelected($event)"
+        title="Performance Metrics"
       ></rai-metric-overview>
       <rai-metric-overview
         *ngIf="protectedFeaturesSet$ | async"
         type="fairness"
         class="half-width"
         (metricSelected)="onFairnessMetricSelected($event)"
+        title="Fairness Metrics"
       ></rai-metric-overview>
     </div>
     <mat-spinner class="spinner" [class.show]="loading$ | async"></mat-spinner>
