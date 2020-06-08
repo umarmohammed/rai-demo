@@ -101,10 +101,6 @@ export const selectOverviewPerformanceItems = createSelector(
   filterOverviewMetrics(isPerformanceMetric)
 );
 
-export const selectHistogram = (
-  selectOverviewMetric: MemoizedSelector<State, OverviewMetric>
-) => createSelector(selectOverviewMetric, (metric) => metric.histogram);
-
 export const selectOverviewLoading = createSelector(
   selectOverviewState,
   fromOverview.selectLoading

@@ -19,3 +19,8 @@ tr:nth-child(even) {
 .data-row:hover {
   background-color: lightblue;
 }
+
+tr.selected-row {
+  background-color: darkblue;
+  color: white;
+}

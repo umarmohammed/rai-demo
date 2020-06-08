@@ -13,7 +13,11 @@ import { OverviewMetric } from '../core/models/overview-metric';
       <th>Std</th>
       <th>Mad</th>
     </tr>
-    <tr *ngFor="let metric of overviewMetrics" class="data-row">
+    <tr
+      *ngFor="let metric of overviewMetrics"
+      class="data-row"
+      [class.selected-row]="metric.name === selected.name"
+    >
       <td>{{ metric.name }}</td>
       <td *ngFor="let aggregate of metric.aggregates">
         {{ aggregate.value | number: '1.1-6' }}
@@ -25,4 +29,5 @@ import { OverviewMetric } from '../core/models/overview-metric';
 export class MetricAggregatesComponent {
   @Input() overviewMetrics: OverviewMetric[];
   @Input() headings: string[];
+  @Input() selected: OverviewMetric;
 }

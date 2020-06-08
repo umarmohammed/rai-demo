@@ -3,8 +3,8 @@ import { OverviewMetric, Bin } from '../core/models/overview-metric';
 
 @Component({
   selector: 'rai-metric-histogram',
-  template: `<div>{{ histogram | json }}</div>`,
+  template: `<div>{{ metric && metric.histogram | json }}</div>`,
 })
 export class MetricHistogramComponent {
-  @Input() histogram: Bin[];
+  @Input() metric: OverviewMetric;
 }
