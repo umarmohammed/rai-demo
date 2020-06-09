@@ -7,15 +7,23 @@ import { map } from 'rxjs/operators';
 @Component({
   selector: 'rai-instances-container',
   template: `
-    <div class="lime-container">Lime Analysis</div>
-    <rai-instances-grid
-      [columnNames]="columnNames$ | async"
-      [instances]="instances$ | async"
-    ></rai-instances-grid>
+    <div class="container" *ngIf="!(loading$ | async)">
+      <div class="lime-container">Lime Analysis</div>
+      <rai-instances-grid
+        [columnNames]="columnNames$ | async"
+        [instances]="instances$ | async"
+      ></rai-instances-grid>
+    </div>
+    <!-- TODO create a wrapper component for this pattern -->
+    <mat-spinner class="spinner" [class.show]="loading$ | async"></mat-spinner>
   `,
   styles: [
     `
       :host {
+        height: 100%;
+      }
+
+      .container {
         height: 100%;
         display: flex;
         flex-direction: column;
@@ -42,12 +50,17 @@ export class InstancesContainerComponent implements OnInit {
       )
     );
   instances$: Observable<any[]>;
+  loading$: Observable<boolean>;
 
   constructor(private store: Store<fromModel.State>) {}
 
   ngOnInit(): void {
     this.instances$ = this.store.select(
       fromModel.selectInstancesByType(this.type)
+    );
+
+    this.loading$ = this.store.select(
+      fromModel.selectInstancesLoadingByType(this.type)
     );
   }
 }

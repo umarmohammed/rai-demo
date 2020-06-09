@@ -125,4 +125,4 @@ export const selectInstancesByType = (type: string) =>
   createSelector(selectInstancesState, fromInstances.selectItemsByType(type));
 
 export const selectInstancesLoadingByType = (type: string) =>
-  createSelector(selectInstancesState, fromInstances.selectItemsByType(type));
+  createSelector(selectInstancesState, fromInstances.selectLoadingByType(type));
