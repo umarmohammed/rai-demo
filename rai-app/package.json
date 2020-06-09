@@ -25,6 +25,8 @@
     "@ngrx/store": "^9.2.0",
     "@ngrx/store-devtools": "^9.2.0",
     "@swimlane/ngx-charts": "^14.0.0",
+    "ag-grid-angular": "^23.2.0",
+    "ag-grid-community": "^23.2.0",
     "rxjs": "~6.5.4",
     "tslib": "^1.10.0",
     "zone.js": "~0.10.2"
