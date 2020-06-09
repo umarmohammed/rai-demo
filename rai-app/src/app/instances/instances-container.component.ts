@@ -7,7 +7,7 @@ import { map } from 'rxjs/operators';
 @Component({
   selector: 'rai-instances-container',
   template: `
-    <div>Lime Analysis</div>
+    <div class="lime-container">Lime Analysis</div>
     <rai-instances-grid
       [columnNames]="columnNames$ | async"
       [instances]="instances$ | async"
@@ -17,6 +17,15 @@ import { map } from 'rxjs/operators';
     `
       :host {
         height: 100%;
+        display: flex;
+        flex-direction: column;
+      }
+
+      .lime-container {
+        height: 35%;
+        display: grid;
+        align-content: center;
+        justify-content: center;
       }
     `,
   ],

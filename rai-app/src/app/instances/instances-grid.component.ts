@@ -13,6 +13,10 @@ import { Component, Input } from '@angular/core';
   `,
   styles: [
     `
+      :host {
+        flex: 1;
+      }
+
       .grid {
         width: 100%;
         height: 100%;
