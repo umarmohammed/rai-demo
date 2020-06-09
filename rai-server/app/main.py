@@ -140,7 +140,7 @@ def bootstrap_magic(X, y, model, n_samples, refit=False, gmaj=None, gmin=None):
     return {"instances": df_instances, "metrics": df_all_metrics}
 
 
-def boostrap_metrics(c, computeFairnessMetrics):
+def boostrap_metrics(X, y, c, computeFairnessMetrics):
     def getMetricHistogram(metric):
         def getMetricPivotTable():
             return c["metrics"].pivot_table(index="Sample", columns="Metric")[
@@ -176,7 +176,16 @@ def boostrap_metrics(c, computeFairnessMetrics):
     def getOverview():
         agg = getAggregates()
         return [{**i, "histogram": getMetricHistogram(i["name"]), "aggregates": getMetricAggregates(agg[i["name"]])} for i in getMetrics()]
-    return {"overview": getOverview()}
+
+    def getInstances():
+
+        def instancesToList(instances):
+            return list(instances.swapaxes(0, 1).to_dict().values())
+
+        return {"performanceInstances": instancesToList(X.loc[(y.values.ravel() - c["instances"].mean(axis=1)
+                                                               ).abs().sort_values(ascending=False).head(10).index])}
+
+    return {"overview": getOverview(), **getInstances(), "columnDefs": list(X.columns)}
 
 
 def getStuffNeededForMetrics(modelAndData, selectedFeatures):
@@ -209,4 +218,4 @@ def bootstrap():
 
     computeFairnessMetrics = gmin is not None and gmin is not None
 
-    return jsonify(boostrap_metrics(c, computeFairnessMetrics))
+    return boostrap_metrics(X, y, c, computeFairnessMetrics)

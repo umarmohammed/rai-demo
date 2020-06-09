@@ -2,6 +2,7 @@ import { OverviewMetric } from './overview-metric';
 
 export interface BootstrapResponse {
   overview: OverviewMetric[];
-  instances: any[];
+  performanceInstances: any[];
+  fairnessInstances: any[];
   columnDefs: string[];
 }
