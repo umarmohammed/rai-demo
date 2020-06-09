@@ -2,9 +2,12 @@ import { Component, Input, OnInit, Output, EventEmitter } from '@angular/core';
 import { Observable } from 'rxjs';
 import { Store } from '@ngrx/store';
 import * as fromModel from '../model-state/reducers';
-import { Chart, featureMetricToChart, blueScheme } from '../core/models/chart';
+import {
+  Chart,
+  featureMetricToChart,
+  orangeScheme,
+} from '../core/models/chart';
 import { map } from 'rxjs/operators';
-import { MatSelectChange } from '@angular/material/select';
 
 @Component({
   selector: 'rai-feature-importance',
@@ -26,7 +29,7 @@ import { MatSelectChange } from '@angular/material/select';
           [results]="(chart$ | async).series"
           [xAxis]="true"
           [yAxis]="true"
-          [scheme]="blueScheme"
+          [scheme]="orangeScheme"
           [roundEdges]="false"
           [showDataLabel]="true"
           [maxYAxisTickLength]="30"
@@ -42,7 +45,7 @@ export class FeatureImportanceComponent implements OnInit {
   @Input() type: string;
   @Output() selectionChange = new EventEmitter<string>();
 
-  blueScheme = blueScheme;
+  orangeScheme = orangeScheme;
 
   loading$: Observable<boolean>;
   chart$: Observable<Chart>;

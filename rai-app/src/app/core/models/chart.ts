@@ -7,6 +7,7 @@ export interface Chart {
 }
 
 export const blueScheme = { domain: ['#1f77b4'] };
+export const orangeScheme = { domain: ['#ff7f0e'] };
 
 // TODO: featureMetricToChart and overviewMetricToChart should be a single function
 export function featureMetricToChart(metric: FeatureMetric): Chart {
