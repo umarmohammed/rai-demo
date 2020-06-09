@@ -180,12 +180,12 @@ def boostrap_metrics(X, y, c, computeFairnessMetrics):
     def getInstances():
 
         def instancesToList(instances):
-            return list(instances.swapaxes(0, 1).to_dict().values())
+            return [{"id": i[0], **i[1]} for i in list(instances.swapaxes(0, 1).to_dict().items())]
 
         return {"performanceInstances": instancesToList(X.loc[(y.values.ravel() - c["instances"].mean(axis=1)
                                                                ).abs().sort_values(ascending=False).head(10).index])}
 
-    return {"overview": getOverview(), **getInstances(), "columnDefs": list(X.columns)}
+    return {"overview": getOverview(), **getInstances(), "columnDefs": ['id'] + list(X.columns)}
 
 
 def getStuffNeededForMetrics(modelAndData, selectedFeatures):
