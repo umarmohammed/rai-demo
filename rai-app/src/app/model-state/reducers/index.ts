@@ -1,6 +1,7 @@
 import * as fromFile from './file.reducer';
 import * as fromFeatures from './features.reducer';
 import * as fromOverview from './overview.reducer';
+import * as fromInstances from './instances.reducer';
 import {
   Action,
   combineReducers,
@@ -17,6 +18,7 @@ export interface ModelState {
   [fromFeatures.featuresFeatureKey]: fromFeatures.State;
   [fromFile.fileFeatureKey]: fromFile.State;
   [fromOverview.overviewFeatureKey]: fromOverview.State;
+  [fromInstances.instancesFeatureKey]: fromInstances.State;
 }
 
 export interface State {
@@ -28,6 +30,7 @@ export function reducers(state: ModelState | undefined, action: Action) {
     [fromFile.fileFeatureKey]: fromFile.reducer,
     [fromFeatures.featuresFeatureKey]: fromFeatures.reducer,
     [fromOverview.overviewFeatureKey]: fromOverview.reducer,
+    [fromInstances.instancesFeatureKey]: fromInstances.reducer,
   })(state, action);
 }
 
@@ -107,3 +110,14 @@ export const selectOverviewLoading = createSelector(
 
 export const selectOverviewSelectedByType = (type: string) =>
   createSelector(selectOverviewState, fromOverview.selectSelectedByType(type));
+
+export const selectInstancesState = createSelector(
+  selectModelState,
+  (state) => state.instances
+);
+
+export const selectInstancesByType = (type: string) =>
+  createSelector(selectInstancesState, fromInstances.selectItemsByType(type));
+
+export const selectInstancesLoadingByType = (type: string) =>
+  createSelector(selectInstancesState, fromInstances.selectItemsByType(type));
