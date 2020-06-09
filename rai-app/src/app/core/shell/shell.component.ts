@@ -2,7 +2,9 @@ import { Component } from '@angular/core';
 
 @Component({
   selector: 'rai-shell',
-  template: ` <mat-toolbar>
+  template: `
+    <!-- TODO split this out -->
+    <mat-toolbar>
       <mat-toolbar-row>
         <button mat-icon-button class="nav-menu" (click)="onMenuClicked()">
           <mat-icon>menu</mat-icon>
@@ -10,6 +12,9 @@ import { Component } from '@angular/core';
         <a mat-button routerLink="/home">Robustness Demo</a>
         <a mat-button routerLinkActive="active" routerLink="/overview"
           >Overview</a
+        >
+        <a mat-button routerLinkActive="active" routerLink="/features"
+          >Features</a
         >
         <a mat-button routerLinkActive="active" routerLink="/instances"
           >Instances</a
@@ -38,7 +43,8 @@ import { Component } from '@angular/core';
       <mat-sidenav-content>
         <router-outlet></router-outlet>
       </mat-sidenav-content>
-    </mat-sidenav-container>`,
+    </mat-sidenav-container>
+  `,
   styleUrls: ['shell.component.scss'],
 })
 export class ShellComponent {

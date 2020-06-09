@@ -20,6 +20,11 @@ const routes: Routes = [
         loadChildren: () =>
           import('./instances/instances.module').then((m) => m.InstancesModule),
       },
+      {
+        path: 'features',
+        loadChildren: () =>
+          import('./features/features.module').then((m) => m.FeaturesModule),
+      },
     ],
   },
   {
