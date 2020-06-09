@@ -17,4 +17,13 @@
   &.shrink {
     height: 65%;
   }
+  display: flex;
+
+  rai-feature-importance {
+    width: 100%;
+
+    &.half-width {
+      width: 50%;
+    }
+  }
 }

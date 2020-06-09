@@ -16,6 +16,13 @@ import { WindowService } from '../core/window.service';
         <rai-feature-importance
           type="performance"
           (selectionChange)="onPerformanceMetricChanged($event)"
+          [class.half-width]="protectedFeaturesSet$ | async"
+        ></rai-feature-importance>
+        <rai-feature-importance
+          type="performance"
+          (selectionChange)="onPerformanceMetricChanged($event)"
+          class="half-width"
+          *ngIf="protectedFeaturesSet$ | async"
         ></rai-feature-importance>
       </div>
     </div>
