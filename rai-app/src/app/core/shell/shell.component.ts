@@ -11,6 +11,9 @@ import { Component } from '@angular/core';
         <a mat-button routerLinkActive="active" routerLink="/overview"
           >Overview</a
         >
+        <a mat-button routerLinkActive="active" routerLink="/instances"
+          >Instances</a
+        >
         <div class="spacer"></div>
         <button mat-icon-button [matMenuTriggerFor]="menu">
           <mat-icon>more_vert</mat-icon>
