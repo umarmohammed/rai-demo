@@ -1,4 +1,6 @@
 import { Component } from '@angular/core';
+import { Store } from '@ngrx/store';
+import * as fromModel from '../model-state/reducers';
 
 @Component({
   selector: 'rai-instances-page',
@@ -18,6 +20,7 @@ import { Component } from '@angular/core';
         routerLinkActive
         #rla1="routerLinkActive"
         [active]="rla1.isActive"
+        [disabled]="!(protectedFeaturesSet$ | async)"
       >
         Fairness
       </a>
@@ -26,4 +29,10 @@ import { Component } from '@angular/core';
       <router-outlet></router-outlet>
     </div>`,
 })
-export class InstancesPageComponent {}
+export class InstancesPageComponent {
+  protectedFeaturesSet$ = this.store.select(
+    fromModel.selectProtectedFeaturesSet
+  );
+
+  constructor(private store: Store) {}
+}
