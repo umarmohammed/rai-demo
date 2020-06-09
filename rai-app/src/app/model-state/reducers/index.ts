@@ -116,6 +116,11 @@ export const selectInstancesState = createSelector(
   (state) => state.instances
 );
 
+export const selectInstancesColumnNames = createSelector(
+  selectInstancesState,
+  fromInstances.selectColumnNames
+);
+
 export const selectInstancesByType = (type: string) =>
   createSelector(selectInstancesState, fromInstances.selectItemsByType(type));
 
