@@ -2,6 +2,6 @@ import { Component } from '@angular/core';
 
 @Component({
   selector: 'rai-instances-page',
-  template: `<div>Instances Page</div>`,
+  template: `<rai-instances-grid></rai-instances-grid>`,
 })
 export class InstancesPageComponent {}
