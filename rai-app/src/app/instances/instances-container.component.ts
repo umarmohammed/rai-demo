@@ -33,6 +33,7 @@ import { map } from 'rxjs/operators';
 export class InstancesContainerComponent implements OnInit {
   @Input() type: string;
 
+  // TODO: move to service
   columnNames$ = this.store
     .select(fromModel.selectInstancesColumnNames)
     .pipe(
