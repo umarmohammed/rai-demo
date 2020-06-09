@@ -1,6 +1,5 @@
 import { Component } from '@angular/core';
-import { Store } from '@ngrx/store';
-import * as fromModel from '../model-state/reducers';
+import { WindowService } from '../core/window.service';
 
 @Component({
   selector: 'rai-instances-page',
@@ -30,9 +29,7 @@ import * as fromModel from '../model-state/reducers';
     </div>`,
 })
 export class InstancesPageComponent {
-  protectedFeaturesSet$ = this.store.select(
-    fromModel.selectProtectedFeaturesSet
-  );
+  protectedFeaturesSet$ = this.windowService.protectedFeaturesSet$;
 
-  constructor(private store: Store) {}
+  constructor(private windowService: WindowService) {}
 }

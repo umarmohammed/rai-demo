@@ -1,0 +1,20 @@
+.container {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  overflow-x: hidden;
+}
+
+.scatter {
+  height: 35%;
+}
+
+// only needed because flex: 1 doesn't work with ngx charts
+.importance-container {
+  height: 100%;
+  width: calc(100% - 10px);
+  &.shrink {
+    height: 65%;
+  }
+}

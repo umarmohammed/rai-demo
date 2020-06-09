@@ -2,28 +2,33 @@ import { Component } from '@angular/core';
 import { Store } from '@ngrx/store';
 import * as fromModel from '../model-state/reducers';
 import { selectedPerformanceMetricChanged } from './feature-importance.actions';
+import { WindowService } from '../core/window.service';
 
 @Component({
   selector: 'rai-features=page',
   template: `
     <div class="container">
-      <rai-feature-importance
-        type="performance"
-        (selectionChange)="onPerformanceMetricChanged($event)"
-      ></rai-feature-importance>
+      <div class="scatter" *ngIf="protectedFeaturesSet$ | async">Scatter</div>
+      <div
+        class="importance-container"
+        [class.shrink]="protectedFeaturesSet$ | async"
+      >
+        <rai-feature-importance
+          type="performance"
+          (selectionChange)="onPerformanceMetricChanged($event)"
+        ></rai-feature-importance>
+      </div>
     </div>
   `,
-  styles: [
-    `
-      .container {
-        width: 100%;
-        height: 100%;
-      }
-    `,
-  ],
+  styleUrls: ['features-page.component.scss'],
 })
 export class FeaturesPageComponent {
-  constructor(private store: Store<fromModel.ModelState>) {}
+  protectedFeaturesSet$ = this.windowService.protectedFeaturesSet$;
+
+  constructor(
+    private store: Store<fromModel.State>,
+    private windowService: WindowService
+  ) {}
 
   onPerformanceMetricChanged(selectedPerformanceMetric: string) {
     this.store.dispatch(

@@ -5,6 +5,7 @@ import {
   performanceMetricSelected,
   fairnessMetricSelected,
 } from '../overview.actions';
+import { WindowService } from 'src/app/core/window.service';
 
 @Component({
   selector: 'rai-overview-page',
@@ -31,11 +32,12 @@ import {
 })
 export class OverviewPageComponent {
   loading$ = this.store.select(fromModel.selectOverviewLoading);
-  protectedFeaturesSet$ = this.store.select(
-    fromModel.selectProtectedFeaturesSet
-  );
+  protectedFeaturesSet$ = this.windowService.protectedFeaturesSet$;
 
-  constructor(private store: Store<fromModel.State>) {}
+  constructor(
+    private store: Store<fromModel.State>,
+    private windowService: WindowService
+  ) {}
 
   onPerformanceMetricSelected(selectedPerformance: string) {
     this.store.dispatch(performanceMetricSelected({ selectedPerformance }));

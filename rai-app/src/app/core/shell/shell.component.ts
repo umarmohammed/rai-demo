@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { WindowService } from '../window.service';
 
 @Component({
   selector: 'rai-shell',
@@ -50,14 +51,10 @@ import { Component } from '@angular/core';
 export class ShellComponent {
   opened = false;
 
-  constructor() {}
+  constructor(private windowService: WindowService) {}
 
   onMenuClicked() {
     this.opened = !this.opened;
-    this.triggerWindowChangeForCharts();
-  }
-
-  private triggerWindowChangeForCharts() {
-    window.dispatchEvent(new Event('resize'));
+    this.windowService.triggerWindowChangeForCharts();
   }
 }
