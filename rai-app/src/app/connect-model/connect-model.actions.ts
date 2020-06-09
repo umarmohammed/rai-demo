@@ -1,5 +1,6 @@
 import { createAction, props } from '@ngrx/store';
 import { BootstrapResponse } from '../core/models/bootstrap-response';
+import { PermutationResponse } from '../core/models/permutation-response';
 
 export const modelSelected = createAction(
   '[Connect Model Page] Model Selected',
@@ -19,4 +20,9 @@ export const bootstrapLoadedSuccess = createAction(
 export const bootstrapLoadedWithFairnessSuccess = createAction(
   '[Bootstrap API] Bootstrap Loaded With Fairness Success',
   props<{ bootstrap: BootstrapResponse }>()
+);
+
+export const permuationLoadedSuccess = createAction(
+  '[Permutation API] Permutation Loaded Success',
+  props<{ permutation: PermutationResponse }>()
 );

@@ -2,6 +2,7 @@ import * as fromFile from './file.reducer';
 import * as fromFeatures from './features.reducer';
 import * as fromOverview from './overview.reducer';
 import * as fromInstances from './instances.reducer';
+import * as fromFeatureImportance from './feature-importance.reducer';
 import {
   Action,
   combineReducers,
@@ -19,6 +20,7 @@ export interface ModelState {
   [fromFile.fileFeatureKey]: fromFile.State;
   [fromOverview.overviewFeatureKey]: fromOverview.State;
   [fromInstances.instancesFeatureKey]: fromInstances.State;
+  [fromFeatureImportance.featureImportanceFeatureKey]: fromFeatureImportance.State;
 }
 
 export interface State {
@@ -31,6 +33,8 @@ export function reducers(state: ModelState | undefined, action: Action) {
     [fromFeatures.featuresFeatureKey]: fromFeatures.reducer,
     [fromOverview.overviewFeatureKey]: fromOverview.reducer,
     [fromInstances.instancesFeatureKey]: fromInstances.reducer,
+    [fromFeatureImportance.featureImportanceFeatureKey]:
+      fromFeatureImportance.reducer,
   })(state, action);
 }
 
@@ -126,3 +130,41 @@ export const selectInstancesByType = (type: string) =>
 
 export const selectInstancesLoadingByType = (type: string) =>
   createSelector(selectInstancesState, fromInstances.selectLoadingByType(type));
+
+export const selectFeatureImportanceState = createSelector(
+  selectModelState,
+  (state) => state.featureImportance
+);
+
+// TODO: refactor this whole select by type pattern.
+// Can create an abstraction over it
+export const selectFeatureImportanceMetricNamesByType = (type: string) =>
+  createSelector(
+    selectFeatureImportanceState,
+    fromFeatureImportance.selectMetricNamesByType(type)
+  );
+
+export const selectFeatureImportanceItemsByType = (type: string) =>
+  createSelector(
+    selectFeatureImportanceState,
+    fromFeatureImportance.selectItemsByType(type)
+  );
+
+export const selectFeatureImportanceLoadingByType = (type: string) =>
+  createSelector(
+    selectFeatureImportanceState,
+    fromFeatureImportance.selectLoadingByType(type)
+  );
+
+export const selectFeatureImportanceSelectedByType = (type: string) =>
+  createSelector(
+    selectFeatureImportanceState,
+    fromFeatureImportance.selectSelectedByType(type)
+  );
+
+export const selectFeatureImportanceSelectedMetricsByType = (type: string) =>
+  createSelector(
+    selectFeatureImportanceSelectedByType(type),
+    selectFeatureImportanceItemsByType(type),
+    (selected, items) => items.find((i) => i.name === selected)
+  );

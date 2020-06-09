@@ -3,11 +3,13 @@ import { environment } from 'src/environments/environment';
 import { HttpClient } from '@angular/common/http';
 import { BootstrapResponse } from '../core/models/bootstrap-response';
 import { SelectedFeatures } from '../core/models/selected-features';
+import { PermutationResponse } from '../core/models/permutation-response';
 
 @Injectable({ providedIn: 'root' })
 export class ModelService {
   featuresUrl = `${environment.baseUrl}${'api/features'}`;
   bootstrapUrl = `${environment.baseUrl}${'api/bootstrap'}`;
+  permutationUrl = `${environment.baseUrl}${'api/permutation'}`;
 
   constructor(private http: HttpClient) {}
 
@@ -18,6 +20,13 @@ export class ModelService {
   getBootstrap(formData: FormData, features: SelectedFeatures = null) {
     return this.http.post<BootstrapResponse>(
       this.bootstrapUrl,
+      this.createFeaturesToUpload(formData, features)
+    );
+  }
+
+  getPermutation(formData: FormData, features: SelectedFeatures = null) {
+    return this.http.post<PermutationResponse>(
+      this.permutationUrl,
       this.createFeaturesToUpload(formData, features)
     );
   }

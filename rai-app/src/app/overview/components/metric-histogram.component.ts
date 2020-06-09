@@ -1,5 +1,5 @@
 import { Component, Input } from '@angular/core';
-import { HistogramChart, blueScheme } from '../../core/models/overview-metric';
+import { Chart, blueScheme } from 'src/app/core/models/chart';
 
 @Component({
   selector: 'rai-metric-histogram',
@@ -19,6 +19,6 @@ import { HistogramChart, blueScheme } from '../../core/models/overview-metric';
   styleUrls: ['metric-histogram.component.scss'],
 })
 export class MetricHistogramComponent {
-  @Input() histogram: HistogramChart;
+  @Input() histogram: Chart;
   blueScheme = blueScheme;
 }

@@ -1,11 +1,8 @@
 import { Component, Input, OnInit, Output, EventEmitter } from '@angular/core';
 import * as fromModel from '../../model-state/reducers';
 import { Store } from '@ngrx/store';
-import {
-  overviewMetricToHistogramChart,
-  OverviewMetric,
-  HistogramChart,
-} from '../../core/models/overview-metric';
+import { OverviewMetric } from '../../core/models/overview-metric';
+import { Chart, overviewMetricToChart } from 'src/app/core/models/chart';
 import { map } from 'rxjs/operators';
 import { Observable } from 'rxjs';
 
@@ -36,7 +33,7 @@ export class MetricOverviewComponent implements OnInit {
   @Output() metricSelected: EventEmitter<string> = new EventEmitter();
 
   selected$: Observable<OverviewMetric>;
-  histogram$: Observable<HistogramChart>;
+  histogram$: Observable<Chart>;
   items$: Observable<OverviewMetric[]>;
 
   constructor(private store: Store<fromModel.State>) {}
@@ -48,6 +45,6 @@ export class MetricOverviewComponent implements OnInit {
     this.selected$ = this.store.select(
       fromModel.selectOverviewSelectedByType(this.type)
     );
-    this.histogram$ = this.selected$.pipe(map(overviewMetricToHistogramChart));
+    this.histogram$ = this.selected$.pipe(map(overviewMetricToChart));
   }
 }

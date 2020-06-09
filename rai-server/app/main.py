@@ -140,6 +140,72 @@ def bootstrap_magic(X, y, model, n_samples, refit=False, gmaj=None, gmin=None):
     return {"instances": df_instances, "metrics": df_all_metrics}
 
 
+def permutation_magic(X, y, model, n_repeats, refit=False, gmaj=None, gmin=None):
+    # pre-allocation
+    np.random.seed(10)
+
+    for r in range(n_repeats):
+        # simple bootstrap
+        idx = np.random.choice(X.index, X.shape[0])
+
+        # left-out indices
+        odx = np.array(list(set(X.index) - set(idx)))
+
+        # train the model before evaluation?
+        if refit:
+            model.fit(X.loc[idx], y.loc[idx].values.ravel())
+
+        # baseline performance
+        if (gmaj is not None) and (gmin is not None):
+            df_baseline_metrics = compute_model_metrics(y.loc[odx].values.ravel(), model, X.loc[odx],
+                                                        gmaj.loc[odx].values.ravel(), gmin.loc[odx].values.ravel())
+        else:
+            df_baseline_metrics = compute_model_metrics(
+                y.loc[odx].values.ravel(), model, X.loc[odx])
+
+        # random permutation
+        X_permuted = X.copy()
+        X_features = X.columns
+        shuffling_idx = np.arange(X.shape[0])
+        for (j, col_idx) in enumerate(X_features):
+            # shuffle
+            np.random.shuffle(shuffling_idx)
+            if hasattr(X_permuted, "iloc"):
+                col = X_permuted.iloc[shuffling_idx, j]
+                col.index = X_permuted.index
+                X_permuted.iloc[:, j] = col
+            else:
+                X_permuted[:, j] = X_permuted[shuffling_idx, col_idx]
+
+            # compute performance
+            if (gmaj is not None) and (gmin is not None):
+                df_metrics = compute_model_metrics(y.loc[odx].values.ravel(), model, X_permuted.loc[odx],
+                                                   gmaj.loc[odx].values.ravel(), gmin.loc[odx].values.ravel())
+            else:
+                df_metrics = compute_model_metrics(
+                    y.loc[odx].values.ravel(), model, X_permuted.loc[odx])
+
+            # store results
+            df_metrics["Value"] = (
+                df_baseline_metrics["Value"] - df_metrics["Value"])
+            df_metrics["Variable"] = col_idx
+            if j is 0:
+                df_var_metrics = df_metrics.copy()
+            else:
+                df_var_metrics = pd.concat(
+                    [df_var_metrics, df_metrics.copy()], axis=0, ignore_index=True)
+
+        # store overall results
+        df_var_metrics["Repeat"] = r
+        if r is 0:
+            df_all_metrics = df_var_metrics.copy()
+        else:
+            df_all_metrics = pd.concat(
+                [df_all_metrics, df_var_metrics.copy()], axis=0, ignore_index=True)
+
+    return {"metrics": df_all_metrics}
+
+
 def boostrap_metrics(X, y, gmin, c, computeFairnessMetrics):
     def getMetricHistogram(metric):
         def getMetricPivotTable():
@@ -193,6 +259,23 @@ def boostrap_metrics(X, y, gmin, c, computeFairnessMetrics):
     return {"overview": getOverview(), **getInstances(), "columnDefs": ['id'] + list(X.columns)}
 
 
+def permuation_metrics(c):
+    b = c["metrics"].pivot_table(
+        index="Variable", columns="Metric", values="Value", aggfunc=["mean", "std"])
+
+    def getMetrics(metricType, metricDict):
+        metricNames = list(perf_metrics.keys())
+
+        def getMetricFeatures(metricFeaturesSeries):
+            return [{"name": i,"value":metricFeaturesSeries[i]} for i in metricFeaturesSeries] 
+
+        features = [{"name": i, "features": getMetricFeatures(b["mean"][i].sort_values().tail(10).to_dict())}
+                    for i in metricNames]
+        return {metricType + "MetricNames": metricNames, metricType+"Features": features}
+
+    return {**getMetrics("performance", perf_metrics)}
+
+
 def getStuffNeededForMetrics(modelAndData, selectedFeatures):
     def getGroups(X):
         gminKey = selectedFeatures and selectedFeatures.get('gmin')
@@ -224,3 +307,13 @@ def bootstrap():
     computeFairnessMetrics = gmin is not None and gmin is not None
 
     return boostrap_metrics(X, y, gmin, c, computeFairnessMetrics)
+
+
+@app.route("/api/permutation", methods=["POST"])
+def permutation():
+    file = request.files['file']
+    (X, y, model, gmin, gmaj) = getStuffNeededForMetrics(
+        load(file.stream), json.loads(request.form['data']))
+    c = permutation_magic(X=X, y=y, model=model, n_repeats=10,
+                          refit=True, gmaj=gmaj, gmin=gmin)
+    return permuation_metrics(c)

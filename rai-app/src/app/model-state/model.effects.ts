@@ -5,6 +5,7 @@ import {
   featuresLoadedSuccess,
   bootstrapLoadedSuccess,
   bootstrapLoadedWithFairnessSuccess,
+  permuationLoadedSuccess,
 } from '../connect-model/connect-model.actions';
 import { map, switchMap, withLatestFrom, tap, filter } from 'rxjs/operators';
 import { fileToFormData } from '../connect-model/form-data';
@@ -58,6 +59,18 @@ export class ModelEffects {
             })
           )
         )
+      )
+    )
+  );
+
+  loadPermutation$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(modelSelected),
+      map(fileToFormData),
+      switchMap((form) =>
+        this.modelService
+          .getPermutation(form)
+          .pipe(map((permutation) => permuationLoadedSuccess({ permutation })))
       )
     )
   );
