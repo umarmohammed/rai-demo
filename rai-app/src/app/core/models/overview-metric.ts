@@ -1,18 +1,15 @@
+import { Metric } from './metric';
+
 export interface OverviewMetric {
   name: string;
   histogram: Bin[];
-  aggregates: AggregateMetric[];
+  aggregates: Metric[];
   type: string;
 }
 
 export interface Bin {
   interval: number;
   frequency: number;
-}
-
-export interface AggregateMetric {
-  name: string;
-  value: number;
 }
 
 export interface HistogramChart {
