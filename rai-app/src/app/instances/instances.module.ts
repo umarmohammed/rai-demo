@@ -9,6 +9,8 @@ import { CommonModule } from '@angular/common';
 import { AgGridModule } from 'ag-grid-angular';
 import { InstanceExplanationComponent } from './explanation/instance-explanation.component';
 import { DataGridSelectedDirective } from './data-grid-selected.component';
+import { InstanceProbabilitiesComponent } from './explanation/instance-probabilities.component';
+import { InstanceLimeChartComponent } from './explanation/instance-lime-chart.componen';
 
 @NgModule({
   declarations: [
@@ -18,6 +20,8 @@ import { DataGridSelectedDirective } from './data-grid-selected.component';
     InstancesRouteWrapperComponent,
     InstanceExplanationComponent,
     DataGridSelectedDirective,
+    InstanceProbabilitiesComponent,
+    InstanceLimeChartComponent,
   ],
   imports: [
     MaterialModule,

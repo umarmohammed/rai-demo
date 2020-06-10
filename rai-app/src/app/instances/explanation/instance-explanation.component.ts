@@ -3,7 +3,11 @@ import { Instance } from '../../core/models/instance';
 
 @Component({
   selector: 'rai-instance-explanation',
-  template: `<div>{{ instance.predictProbablities | json }}</div>`,
+  template: `<div class="flex-container">
+    <rai-instance-probabilities></rai-instance-probabilities>
+    <rai-instance-lime-chart></rai-instance-lime-chart>
+  </div>`,
+  styleUrls: ['instance-explanation.component.scss'],
 })
 export class InstanceExplanationComponent {
   @Input() instance: Instance;

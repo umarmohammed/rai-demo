@@ -41,9 +41,6 @@ import { Instance } from '../core/models/instance';
 
       .lime-container {
         height: 35%;
-        display: grid;
-        align-content: center;
-        justify-content: center;
       }
     `,
   ],
