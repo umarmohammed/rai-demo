@@ -26,3 +26,8 @@ export const permuationLoadedSuccess = createAction(
   '[Permutation API] Permutation Loaded Success',
   props<{ permutation: PermutationResponse }>()
 );
+
+export const permuationLoadedWithFairnessSuccess = createAction(
+  '[Permutation API] Permutation Loaded With Fairness Success',
+  props<{ permutation: PermutationResponse }>()
+);

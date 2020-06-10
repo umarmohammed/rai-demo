@@ -6,6 +6,7 @@ import {
   bootstrapLoadedSuccess,
   bootstrapLoadedWithFairnessSuccess,
   permuationLoadedSuccess,
+  permuationLoadedWithFairnessSuccess,
 } from '../connect-model/connect-model.actions';
 import { map, switchMap, withLatestFrom, tap, filter } from 'rxjs/operators';
 import { fileToFormData } from '../connect-model/form-data';
@@ -13,6 +14,7 @@ import { ModelService } from './model.service';
 import { protectedFeatureChanged } from '../core/options/options.actions';
 import { Store } from '@ngrx/store';
 import * as fromModel from './reducers';
+import { protectedFeaturesSet } from '../core/models/selected-features';
 
 @Injectable()
 export class ModelEffects {
@@ -49,7 +51,7 @@ export class ModelEffects {
   loadBootstrapWithFairness$ = createEffect(() =>
     this.actions$.pipe(
       ofType(protectedFeatureChanged),
-      filter((features) => !!features.gmin && !!features.gmaj),
+      filter(protectedFeaturesSet),
       withLatestFrom(this.store.select(fromModel.selectFormData)),
       switchMap(([features, formData]) =>
         this.modelService.getBootstrap(formData, features).pipe(
@@ -71,6 +73,23 @@ export class ModelEffects {
         this.modelService
           .getPermutation(form)
           .pipe(map((permutation) => permuationLoadedSuccess({ permutation })))
+      )
+    )
+  );
+
+  loadPermutationWithFairness$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(protectedFeatureChanged),
+      filter(protectedFeaturesSet),
+      withLatestFrom(this.store.select(fromModel.selectFormData)),
+      switchMap(([features, formData]) =>
+        this.modelService.getPermutation(formData, features).pipe(
+          map((permutation) =>
+            permuationLoadedWithFairnessSuccess({
+              permutation,
+            })
+          )
+        )
       )
     )
   );

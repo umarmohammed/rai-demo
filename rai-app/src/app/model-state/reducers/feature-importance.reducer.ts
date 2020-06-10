@@ -2,9 +2,15 @@ import { on, createReducer, Action } from '@ngrx/store';
 import {
   modelSelected,
   permuationLoadedSuccess,
+  permuationLoadedWithFairnessSuccess,
 } from 'src/app/connect-model/connect-model.actions';
 import { FeatureMetric } from 'src/app/core/models/feature-metric';
-import { selectedPerformanceMetricChanged } from 'src/app/features/feature-importance.actions';
+import {
+  selectedPerformanceMetricChanged,
+  selectedFairnessMetricChanged,
+} from 'src/app/features/feature-importance.actions';
+import { protectedFeaturesSet } from 'src/app/core/models/selected-features';
+import { protectedFeatureChanged } from 'src/app/core/options/options.actions';
 
 export const featureImportanceFeatureKey = 'featureImportance';
 
@@ -46,7 +52,24 @@ const featureImportanceReducer = createReducer(
       ...state,
       selectedPerformanceMetric,
     })
-  )
+  ),
+  on(selectedFairnessMetricChanged, (state, { selectedFairnessMetric }) => ({
+    ...state,
+    selectedFairnessMetric,
+  })),
+  on(protectedFeatureChanged, (state, protectedFeatures) =>
+    protectedFeaturesSet(protectedFeatures)
+      ? { ...state, fairnessLoading: true }
+      : state
+  ),
+  on(permuationLoadedWithFairnessSuccess, (state, { permutation }) => ({
+    ...state,
+    fairnessLoading: false,
+    performanceItems: permutation.performanceFeatures,
+    fairnessItems: permutation.fairnessFeatures,
+    fairnessMetricNames: permutation.fairnessMetricNames,
+    selectedFairnessMetric: permutation.fairnessMetricNames[0],
+  }))
 );
 
 export function reducer(state: State | undefined, action: Action) {

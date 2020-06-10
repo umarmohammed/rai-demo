@@ -259,21 +259,24 @@ def boostrap_metrics(X, y, gmin, c, computeFairnessMetrics):
     return {"overview": getOverview(), **getInstances(), "columnDefs": ['id'] + list(X.columns)}
 
 
-def permuation_metrics(c):
+def permuation_metrics(c, computeFairnessMetrics):
     b = c["metrics"].pivot_table(
         index="Variable", columns="Metric", values="Value", aggfunc=["mean", "std"])
 
     def getMetrics(metricType, metricDict):
-        metricNames = list(perf_metrics.keys())
+        metricNames = list(metricDict.keys())
 
         def getMetricFeatures(metricFeaturesSeries):
-            return [{"name": i,"value":metricFeaturesSeries[i]} for i in metricFeaturesSeries] 
+            return [{"name": i, "value": metricFeaturesSeries[i]} for i in metricFeaturesSeries]
 
         features = [{"name": i, "features": getMetricFeatures(b["mean"][i].sort_values().tail(10).to_dict())}
                     for i in metricNames]
         return {metricType + "MetricNames": metricNames, metricType+"Features": features}
 
-    return {**getMetrics("performance", perf_metrics)}
+    fairnessMetrics = getMetrics(
+        "fairness", fair_metrics) if computeFairnessMetrics else {}
+
+    return {**getMetrics("performance", perf_metrics), **fairnessMetrics}
 
 
 def getStuffNeededForMetrics(modelAndData, selectedFeatures):
@@ -316,4 +319,5 @@ def permutation():
         load(file.stream), json.loads(request.form['data']))
     c = permutation_magic(X=X, y=y, model=model, n_repeats=10,
                           refit=True, gmaj=gmaj, gmin=gmin)
-    return permuation_metrics(c)
+    computeFairnessMetrics = gmin is not None and gmin is not None
+    return permuation_metrics(c, computeFairnessMetrics)

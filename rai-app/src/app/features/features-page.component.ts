@@ -1,7 +1,10 @@
 import { Component } from '@angular/core';
 import { Store } from '@ngrx/store';
 import * as fromModel from '../model-state/reducers';
-import { selectedPerformanceMetricChanged } from './feature-importance.actions';
+import {
+  selectedPerformanceMetricChanged,
+  selectedFairnessMetricChanged,
+} from './feature-importance.actions';
 import { WindowService } from '../core/window.service';
 
 @Component({
@@ -19,8 +22,8 @@ import { WindowService } from '../core/window.service';
           [class.half-width]="protectedFeaturesSet$ | async"
         ></rai-feature-importance>
         <rai-feature-importance
-          type="performance"
-          (selectionChange)="onPerformanceMetricChanged($event)"
+          type="fairness"
+          (selectionChange)="onFairnessMetricChanged($event)"
           class="half-width"
           *ngIf="protectedFeaturesSet$ | async"
         ></rai-feature-importance>
@@ -40,6 +43,12 @@ export class FeaturesPageComponent {
   onPerformanceMetricChanged(selectedPerformanceMetric: string) {
     this.store.dispatch(
       selectedPerformanceMetricChanged({ selectedPerformanceMetric })
+    );
+  }
+
+  onFairnessMetricChanged(selectedFairnessMetric: string) {
+    this.store.dispatch(
+      selectedFairnessMetricChanged({ selectedFairnessMetric })
     );
   }
 }
