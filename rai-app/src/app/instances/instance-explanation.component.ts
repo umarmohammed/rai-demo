@@ -1,7 +1,10 @@
-import { Component } from '@angular/core';
+import { Component, Input } from '@angular/core';
+import { Instance } from '../core/models/instance';
 
 @Component({
   selector: 'rai-instance-explanation',
-  template: `<div>Instance explanation</div>`,
+  template: `<div>{{ instance.predictProbablities | json }}</div>`,
 })
-export class InstanceExplanationComponent {}
+export class InstanceExplanationComponent {
+  @Input() instance: Instance;
+}

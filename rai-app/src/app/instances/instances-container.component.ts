@@ -7,6 +7,7 @@ import {
   performaceInstanceSelected,
   fairnessInstanceSelected,
 } from './instances-container.actions';
+import { Instance } from '../core/models/instance';
 
 @Component({
   selector: 'rai-instances-container',
@@ -14,6 +15,7 @@ import {
     <div class="container" *ngIf="!(loading$ | async)">
       <rai-instance-explanation
         class="lime-container"
+        [instance]="selectedInstance$ | async"
       ></rai-instance-explanation>
       <rai-instances-grid
         [columnNames]="columnNames$ | async"
@@ -60,6 +62,7 @@ export class InstancesContainerComponent implements OnInit {
   instances$: Observable<any[]>;
   loading$: Observable<boolean>;
   selectedId$: Observable<string>;
+  selectedInstance$: Observable<Instance>;
 
   constructor(private store: Store<fromModel.State>) {}
 
@@ -74,6 +77,10 @@ export class InstancesContainerComponent implements OnInit {
 
     this.selectedId$ = this.store.select(
       fromModel.selectInstancesSelectedItemIdByType(this.type)
+    );
+
+    this.selectedInstance$ = this.store.select(
+      fromModel.selectInstancesSelectedItemByType(this.type)
     );
   }
 

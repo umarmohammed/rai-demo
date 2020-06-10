@@ -143,6 +143,13 @@ export const selectInstancesSelectedItemIdByType = (type: string) =>
     fromInstances.selectSelectedItemByType(type)
   );
 
+export const selectInstancesSelectedItemByType = (type: string) =>
+  createSelector(
+    selectInstancesItemsByType(type),
+    selectInstancesSelectedItemIdByType(type),
+    (items, id) => items.find((i) => i.instance.id === id)
+  );
+
 export const selectFeatureImportanceState = createSelector(
   selectModelState,
   (state) => state.featureImportance
