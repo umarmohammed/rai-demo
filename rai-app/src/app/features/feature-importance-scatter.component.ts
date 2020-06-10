@@ -6,9 +6,18 @@ import * as fromModel from '../model-state/reducers';
   selector: 'feature-importance-scatter',
   template: `
     <div *ngIf="!(loading$ | async)" class="scatter-container">
-      <div style="overflow: hidden; height: 100%">
-        {{ scatterChart$ | async | json }}
-      </div>
+      <ngx-charts-bubble-chart
+        [results]="(scatterChart$ | async).multi"
+        [xAxis]="true"
+        [yAxis]="true"
+        [showXAxisLabel]="true"
+        [showYAxisLabel]="true"
+        [xAxisLabel]="(scatterChart$ | async).xAxisLabel"
+        [yAxisLabel]="(scatterChart$ | async).yAxisLabel"
+        [minRadius]="3"
+        [roundDomains]="true"
+      >
+      </ngx-charts-bubble-chart>
     </div>
   `,
   styles: [
