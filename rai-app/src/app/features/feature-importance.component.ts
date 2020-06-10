@@ -6,8 +6,10 @@ import {
   Chart,
   featureMetricToChart,
   orangeScheme,
+  getChartMin,
 } from '../core/models/chart';
 import { map } from 'rxjs/operators';
+import { range } from '../core/array-util';
 
 @Component({
   selector: 'rai-feature-importance',
@@ -33,6 +35,7 @@ import { map } from 'rxjs/operators';
           [roundEdges]="false"
           [showDataLabel]="true"
           [maxYAxisTickLength]="30"
+          [xScaleMin]="xScaleMin$ | async"
         >
         </ngx-charts-bar-horizontal>
       </div>
@@ -51,6 +54,7 @@ export class FeatureImportanceComponent implements OnInit {
   chart$: Observable<Chart>;
   selected$: Observable<string>;
   metrics$: Observable<string[]>;
+  xScaleMin$: Observable<number>;
 
   constructor(private store: Store<fromModel.State>) {}
 
@@ -62,6 +66,10 @@ export class FeatureImportanceComponent implements OnInit {
     this.chart$ = this.store
       .select(fromModel.selectFeatureImportanceSelectedMetricsByType(this.type))
       .pipe(map(featureMetricToChart));
+
+    this.xScaleMin$ = this.chart$.pipe(
+      map((chart) => getChartMin(range(chart.series.map((s) => s.value))))
+    );
 
     this.selected$ = this.store.select(
       fromModel.selectFeatureImportanceSelectedByType(this.type)

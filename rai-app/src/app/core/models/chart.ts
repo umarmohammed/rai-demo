@@ -1,9 +1,15 @@
 import { OverviewMetric } from './overview-metric';
 import { FeatureMetric } from './feature-metric';
+import { Range } from '../array-util';
 
 export interface Chart {
   name: string;
-  series: any;
+  series: Series[];
+}
+
+export interface Series {
+  name: string | number;
+  value: number;
 }
 
 export const blueScheme = { domain: ['#1f77b4'] };
@@ -28,4 +34,8 @@ export function overviewMetricToChart(metric: OverviewMetric): Chart {
       value: bin.frequency,
     })),
   };
+}
+
+export function getChartMin(range: Range) {
+  return range.max - 2 * (range.max - range.min);
 }
