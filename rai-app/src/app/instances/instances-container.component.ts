@@ -8,7 +8,9 @@ import { map } from 'rxjs/operators';
   selector: 'rai-instances-container',
   template: `
     <div class="container" *ngIf="!(loading$ | async)">
-      <div class="lime-container">Lime Analysis</div>
+      <rai-instance-explanation
+        class="lime-container"
+      ></rai-instance-explanation>
       <rai-instances-grid
         [columnNames]="columnNames$ | async"
         [instances]="instances$ | async"
