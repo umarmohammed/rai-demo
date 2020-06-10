@@ -3,6 +3,10 @@ import { Store } from '@ngrx/store';
 import * as fromModel from '../model-state/reducers';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
+import {
+  performaceInstanceSelected,
+  fairnessInstanceSelected,
+} from './instances-container.actions';
 
 @Component({
   selector: 'rai-instances-container',
@@ -14,6 +18,8 @@ import { map } from 'rxjs/operators';
       <rai-instances-grid
         [columnNames]="columnNames$ | async"
         [instances]="instances$ | async"
+        [selectedRowId]="selectedId$ | async"
+        (selectionChanged)="onSelectionChanged($event)"
       ></rai-instances-grid>
     </div>
     <!-- TODO create a wrapper component for this pattern -->
@@ -53,6 +59,7 @@ export class InstancesContainerComponent implements OnInit {
     );
   instances$: Observable<any[]>;
   loading$: Observable<boolean>;
+  selectedId$: Observable<string>;
 
   constructor(private store: Store<fromModel.State>) {}
 
@@ -64,5 +71,19 @@ export class InstancesContainerComponent implements OnInit {
     this.loading$ = this.store.select(
       fromModel.selectInstancesLoadingByType(this.type)
     );
+
+    this.selectedId$ = this.store.select(
+      fromModel.selectInstancesSelectedItemIdByType(this.type)
+    );
+  }
+
+  onSelectionChanged(id: string) {
+    if (this.type === 'performance') {
+      this.store.dispatch(
+        performaceInstanceSelected({ selectedPerformanceId: id })
+      );
+    } else {
+      this.store.dispatch(fairnessInstanceSelected({ selectedFairnessId: id }));
+    }
   }
 }

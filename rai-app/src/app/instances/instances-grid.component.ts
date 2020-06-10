@@ -1,4 +1,5 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, Output, EventEmitter } from '@angular/core';
+import { AgGridEvent } from 'ag-grid-community';
 
 @Component({
   selector: 'rai-instances-grid',
@@ -8,6 +9,8 @@ import { Component, Input } from '@angular/core';
       [rowData]="instances"
       [columnDefs]="columnNames"
       rowSelection="single"
+      (selectionChanged)="onSelectionChanged($event)"
+      [raiSelected]="selectedRowId"
     >
     </ag-grid-angular>
   `,
@@ -27,4 +30,11 @@ import { Component, Input } from '@angular/core';
 export class InstancesGridComponent {
   @Input() columnNames: string[];
   @Input() instances: any[];
+  @Input() selectedRowId: number;
+
+  @Output() selectionChanged = new EventEmitter<string>();
+
+  onSelectionChanged(event: AgGridEvent) {
+    this.selectionChanged.next(event.api.getSelectedNodes()[0].data.id);
+  }
 }

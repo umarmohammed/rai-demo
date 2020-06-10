@@ -7,6 +7,10 @@ import {
 import { protectedFeatureChanged } from 'src/app/core/options/options.actions';
 import { protectedFeaturesSet } from 'src/app/core/models/selected-features';
 import { Instance } from 'src/app/core/models/instance';
+import {
+  performaceInstanceSelected,
+  fairnessInstanceSelected,
+} from 'src/app/instances/instances-container.actions';
 
 export const instancesFeatureKey = 'instances';
 
@@ -16,6 +20,8 @@ export interface State {
   fairnessItems: Instance[];
   performanceLoading: boolean;
   fairnessLoading: boolean;
+  selectedPerformanceId: string;
+  selectedFairnessId: string;
 }
 
 export const initialState: State = {
@@ -24,6 +30,8 @@ export const initialState: State = {
   fairnessItems: null,
   performanceLoading: false,
   fairnessLoading: false,
+  selectedPerformanceId: null,
+  selectedFairnessId: null,
 };
 
 const instancesReducer = createReducer(
@@ -33,6 +41,7 @@ const instancesReducer = createReducer(
     ...state,
     ...bootstrap,
     performanceLoading: false,
+    selectedPerformanceId: bootstrap.performanceItems[0].instance.id,
   })),
   on(protectedFeatureChanged, (state, protectedFeatures) =>
     protectedFeaturesSet(protectedFeatures)
@@ -41,8 +50,17 @@ const instancesReducer = createReducer(
   ),
   on(bootstrapLoadedWithFairnessSuccess, (state, { bootstrap }) => ({
     ...state,
-    fairnessLoading: false,
     ...bootstrap,
+    fairnessLoading: false,
+    selectedFairnessId: bootstrap.fairnessItems[0].instance.id,
+  })),
+  on(performaceInstanceSelected, (state, { selectedPerformanceId }) => ({
+    ...state,
+    selectedPerformanceId,
+  })),
+  on(fairnessInstanceSelected, (state, { selectedFairnessId }) => ({
+    ...state,
+    selectedFairnessId,
   }))
 );
 
@@ -56,3 +74,8 @@ export const selectItemsByType = (type: string) => (state: State) =>
   type === 'performance' ? state.performanceItems : state.fairnessItems;
 export const selectLoadingByType = (type: string) => (state: State) =>
   type === 'performance' ? state.performanceLoading : state.fairnessLoading;
+
+export const selectSelectedItemByType = (type: string) => (state: State) =>
+  type === 'performance'
+    ? state.selectedPerformanceId
+    : state.selectedFairnessId;

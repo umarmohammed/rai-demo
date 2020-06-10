@@ -137,6 +137,12 @@ export const selectInstancesByType = (type: string) =>
 export const selectInstancesLoadingByType = (type: string) =>
   createSelector(selectInstancesState, fromInstances.selectLoadingByType(type));
 
+export const selectInstancesSelectedItemIdByType = (type: string) =>
+  createSelector(
+    selectInstancesState,
+    fromInstances.selectSelectedItemByType(type)
+  );
+
 export const selectFeatureImportanceState = createSelector(
   selectModelState,
   (state) => state.featureImportance

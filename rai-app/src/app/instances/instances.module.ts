@@ -8,6 +8,7 @@ import { InstancesRouteWrapperComponent } from './instances-route-wrapper.compon
 import { CommonModule } from '@angular/common';
 import { AgGridModule } from 'ag-grid-angular';
 import { InstanceExplanationComponent } from './instance-explanation.component';
+import { DataGridSelectedDirective } from './data-grid-selected.component';
 
 @NgModule({
   declarations: [
@@ -16,6 +17,7 @@ import { InstanceExplanationComponent } from './instance-explanation.component';
     InstancesContainerComponent,
     InstancesRouteWrapperComponent,
     InstanceExplanationComponent,
+    DataGridSelectedDirective,
   ],
   imports: [
     MaterialModule,
