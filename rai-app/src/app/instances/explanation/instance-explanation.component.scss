@@ -2,10 +2,15 @@
   display: flex;
   height: 100%;
 }
+
+.instance-difficulty {
+  width: 30%;
+}
+
 rai-instance-probabilities {
-  width: 45%;
+  width: 30%;
 }
 
 rai-instance-lime-chart {
-  width: 45%;
+  width: 30%;
 }
