@@ -6,7 +6,7 @@ import pandas as pd
 from sklearn import metrics
 import json
 from functools import reduce
-
+from lime.lime_tabular import LimeTabularExplainer
 
 app = Flask(__name__)
 CORS(app)
@@ -207,6 +207,13 @@ def permutation_magic(X, y, model, n_repeats, refit=False, gmaj=None, gmin=None)
 
 
 def boostrap_metrics(X, y, gmin, model, c, computeFairnessMetrics):
+    categorical_features = [i for i, col in enumerate(X.columns) if "_" in col]
+    class_names = ["good", "bad"]
+    feature_names = X.columns
+    train = X.values
+    explainer = LimeTabularExplainer(
+        train, class_names=class_names, feature_names=feature_names, categorical_features=categorical_features)
+
     def getMetricHistogram(metric):
         def getMetricPivotTable():
             return c["metrics"].pivot_table(index="Sample", columns="Metric")[
@@ -251,7 +258,12 @@ def boostrap_metrics(X, y, gmin, model, c, computeFairnessMetrics):
                     X.iloc[id].values.reshape(1, -1)).flatten().tolist()
                 return [{"name": "good", "value": probs[0]}, {"name": "bad", "value": probs[1]}]
 
-            return [{"instance": {"id": i[0], **i[1]}, "predictProbablities": getPredictProbas(i[0])} for i in list(instances.swapaxes(0, 1).to_dict().items())]
+            def getLimeProbs(id):
+                exp = explainer.explain_instance(
+                    X.iloc[0], model.predict_proba, num_features=4).as_list()
+                return [{"name": i[0], "value": i[1]} for i in exp]
+
+            return [{"instance": {"id": i[0], **i[1]}, "predictProbablities": getPredictProbas(i[0]), "explanation": getLimeProbs(i[0])} for i in list(instances.swapaxes(0, 1).to_dict().items())]
 
         performanceInstances = instancesToList(X.loc[(y.values.ravel() - c["instances"].mean(axis=1)
                                                       ).abs().sort_values(ascending=False).head(10).index])
