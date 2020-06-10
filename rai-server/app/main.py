@@ -262,6 +262,8 @@ def boostrap_metrics(X, y, gmin, c, computeFairnessMetrics):
 def permuation_metrics(c, computeFairnessMetrics):
     b = c["metrics"].pivot_table(
         index="Variable", columns="Metric", values="Value", aggfunc=["mean", "std"])
+    d = c["metrics"].pivot_table(
+        index="Variable", columns="Metric", values="Value", aggfunc="mean")
 
     def getMetrics(metricType, metricDict):
         metricNames = list(metricDict.keys())
@@ -276,7 +278,7 @@ def permuation_metrics(c, computeFairnessMetrics):
     fairnessMetrics = getMetrics(
         "fairness", fair_metrics) if computeFairnessMetrics else {}
 
-    return {**getMetrics("performance", perf_metrics), **fairnessMetrics}
+    return {**getMetrics("performance", perf_metrics), **fairnessMetrics, "featureScatter": d.swapaxes(0, 1).to_dict()}
 
 
 def getStuffNeededForMetrics(modelAndData, selectedFeatures):

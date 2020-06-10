@@ -1,15 +1,34 @@
 import { OverviewMetric } from './overview-metric';
 import { FeatureMetric } from './feature-metric';
 import { Range } from '../array-util';
+import { FeatureScatter } from './permutation-response';
 
 export interface Chart {
   name: string;
   series: Series[];
 }
 
+export interface ScatterChart {
+  xAxisLabel: string;
+  yAxisLabel: string;
+  multi: NamedScatterSeries[];
+}
+
 export interface Series {
   name: string | number;
   value: number;
+}
+
+export interface NamedScatterSeries {
+  name: string;
+  series: ScatterSeries[];
+}
+
+export interface ScatterSeries {
+  name: string;
+  x: number;
+  y: number;
+  r: number;
 }
 
 export const blueScheme = { domain: ['#1f77b4'] };
@@ -33,6 +52,28 @@ export function overviewMetricToChart(metric: OverviewMetric): Chart {
       name: bin.interval,
       value: bin.frequency,
     })),
+  };
+}
+
+export function featureScatterToMultiSeriesChart(
+  featureScatter: FeatureScatter,
+  metricX: string,
+  metricY: string
+): ScatterChart {
+  return {
+    xAxisLabel: metricX,
+    yAxisLabel: metricY,
+    multi: [
+      {
+        name: 'scatter',
+        series: Object.keys(featureScatter).map((feature) => ({
+          x: featureScatter[feature][metricX],
+          y: featureScatter[feature][metricY],
+          name: feature,
+          r: 1,
+        })),
+      },
+    ],
   };
 }
 

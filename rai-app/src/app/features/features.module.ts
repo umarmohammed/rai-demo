@@ -5,11 +5,16 @@ import { FeatureImportanceComponent } from './feature-importance.component';
 import { CommonModule } from '@angular/common';
 import { MaterialModule } from '../material/material.module';
 import { NgxChartsModule } from '@swimlane/ngx-charts';
+import { FeatureImportanceScatterComponent } from './feature-importance-scatter.component';
 
 export const routes: Routes = [{ path: '', component: FeaturesPageComponent }];
 
 @NgModule({
-  declarations: [FeaturesPageComponent, FeatureImportanceComponent],
+  declarations: [
+    FeaturesPageComponent,
+    FeatureImportanceComponent,
+    FeatureImportanceScatterComponent,
+  ],
   imports: [
     RouterModule.forChild(routes),
     CommonModule,

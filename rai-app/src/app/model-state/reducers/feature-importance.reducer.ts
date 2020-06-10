@@ -11,6 +11,7 @@ import {
 } from 'src/app/features/feature-importance.actions';
 import { protectedFeaturesSet } from 'src/app/core/models/selected-features';
 import { protectedFeatureChanged } from 'src/app/core/options/options.actions';
+import { FeatureScatter } from 'src/app/core/models/permutation-response';
 
 export const featureImportanceFeatureKey = 'featureImportance';
 
@@ -23,6 +24,7 @@ export interface State {
   fairnessLoading: boolean;
   selectedPerformanceMetric: string;
   selectedFairnessMetric: string;
+  featureScatter: FeatureScatter;
 }
 
 export const initialState: State = {
@@ -34,11 +36,13 @@ export const initialState: State = {
   fairnessLoading: false,
   selectedPerformanceMetric: null,
   selectedFairnessMetric: null,
+  featureScatter: null,
 };
 
 const featureImportanceReducer = createReducer(
   initialState,
   on(modelSelected, (state) => ({ ...state, performanceLoading: true })),
+  // TODO rename properties and use spread
   on(permuationLoadedSuccess, (state, { permutation }) => ({
     ...state,
     performanceLoading: false,
@@ -62,6 +66,7 @@ const featureImportanceReducer = createReducer(
       ? { ...state, fairnessLoading: true }
       : state
   ),
+  // TODO rename properties and use spread
   on(permuationLoadedWithFairnessSuccess, (state, { permutation }) => ({
     ...state,
     fairnessLoading: false,
@@ -69,6 +74,7 @@ const featureImportanceReducer = createReducer(
     fairnessItems: permutation.fairnessFeatures,
     fairnessMetricNames: permutation.fairnessMetricNames,
     selectedFairnessMetric: permutation.fairnessMetricNames[0],
+    featureScatter: permutation.featureScatter,
   }))
 );
 
@@ -91,3 +97,5 @@ export const selectSelectedByType = (type: string) => (state: State) =>
   type === 'performance'
     ? state.selectedPerformanceMetric
     : state.selectedFairnessMetric;
+
+export const selectFeatureScatter = (state: State) => state.featureScatter;

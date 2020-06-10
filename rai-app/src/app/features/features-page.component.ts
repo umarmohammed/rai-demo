@@ -11,7 +11,10 @@ import { WindowService } from '../core/window.service';
   selector: 'rai-features=page',
   template: `
     <div class="container">
-      <div class="scatter" *ngIf="protectedFeaturesSet$ | async">Scatter</div>
+      <feature-importance-scatter
+        class="scatter"
+        *ngIf="protectedFeaturesSet$ | async"
+      ></feature-importance-scatter>
       <div
         class="importance-container"
         [class.shrink]="protectedFeaturesSet$ | async"

@@ -5,4 +5,7 @@ export class PermutationResponse {
   performanceMetricNames: string[];
   fairnessFeatures: FeatureMetric[];
   fairnessMetricNames: string[];
+  featureScatter: FeatureScatter;
 }
+
+export type FeatureScatter = { [key: string]: { [key: string]: number } };

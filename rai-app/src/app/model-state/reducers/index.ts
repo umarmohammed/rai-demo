@@ -12,6 +12,7 @@ import {
 import { filterOverviewMetricsByType } from 'src/app/core/models/overview-metric';
 import { fileToFormData } from 'src/app/connect-model/form-data';
 import { protectedFeaturesSet } from 'src/app/core/models/selected-features';
+import { featureScatterToMultiSeriesChart } from 'src/app/core/models/chart';
 
 export const modelFeatureKey = 'model';
 
@@ -168,3 +169,15 @@ export const selectFeatureImportanceSelectedMetricsByType = (type: string) =>
     selectFeatureImportanceItemsByType(type),
     (selected, items) => items.find((i) => i.name === selected)
   );
+
+export const selectFeatureScatter = createSelector(
+  selectFeatureImportanceState,
+  fromFeatureImportance.selectFeatureScatter
+);
+
+export const selectFeatureScatterChart = createSelector(
+  selectFeatureScatter,
+  selectFeatureImportanceSelectedByType('performance'),
+  selectFeatureImportanceSelectedByType('fairness'),
+  featureScatterToMultiSeriesChart
+);
