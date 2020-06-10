@@ -5,7 +5,7 @@ from sklearn.ensemble import RandomForestClassifier
 from sklearn.preprocessing import KBinsDiscretizer
 from sklearn.preprocessing import OneHotEncoder
 from IPython import get_ipython
-
+from lime.lime_tabular import LimeTabularExplainer
 
 import pandas as pd
 import numpy as np
@@ -371,3 +371,20 @@ b["mean"]["DispImpact"].sort_values().tail(10)
 
 # ### Adversarial Attacks stuff
 # ## Fix Component
+
+
+# Lime
+#df = pd.concat([X, y], axis=1)
+categorical_features = [i for i, col in enumerate(X.columns) if "_" in col]
+class_names = ["good", "bad"]
+feature_names = X.columns
+train = X.values
+
+
+def explain():
+    explainer = LimeTabularExplainer(
+        train, class_names=class_names, feature_names=feature_names, categorical_features=categorical_features)
+
+    return explainer.explain_instance(X.iloc[0], rf.predict_proba, num_features=4)
+
+print(explain().as_list())
