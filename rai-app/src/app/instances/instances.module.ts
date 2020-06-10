@@ -11,6 +11,7 @@ import { InstanceExplanationComponent } from './explanation/instance-explanation
 import { DataGridSelectedDirective } from './data-grid-selected.component';
 import { InstanceProbabilitiesComponent } from './explanation/instance-probabilities.component';
 import { InstanceLimeChartComponent } from './explanation/instance-lime-chart.componen';
+import { NgxChartsModule } from '@swimlane/ngx-charts';
 
 @NgModule({
   declarations: [
@@ -28,6 +29,7 @@ import { InstanceLimeChartComponent } from './explanation/instance-lime-chart.co
     InstancesRouterModule,
     CommonModule,
     AgGridModule.withComponents([]),
+    NgxChartsModule,
   ],
 })
 export class InstancesModule {}
