@@ -8,7 +8,7 @@ import { FeatureMetric } from 'src/app/core/models/feature-metric';
 import {
   selectedPerformanceMetricChanged,
   selectedFairnessMetricChanged,
-} from 'src/app/features/feature-importance.actions';
+} from 'src/app/features/components/feature-importance.actions';
 import { protectedFeaturesSet } from 'src/app/core/models/selected-features';
 import { protectedFeatureChanged } from 'src/app/core/options/options.actions';
 import { FeatureScatter } from 'src/app/core/models/permutation-response';

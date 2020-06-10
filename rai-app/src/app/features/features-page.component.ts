@@ -4,7 +4,7 @@ import * as fromModel from '../model-state/reducers';
 import {
   selectedPerformanceMetricChanged,
   selectedFairnessMetricChanged,
-} from './feature-importance.actions';
+} from './components/feature-importance.actions';
 import { WindowService } from '../core/window.service';
 
 @Component({

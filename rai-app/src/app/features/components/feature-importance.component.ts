@@ -1,15 +1,15 @@
 import { Component, Input, OnInit, Output, EventEmitter } from '@angular/core';
 import { Observable } from 'rxjs';
 import { Store } from '@ngrx/store';
-import * as fromModel from '../model-state/reducers';
+import * as fromModel from '../../model-state/reducers';
 import {
   Chart,
   featureMetricToChart,
   orangeScheme,
   getChartMin,
-} from '../core/models/chart';
+} from '../../core/models/chart';
 import { map } from 'rxjs/operators';
-import { range } from '../core/array-util';
+import { range } from '../../core/array-util';
 
 @Component({
   selector: 'rai-feature-importance',

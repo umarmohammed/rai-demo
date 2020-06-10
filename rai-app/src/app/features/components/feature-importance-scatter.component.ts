@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { Store } from '@ngrx/store';
-import * as fromModel from '../model-state/reducers';
+import * as fromModel from '../../model-state/reducers';
 
 @Component({
   selector: 'feature-importance-scatter',

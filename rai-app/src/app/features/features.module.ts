@@ -1,11 +1,11 @@
 import { NgModule } from '@angular/core';
 import { FeaturesPageComponent } from './features-page.component';
 import { Routes, RouterModule } from '@angular/router';
-import { FeatureImportanceComponent } from './feature-importance.component';
+import { FeatureImportanceComponent } from './components/feature-importance.component';
 import { CommonModule } from '@angular/common';
 import { MaterialModule } from '../material/material.module';
 import { NgxChartsModule } from '@swimlane/ngx-charts';
-import { FeatureImportanceScatterComponent } from './feature-importance-scatter.component';
+import { FeatureImportanceScatterComponent } from './components/feature-importance-scatter.component';
 
 export const routes: Routes = [{ path: '', component: FeaturesPageComponent }];
 
