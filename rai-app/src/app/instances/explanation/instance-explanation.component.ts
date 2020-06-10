@@ -1,5 +1,5 @@
 import { Component, Input } from '@angular/core';
-import { Instance } from '../core/models/instance';
+import { Instance } from '../../core/models/instance';
 
 @Component({
   selector: 'rai-instance-explanation',
