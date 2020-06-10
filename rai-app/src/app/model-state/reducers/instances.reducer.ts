@@ -6,14 +6,14 @@ import {
 } from 'src/app/connect-model/connect-model.actions';
 import { protectedFeatureChanged } from 'src/app/core/options/options.actions';
 import { protectedFeaturesSet } from 'src/app/core/models/selected-features';
-import { state } from '@angular/animations';
+import { Instance } from 'src/app/core/models/instance';
 
 export const instancesFeatureKey = 'instances';
 
 export interface State {
   columnNames: string[];
-  performanceItems: any[];
-  fairnessItems: any[];
+  performanceItems: Instance[];
+  fairnessItems: Instance[];
   performanceLoading: boolean;
   fairnessLoading: boolean;
 }
@@ -31,8 +31,7 @@ const instancesReducer = createReducer(
   on(modelSelected, (state) => ({ ...state, performanceLoading: true })),
   on(bootstrapLoadedSuccess, (state, { bootstrap }) => ({
     ...state,
-    columnNames: bootstrap.columnDefs,
-    performanceItems: bootstrap.performanceInstances,
+    ...bootstrap,
     performanceLoading: false,
   })),
   on(protectedFeatureChanged, (state, protectedFeatures) =>
@@ -43,7 +42,7 @@ const instancesReducer = createReducer(
   on(bootstrapLoadedWithFairnessSuccess, (state, { bootstrap }) => ({
     ...state,
     fairnessLoading: false,
-    fairnessItems: bootstrap.fairnessInstances,
+    ...bootstrap,
   }))
 );
 

@@ -1,8 +1,9 @@
 import { OverviewMetric } from './overview-metric';
+import { Instance } from './instance';
 
 export interface BootstrapResponse {
   overview: OverviewMetric[];
-  performanceInstances: any[];
-  fairnessInstances: any[];
-  columnDefs: string[];
+  performanceItems: Instance[];
+  fairnessItems: Instance[];
+  columnNames: string[];
 }

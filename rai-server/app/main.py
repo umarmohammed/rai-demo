@@ -206,7 +206,7 @@ def permutation_magic(X, y, model, n_repeats, refit=False, gmaj=None, gmin=None)
     return {"metrics": df_all_metrics}
 
 
-def boostrap_metrics(X, y, gmin, c, computeFairnessMetrics):
+def boostrap_metrics(X, y, gmin, model, c, computeFairnessMetrics):
     def getMetricHistogram(metric):
         def getMetricPivotTable():
             return c["metrics"].pivot_table(index="Sample", columns="Metric")[
@@ -246,7 +246,12 @@ def boostrap_metrics(X, y, gmin, c, computeFairnessMetrics):
     def getInstances():
 
         def instancesToList(instances):
-            return [{"id": i[0], **i[1]} for i in list(instances.swapaxes(0, 1).to_dict().items())]
+            def getPredictProbas(id):
+                probs = model.predict_proba(
+                    X.iloc[id].values.reshape(1, -1)).flatten().tolist()
+                return [{"name": "good", "value": probs[0]}, {"name": "bad", "value": probs[1]}]
+
+            return [{"instance": {"id": i[0], **i[1]}, "predictProbablities": getPredictProbas(i[0])} for i in list(instances.swapaxes(0, 1).to_dict().items())]
 
         performanceInstances = instancesToList(X.loc[(y.values.ravel() - c["instances"].mean(axis=1)
                                                       ).abs().sort_values(ascending=False).head(10).index])
@@ -254,9 +259,9 @@ def boostrap_metrics(X, y, gmin, c, computeFairnessMetrics):
         fairnessInstances = instancesToList(X.loc[(y.values.ravel() - c["instances"].mean(axis=1)).abs()[
             gmin.values.ravel() == 1].sort_values(ascending=False).head(10).index]) if computeFairnessMetrics else []
 
-        return {"performanceInstances": performanceInstances, "fairnessInstances": fairnessInstances}
+        return {"performanceItems": performanceInstances, "fairnessItems": fairnessInstances}
 
-    return {"overview": getOverview(), **getInstances(), "columnDefs": ['id'] + list(X.columns)}
+    return {"overview": getOverview(), **getInstances(), "columnNames": ['id'] + list(X.columns)}
 
 
 def permuation_metrics(c, computeFairnessMetrics):
@@ -311,7 +316,7 @@ def bootstrap():
 
     computeFairnessMetrics = gmin is not None and gmin is not None
 
-    return boostrap_metrics(X, y, gmin, c, computeFairnessMetrics)
+    return boostrap_metrics(X, y, gmin, model, c, computeFairnessMetrics)
 
 
 @app.route("/api/permutation", methods=["POST"])
