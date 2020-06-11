@@ -1,0 +1,6 @@
+.container {
+  height: 100%;
+  &.nav-barred {
+    height: calc(100% - 49px);
+  }
+}

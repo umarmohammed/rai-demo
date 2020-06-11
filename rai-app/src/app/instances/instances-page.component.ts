@@ -3,7 +3,8 @@ import { WindowService } from '../core/window.service';
 
 @Component({
   selector: 'rai-instances-page',
-  template: ` <nav mat-tab-nav-bar>
+  template: `
+    <nav mat-tab-nav-bar *ngIf="protectedFeaturesSet$ | async">
       <a
         mat-tab-link
         routerLink="performance"
@@ -19,14 +20,15 @@ import { WindowService } from '../core/window.service';
         routerLinkActive
         #rla1="routerLinkActive"
         [active]="rla1.isActive"
-        [disabled]="!(protectedFeaturesSet$ | async)"
       >
         Fairness
       </a>
     </nav>
-    <div style="height: calc(100% - 49px)">
+    <div class="container" [class.nav-barred]="protectedFeaturesSet$ | async">
       <router-outlet></router-outlet>
-    </div>`,
+    </div>
+  `,
+  styleUrls: ['instances-page.component.scss'],
 })
 export class InstancesPageComponent {
   protectedFeaturesSet$ = this.windowService.protectedFeaturesSet$;
