@@ -24,6 +24,11 @@ import { protectedFeatureChanged } from './options.actions';
           (selectionChange)="onGmajChanged($event, selectGmin.value)"
           #selectGmaj
         ></rai-select-protected-feaure>
+        <mat-spinner
+          class="spinner"
+          [class.show]="somethingLoading$ | async"
+          [diameter]="30"
+        ></mat-spinner>
       </div>
     </div>
     <mat-spinner
@@ -38,6 +43,9 @@ export class OptionsComponent {
   featuresLoading$ = this.store.select(fromModel.selectFeaturesLoading);
   gmin$ = this.store.select(fromModel.selectGmin);
   gmaj$ = this.store.select(fromModel.selectGmaj);
+  somethingLoading$ = this.store.select(
+    fromModel.selectSomethingLoadingOnFeaturesSet
+  );
 
   constructor(private store: Store<fromModel.State>) {}
 

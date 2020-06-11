@@ -178,7 +178,21 @@ export const selectFeatureImportanceLoading = createSelector(
   fromFeatureImportance.selectLoading
 );
 
+export const selectFeatureImportanceFairnessLoading = createSelector(
+  selectFeatureImportanceState,
+  fromFeatureImportance.selectFairnessLoading
+);
+
 export const selectFeatureScatter = createSelector(
   selectFeatureImportanceState,
   fromFeatureImportance.selectFeatureScatter
+);
+
+export const selectSomethingLoadingOnFeaturesSet = createSelector(
+  selectProtectedFeatures,
+  selectFeatureImportanceFairnessLoading,
+  selectInstancesLoadingByType('fairness'),
+  (protectedFeatures, featuresLoading, overviewLoading) =>
+    protectedFeaturesSet(protectedFeatures) &&
+    (featuresLoading || overviewLoading)
 );
