@@ -150,6 +150,12 @@ export const selectInstancesSelectedItemByType = (type: string) =>
     (items, id) => items.find((i) => i.instance.id === id)
   );
 
+export const selectInstancesDifficultiesByType = (type: string) =>
+  createSelector(
+    selectInstancesState,
+    fromInstances.selectDifficultiesByType(type)
+  );
+
 export const selectFeatureImportanceState = createSelector(
   selectModelState,
   (state) => state.featureImportance

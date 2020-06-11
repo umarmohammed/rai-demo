@@ -8,6 +8,7 @@ import {
   fairnessInstanceSelected,
 } from './instances-container.actions';
 import { Instance } from '../core/models/instance';
+import { Metric } from '../core/models/metric';
 
 @Component({
   selector: 'rai-instances-container',
@@ -16,6 +17,7 @@ import { Instance } from '../core/models/instance';
       <rai-instance-explanation
         class="lime-container"
         [instance]="selectedInstance$ | async"
+        [difficulties]="difficulties$ | async"
       ></rai-instance-explanation>
       <rai-instances-grid
         [columnNames]="columnNames$ | async"
@@ -60,6 +62,7 @@ export class InstancesContainerComponent implements OnInit {
   loading$: Observable<boolean>;
   selectedId$: Observable<string>;
   selectedInstance$: Observable<Instance>;
+  difficulties$: Observable<Metric[]>;
 
   constructor(private store: Store<fromModel.State>) {}
 
@@ -78,6 +81,10 @@ export class InstancesContainerComponent implements OnInit {
 
     this.selectedInstance$ = this.store.select(
       fromModel.selectInstancesSelectedItemByType(this.type)
+    );
+
+    this.difficulties$ = this.store.select(
+      fromModel.selectInstancesDifficultiesByType(this.type)
     );
   }
 

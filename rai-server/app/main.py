@@ -265,13 +265,22 @@ def boostrap_metrics(X, y, gmin, model, c, computeFairnessMetrics):
 
             return [{"instance": {"id": i[0], **i[1]}, "predictProbablities": getPredictProbas(i[0]), "explanation": getLimeProbs(i[0])} for i in list(instances.swapaxes(0, 1).to_dict().items())]
 
+        def difficultiesToList(difficulties):
+            return [{"name": i, "value": difficulties[i]} for i in difficulties.keys()]
+
         performanceInstances = instancesToList(X.loc[(y.values.ravel() - c["instances"].mean(axis=1)
                                                       ).abs().sort_values(ascending=False).head(10).index])
+
+        performanceDifficulies = difficultiesToList((y.values.ravel(
+        ) - c["instances"].mean(axis=1)).abs().sort_values(ascending=False).head(10))
 
         fairnessInstances = instancesToList(X.loc[(y.values.ravel() - c["instances"].mean(axis=1)).abs()[
             gmin.values.ravel() == 1].sort_values(ascending=False).head(10).index]) if computeFairnessMetrics else []
 
-        return {"performanceItems": performanceInstances, "fairnessItems": fairnessInstances}
+        fairnessDifficulties = difficultiesToList((y.values.ravel() - c["instances"].mean(
+            axis=1)).abs()[gmin.values.ravel() == 1].sort_values(ascending=False).head(10)) if computeFairnessMetrics else []
+
+        return {"performanceItems": performanceInstances, "fairnessItems": fairnessInstances, "performanceDifficulties": performanceDifficulies, "fairnessDifficulties": fairnessDifficulties}
 
     return {"overview": getOverview(), **getInstances(), "columnNames": ['id'] + list(X.columns)}
 

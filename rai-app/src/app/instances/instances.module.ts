@@ -12,6 +12,7 @@ import { DataGridSelectedDirective } from './data-grid-selected.component';
 import { InstanceProbabilitiesComponent } from './explanation/instance-probabilities.component';
 import { InstanceLimeChartComponent } from './explanation/instance-lime-chart.componen';
 import { NgxChartsModule } from '@swimlane/ngx-charts';
+import { InstanceDifficultiesComponent } from './explanation/instance-difficulties.component';
 
 @NgModule({
   declarations: [
@@ -23,6 +24,7 @@ import { NgxChartsModule } from '@swimlane/ngx-charts';
     DataGridSelectedDirective,
     InstanceProbabilitiesComponent,
     InstanceLimeChartComponent,
+    InstanceDifficultiesComponent,
   ],
   imports: [
     MaterialModule,

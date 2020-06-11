@@ -11,6 +11,7 @@ import {
   performaceInstanceSelected,
   fairnessInstanceSelected,
 } from 'src/app/instances/instances-container.actions';
+import { Metric } from 'src/app/core/models/metric';
 
 export const instancesFeatureKey = 'instances';
 
@@ -18,6 +19,8 @@ export interface State {
   columnNames: string[];
   performanceItems: Instance[];
   fairnessItems: Instance[];
+  performanceDifficulties: Metric[];
+  fairnessDifficulties: Metric[];
   performanceLoading: boolean;
   fairnessLoading: boolean;
   selectedPerformanceId: string;
@@ -28,6 +31,8 @@ export const initialState: State = {
   columnNames: null,
   performanceItems: null,
   fairnessItems: null,
+  performanceDifficulties: null,
+  fairnessDifficulties: null,
   performanceLoading: false,
   fairnessLoading: false,
   selectedPerformanceId: null,
@@ -79,3 +84,8 @@ export const selectSelectedItemByType = (type: string) => (state: State) =>
   type === 'performance'
     ? state.selectedPerformanceId
     : state.selectedFairnessId;
+
+export const selectDifficultiesByType = (type: string) => (state: State) =>
+  type === 'performance'
+    ? state.performanceDifficulties
+    : state.fairnessDifficulties;
