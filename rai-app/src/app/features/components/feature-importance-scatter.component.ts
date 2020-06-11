@@ -5,7 +5,7 @@ import { ScatterChart } from 'src/app/core/models/chart';
   selector: 'feature-importance-scatter',
   template: `
     <div class="scatter-container">
-      <ngx-charts-bubble-chart
+      <ngx-charts-custom-bubble-chart
         [results]="scatterChart.multi"
         [xAxis]="true"
         [yAxis]="true"
@@ -16,7 +16,7 @@ import { ScatterChart } from 'src/app/core/models/chart';
         [minRadius]="3"
         [roundDomains]="true"
       >
-      </ngx-charts-bubble-chart>
+      </ngx-charts-custom-bubble-chart>
     </div>
   `,
   styles: [

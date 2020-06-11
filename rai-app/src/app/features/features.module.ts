@@ -6,6 +6,7 @@ import { CommonModule } from '@angular/common';
 import { MaterialModule } from '../material/material.module';
 import { NgxChartsModule } from '@swimlane/ngx-charts';
 import { FeatureImportanceScatterComponent } from './components/feature-importance-scatter.component';
+import { ChartsModule } from '../charts/charts.module';
 
 export const routes: Routes = [{ path: '', component: FeaturesPageComponent }];
 
@@ -19,7 +20,7 @@ export const routes: Routes = [{ path: '', component: FeaturesPageComponent }];
     RouterModule.forChild(routes),
     CommonModule,
     MaterialModule,
-    NgxChartsModule,
+    ChartsModule,
   ],
 })
 export class FeaturesModule {}
