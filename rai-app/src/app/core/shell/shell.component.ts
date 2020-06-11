@@ -20,6 +20,22 @@ import { WindowService } from '../window.service';
         <a mat-button routerLinkActive="active" routerLink="/instances"
           >Instances</a
         >
+        <button
+          color="primary"
+          class="m-l-50"
+          mat-flat-button
+          [disabled]="true"
+        >
+          Fix
+        </button>
+        <button
+          class="m-l-20"
+          color="primary"
+          mat-flat-button
+          [disabled]="true"
+        >
+          Auto ML
+        </button>
         <div class="spacer"></div>
         <button mat-icon-button [matMenuTriggerFor]="menu">
           <mat-icon>more_vert</mat-icon>
