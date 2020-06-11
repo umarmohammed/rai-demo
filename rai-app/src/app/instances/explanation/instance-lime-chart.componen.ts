@@ -5,9 +5,6 @@ import { Metric } from 'src/app/core/models/metric';
   selector: 'rai-instance-lime-chart',
   template: `<ngx-charts-bar-horizontal
     [results]="explanation"
-    [xScaleMax]="1"
-    [xScaleMin]="-1"
-    [xAxis]="true"
     [yAxis]="true"
     [customColors]="customColor(explanation)"
     [trimYAxisTicks]="false"
