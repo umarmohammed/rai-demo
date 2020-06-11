@@ -67,9 +67,9 @@ export class ModelEffects {
 
   loadPermutation$ = createEffect(() =>
     this.actions$.pipe(
-      ofType(modelSelected),
-      map(fileToFormData),
-      switchMap((form) =>
+      ofType(bootstrapLoadedSuccess),
+      withLatestFrom(this.store.select(fromModel.selectFormData)),
+      switchMap(([, form]) =>
         this.modelService
           .getPermutation(form)
           .pipe(map((permutation) => permuationLoadedSuccess({ permutation })))
@@ -79,10 +79,12 @@ export class ModelEffects {
 
   loadPermutationWithFairness$ = createEffect(() =>
     this.actions$.pipe(
-      ofType(protectedFeatureChanged),
-      filter(protectedFeaturesSet),
-      withLatestFrom(this.store.select(fromModel.selectFormData)),
-      switchMap(([features, formData]) =>
+      ofType(bootstrapLoadedWithFairnessSuccess),
+      withLatestFrom(
+        this.store.select(fromModel.selectProtectedFeatures),
+        this.store.select(fromModel.selectFormData)
+      ),
+      switchMap(([, features, formData]) =>
         this.modelService.getPermutation(formData, features).pipe(
           map((permutation) =>
             permuationLoadedWithFairnessSuccess({
