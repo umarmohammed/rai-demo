@@ -96,7 +96,7 @@ export class BubbleCircleComponent implements OnChanges {
     const name =
       hasSeriesName && hasTooltipLabel
         ? `${circle.seriesName} • ${circle.tooltipLabel}`
-        : circle.seriesName + circle.tooltipLabel;
+        : circle.tooltipLabel;
     const tooltipTitle =
       hasSeriesName || hasTooltipLabel
         ? `<span class="tooltip-label">${escapeLabel(name)}</span>`
@@ -107,9 +107,6 @@ export class BubbleCircleComponent implements OnChanges {
       <span class="tooltip-label">
         <label>${escapeLabel(xAxisLabel)}</label> ${escapeLabel(x)}<br />
         <label>${escapeLabel(yAxisLabel)}</label> ${escapeLabel(y)}
-      </span>
-      <span class="tooltip-val">
-        ${escapeLabel(radiusValue)}
       </span>
     `;
   }
