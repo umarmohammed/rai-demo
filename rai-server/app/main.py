@@ -256,11 +256,11 @@ def boostrap_metrics(X, y, gmin, model, c, computeFairnessMetrics):
             def getPredictProbas(id):
                 probs = model.predict_proba(
                     X.iloc[id].values.reshape(1, -1)).flatten().tolist()
-                return [{"name": "good", "value": probs[0]}, {"name": "bad", "value": probs[1]}]
+                return [{"name": "negative", "value": probs[0]}, {"name": "positive", "value": probs[1]}]
 
             def getLimeProbs(id):
                 exp = explainer.explain_instance(
-                    X.iloc[0], model.predict_proba, num_features=4).as_list()
+                    X.iloc[id], model.predict_proba, num_features=4).as_list()
                 return [{"name": i[0], "value": i[1]} for i in exp]
 
             return [{"instance": {"id": i[0], **i[1]}, "predictProbablities": getPredictProbas(i[0]), "explanation": getLimeProbs(i[0])} for i in list(instances.swapaxes(0, 1).to_dict().items())]
@@ -290,8 +290,9 @@ def permuation_metrics(c, computeFairnessMetrics):
                     for i in metricNames]
         return {"metricNames": metricNames, "features": features}
 
-    metricNames = list(perf_metrics.keys()) + (list(fair_metrics.keys()) if computeFairnessMetrics else [])
-    
+    metricNames = list(perf_metrics.keys()) + \
+        (list(fair_metrics.keys()) if computeFairnessMetrics else [])
+
     return {**getMetrics(metricNames), "featureScatter": d.swapaxes(0, 1).to_dict()}
 
 
