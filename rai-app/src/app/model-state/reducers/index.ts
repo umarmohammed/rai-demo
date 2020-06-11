@@ -108,10 +108,8 @@ export const selectOverviewItems = createSelector(
 export const selectOverviewItemsByType = (type: string) =>
   createSelector(selectOverviewItems, filterOverviewMetricsByType(type));
 
-export const selectOverviewLoading = createSelector(
-  selectOverviewState,
-  fromOverview.selectLoading
-);
+export const selectOverviewLoadingByType = (type: string) =>
+  createSelector(selectOverviewState, fromOverview.selectLoadingByType(type));
 
 export const selectOverviewSelectedByType = (type: string) =>
   createSelector(selectOverviewState, fromOverview.selectSelectedByType(type));

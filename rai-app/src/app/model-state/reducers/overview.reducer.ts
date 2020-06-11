@@ -17,14 +17,14 @@ export const overviewFeatureKey = 'overview';
 export interface State {
   items: OverviewMetric[];
   loading: boolean;
-  loaded: boolean;
+  fairnessLoading: boolean;
   selectedPerformance: string;
   selectedFairness: string;
 }
 
 export const initialState: State = {
   items: null,
-  loaded: false,
+  fairnessLoading: false,
   loading: false,
   selectedPerformance: null,
   selectedFairness: null,
@@ -35,7 +35,6 @@ const overviewReducer = createReducer(
   on(modelSelected, (state) => ({ ...state, loading: true, loaded: false })),
   on(bootstrapLoadedSuccess, (state, { bootstrap }) => ({
     ...state,
-    loaded: true,
     loading: false,
     items: bootstrap.overview,
     selectedPerformance: bootstrap.overview.find(
@@ -44,8 +43,7 @@ const overviewReducer = createReducer(
   })),
   on(bootstrapLoadedWithFairnessSuccess, (state, { bootstrap }) => ({
     ...state,
-    loaded: true,
-    loading: false,
+    fairnessLoading: false,
     items: bootstrap.overview,
     selectedPerformance: bootstrap.overview.find(
       (o) => o.type === 'performance'
@@ -57,8 +55,7 @@ const overviewReducer = createReducer(
     protectedFeaturesSet(protectedFeatures)
       ? {
           ...state,
-          loaded: false,
-          loading: true,
+          fairnessLoading: true,
         }
       : state
   ),
@@ -77,8 +74,8 @@ export function reducer(state: State | undefined, action: Action) {
 }
 
 export const selectItems = (state: State) => state.items;
-export const selectLoaded = (state: State) => state.loaded;
-export const selectLoading = (state: State) => state.loading;
+export const selectLoadingByType = (type: string) => (state: State) =>
+  type === 'performance' ? state.loading : state.fairnessLoading;
 export const selectSelectedByType = (type: string) => (state: State) =>
   state.items.find((i) => i.name === typeToSelected(type, state));
 

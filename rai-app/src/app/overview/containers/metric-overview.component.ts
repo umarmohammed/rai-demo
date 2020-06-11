@@ -12,7 +12,7 @@ import { Observable } from 'rxjs';
 @Component({
   selector: 'rai-metric-overview',
   template: `
-    <div class="container">
+    <div class="container" *ngIf="!loading">
       <h2 class="center-text">{{ title }}</h2>
       <p class="center-text">{{ (selected$ | async).name }}</p>
       <rai-metric-histogram
@@ -26,12 +26,14 @@ import { Observable } from 'rxjs';
         [rows]="items$ | async"
       ></rai-metric-aggregates>
     </div>
+    <mat-spinner class="spinner" [class.show]="loading"></mat-spinner>
   `,
   styleUrls: ['metric-overview.component.scss'],
 })
 export class MetricOverviewComponent implements OnInit {
   @Input() type: string;
   @Input() title: string;
+  @Input() loading: boolean;
 
   @Output() metricSelected: EventEmitter<string> = new EventEmitter();
 
