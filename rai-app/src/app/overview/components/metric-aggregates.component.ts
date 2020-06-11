@@ -29,13 +29,24 @@ export class MetricAggregatesComponent {
   @Output() metricSelected = new EventEmitter<string>();
 
   columnsDefs = [
-    { headerName: 'Metric', field: 'metric' },
-    { headerName: 'Mean', field: 'mean' },
-    { headerName: 'Median', field: 'median' },
-    { headerName: 'CI 5%', field: 'q05' },
-    { headerName: 'CI 95%', field: 'q95' },
-    { headerName: 'Std', field: 'std' },
-    { headerName: 'Mad', field: 'mad' },
+    {
+      headerName: 'Metric',
+      field: 'metric',
+    },
+    { headerName: 'Mean', field: 'mean', valueFormatter: this.numberFormatter },
+    {
+      headerName: 'Median',
+      field: 'median',
+      valueFormatter: this.numberFormatter,
+    },
+    { headerName: 'CI 5%', field: 'q05', valueFormatter: this.numberFormatter },
+    {
+      headerName: 'CI 95%',
+      field: 'q95',
+      valueFormatter: this.numberFormatter,
+    },
+    { headerName: 'Std', field: 'std', valueFormatter: this.numberFormatter },
+    { headerName: 'Mad', field: 'mad', valueFormatter: this.numberFormatter },
   ];
 
   rowClassRules = {
@@ -49,5 +60,9 @@ export class MetricAggregatesComponent {
 
   onSelectionChanged(event: AgGridEvent) {
     this.metricSelected.next(event.api.getSelectedNodes()[0].data.metric);
+  }
+
+  numberFormatter(params: any) {
+    return params.value.toFixed(4);
   }
 }
