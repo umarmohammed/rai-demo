@@ -1,7 +1,10 @@
 import { Component, Input, OnInit, Output, EventEmitter } from '@angular/core';
 import * as fromModel from '../../model-state/reducers';
 import { Store } from '@ngrx/store';
-import { OverviewMetric } from '../../core/models/overview-metric';
+import {
+  OverviewMetric,
+  overviewMetricToGridArray,
+} from '../../core/models/overview-metric';
 import { Chart, overviewMetricToChart } from 'src/app/core/models/chart';
 import { map } from 'rxjs/operators';
 import { Observable } from 'rxjs';
@@ -19,8 +22,8 @@ import { Observable } from 'rxjs';
       <rai-metric-aggregates
         class="aggregates"
         (metricSelected)="metricSelected.emit($event)"
-        [selected]="selected$ | async"
-        [overviewMetrics]="items$ | async"
+        [selected]="(selected$ | async).name"
+        [rows]="items$ | async"
       ></rai-metric-aggregates>
     </div>
   `,
@@ -34,14 +37,14 @@ export class MetricOverviewComponent implements OnInit {
 
   selected$: Observable<OverviewMetric>;
   histogram$: Observable<Chart>;
-  items$: Observable<OverviewMetric[]>;
+  items$: Observable<any[]>;
 
   constructor(private store: Store<fromModel.State>) {}
 
   ngOnInit(): void {
-    this.items$ = this.store.select(
-      fromModel.selectOverviewItemsByType(this.type)
-    );
+    this.items$ = this.store
+      .select(fromModel.selectOverviewItemsByType(this.type))
+      .pipe(map((items) => items.map(overviewMetricToGridArray)));
     this.selected$ = this.store.select(
       fromModel.selectOverviewSelectedByType(this.type)
     );

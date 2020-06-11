@@ -7,6 +7,8 @@ import { MaterialModule } from '../material/material.module';
 import { MetricAggregatesComponent } from './components/metric-aggregates.component';
 import { NgxChartsModule } from '@swimlane/ngx-charts';
 import { OverviewPageComponent } from './containers/overview-page.component';
+import { AgGridModule } from 'ag-grid-angular';
+import { SharedModule } from '../shared/shared.module';
 
 export const routes: Routes = [{ path: '', component: OverviewPageComponent }];
 
@@ -22,6 +24,8 @@ export const routes: Routes = [{ path: '', component: OverviewPageComponent }];
     RouterModule.forChild(routes),
     MaterialModule,
     NgxChartsModule,
+    AgGridModule.withComponents([]),
+    SharedModule,
   ],
 })
 export class OverviewModule {}

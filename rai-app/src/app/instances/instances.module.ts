@@ -8,7 +8,7 @@ import { InstancesRouteWrapperComponent } from './instances-route-wrapper.compon
 import { CommonModule } from '@angular/common';
 import { AgGridModule } from 'ag-grid-angular';
 import { InstanceExplanationComponent } from './explanation/instance-explanation.component';
-import { DataGridSelectedDirective } from './data-grid-selected.component';
+import { SharedModule } from '../shared/shared.module';
 import { InstanceProbabilitiesComponent } from './explanation/instance-probabilities.component';
 import { InstanceLimeChartComponent } from './explanation/instance-lime-chart.componen';
 import { NgxChartsModule } from '@swimlane/ngx-charts';
@@ -21,7 +21,6 @@ import { InstanceDifficultiesComponent } from './explanation/instance-difficulti
     InstancesContainerComponent,
     InstancesRouteWrapperComponent,
     InstanceExplanationComponent,
-    DataGridSelectedDirective,
     InstanceProbabilitiesComponent,
     InstanceLimeChartComponent,
     InstanceDifficultiesComponent,
@@ -32,6 +31,7 @@ import { InstanceDifficultiesComponent } from './explanation/instance-difficulti
     CommonModule,
     AgGridModule.withComponents([]),
     NgxChartsModule,
+    SharedModule,
   ],
 })
 export class InstancesModule {}
