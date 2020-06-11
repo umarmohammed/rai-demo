@@ -10,7 +10,7 @@ import { Chart, blueScheme } from 'src/app/core/models/chart';
         [xAxis]="true"
         [yAxis]="true"
         [scheme]="blueScheme"
-        [barPadding]="0"
+        [barPadding]="1"
         [roundEdges]="false"
       >
       </ngx-charts-bar-vertical>
