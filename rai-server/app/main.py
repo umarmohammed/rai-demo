@@ -79,6 +79,14 @@ fair_metrics = {"Cohen-D": CohenD,
                 "AvgOddsDiff": AvgOddsDiff
                 }
 
+fair_metrics_targets = {"Cohen-D": [0, 0],
+                        "2-SD Rule": [2, -2],
+                        "StatParity": [0.1, -0.1],
+                        "EqualOppDiff": [0.1, -0.1],
+                        "DispImpact": [1.2, 0.8],
+                        "AvgOddsDiff": [0.1, -0.1]
+                        }
+
 
 def compute_model_metrics(yobs, model, Xobs, gmaj=None, gmin=None):
     # get predictions -- where you would start, after loading the data and model
@@ -237,8 +245,15 @@ def boostrap_metrics(X, y, gmin, model, c, computeFairnessMetrics):
         return c["metrics"].pivot_table(values="Value", index="Metric", aggfunc=[
             "mean", "median", q05, q95, "std", "mad"]).swapaxes(0, 1).to_dict()
 
-    def getMetricAggregates(aggregates):
-        return [{"name": i[0], "value": aggregates[i]} for i in aggregates.keys()]
+    def getMetricAggregates(aggregates, metricName):
+        def isValueInRange(value, range):
+            return value <= range[0] and value >= range[1]
+
+        targets = fair_metrics_targets.get(metricName)
+        fair = [] if targets is None else [
+            {"name": "isFair", "value": isValueInRange(aggregates[('mean', 'Value')], targets)}]
+
+        return [{"name": i[0], "value": aggregates[i]} for i in aggregates.keys()] + fair
 
     def getMetrics():
         def metricsToList(metricType, metricDict):
@@ -248,7 +263,7 @@ def boostrap_metrics(X, y, gmin, model, c, computeFairnessMetrics):
 
     def getOverview():
         agg = getAggregates()
-        return [{**i, "histogram": getMetricHistogram(i["name"]), "aggregates": getMetricAggregates(agg[i["name"]])} for i in getMetrics()]
+        return [{**i, "histogram": getMetricHistogram(i["name"]), "aggregates": getMetricAggregates(agg[i["name"]], i["name"])} for i in getMetrics()]
 
     def getInstances():
 

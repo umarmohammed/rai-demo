@@ -24,6 +24,7 @@ import { Observable } from 'rxjs';
         (metricSelected)="metricSelected.emit($event)"
         [selected]="(selected$ | async).name"
         [rows]="items$ | async"
+        [highlight]="type === 'fairness'"
       ></rai-metric-aggregates>
     </div>
     <mat-spinner class="spinner" [class.show]="loading"></mat-spinner>

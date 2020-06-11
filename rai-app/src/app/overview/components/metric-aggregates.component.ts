@@ -4,23 +4,27 @@ import { AgGridEvent } from 'ag-grid-community';
 @Component({
   selector: 'rai-metric-aggregates',
   template: `
-    <ag-grid-angular
-      class="ag-theme-alpine grid"
-      [rowData]="rows"
-      [columnDefs]="columnsDefs"
-      rowSelection="single"
-      (gridSizeChanged)="onGridSizeChanged($event)"
-      [raiSelected]="selected"
-      selectedProp="metric"
-      (selectionChanged)="onSelectionChanged($event)"
-    >
-    </ag-grid-angular>
+    <div [class.highlight]="highlight" class="grid-container">
+      <ag-grid-angular
+        class="ag-theme-alpine grid"
+        [rowData]="rows"
+        [columnDefs]="columnsDefs"
+        rowSelection="single"
+        (gridSizeChanged)="onGridSizeChanged($event)"
+        [raiSelected]="selected"
+        selectedProp="metric"
+        (selectionChanged)="onSelectionChanged($event)"
+        [rowClassRules]="rowClassRules"
+      >
+      </ag-grid-angular>
+    </div>
   `,
   styleUrls: ['./metric-aggregates.component.scss'],
 })
 export class MetricAggregatesComponent {
   @Input() rows: any[];
   @Input() selected: string;
+  @Input() highlight: boolean;
 
   @Output() metricSelected = new EventEmitter<string>();
 
@@ -33,6 +37,11 @@ export class MetricAggregatesComponent {
     { headerName: 'Std', field: 'std' },
     { headerName: 'Mad', field: 'mad' },
   ];
+
+  rowClassRules = {
+    'fair-aggregate': (params) => params.data.isFair,
+    'unfair-aggregate': (params) => !params.data.isFair,
+  };
 
   onGridSizeChanged(params: AgGridEvent) {
     params.api.sizeColumnsToFit();
