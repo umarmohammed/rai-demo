@@ -282,20 +282,17 @@ def permuation_metrics(c, computeFairnessMetrics):
     d = c["metrics"].pivot_table(
         index="Variable", columns="Metric", values="Value", aggfunc="mean")
 
-    def getMetrics(metricType, metricDict):
-        metricNames = list(metricDict.keys())
-
+    def getMetrics(metricNames):
         def getMetricFeatures(metricFeaturesSeries):
             return [{"name": i, "value": metricFeaturesSeries[i]} for i in metricFeaturesSeries]
 
         features = [{"name": i, "features": getMetricFeatures(b["mean"][i].sort_values().tail(10).to_dict())}
                     for i in metricNames]
-        return {metricType + "MetricNames": metricNames, metricType+"Features": features}
+        return {"metricNames": metricNames, "features": features}
 
-    fairnessMetrics = getMetrics(
-        "fairness", fair_metrics) if computeFairnessMetrics else {}
-
-    return {**getMetrics("performance", perf_metrics), **fairnessMetrics, "featureScatter": d.swapaxes(0, 1).to_dict()}
+    metricNames = list(perf_metrics.keys()) + (list(fair_metrics.keys()) if computeFairnessMetrics else [])
+    
+    return {**getMetrics(metricNames), "featureScatter": d.swapaxes(0, 1).to_dict()}
 
 
 def getStuffNeededForMetrics(modelAndData, selectedFeatures):

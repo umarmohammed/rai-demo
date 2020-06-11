@@ -1,10 +1,8 @@
 import { FeatureMetric } from './feature-metric';
 
 export class PermutationResponse {
-  performanceFeatures: FeatureMetric[];
-  performanceMetricNames: string[];
-  fairnessFeatures: FeatureMetric[];
-  fairnessMetricNames: string[];
+  features: FeatureMetric[];
+  metricNames: string[];
   featureScatter: FeatureScatter;
 }
 

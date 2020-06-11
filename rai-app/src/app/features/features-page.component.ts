@@ -1,57 +1,43 @@
 import { Component } from '@angular/core';
-import { Store } from '@ngrx/store';
-import * as fromModel from '../model-state/reducers';
-import {
-  selectedPerformanceMetricChanged,
-  selectedFairnessMetricChanged,
-} from './components/feature-importance.actions';
-import { WindowService } from '../core/window.service';
+
+import { FeatureImportanceService } from './feature-importance.service';
 
 @Component({
   selector: 'rai-features=page',
   template: `
-    <div class="container">
+    <div class="container" *ngIf="!(loading$ | async)">
       <feature-importance-scatter
         class="scatter"
-        *ngIf="protectedFeaturesSet$ | async"
+        [scatterChart]="scatterChart$ | async"
       ></feature-importance-scatter>
-      <div
-        class="importance-container"
-        [class.shrink]="protectedFeaturesSet$ | async"
-      >
+      <div class="importance-container shrink">
         <rai-feature-importance
-          type="performance"
-          (selectionChange)="onPerformanceMetricChanged($event)"
-          [class.half-width]="protectedFeaturesSet$ | async"
+          axis="x"
+          (selectionChange)="onXAxisMetricChanged($event)"
+          class="half-width"
         ></rai-feature-importance>
         <rai-feature-importance
-          type="fairness"
-          (selectionChange)="onFairnessMetricChanged($event)"
+          axis="y"
+          (selectionChange)="onYAxisMetricChanged($event)"
           class="half-width"
-          *ngIf="protectedFeaturesSet$ | async"
         ></rai-feature-importance>
       </div>
     </div>
+    <mat-spinner class="spinner" [class.show]="loading$ | async"></mat-spinner>
   `,
   styleUrls: ['features-page.component.scss'],
 })
 export class FeaturesPageComponent {
-  protectedFeaturesSet$ = this.windowService.protectedFeaturesSet$;
+  loading$ = this.featureImportanceService.loading$;
+  scatterChart$ = this.featureImportanceService.scatterChart$;
 
-  constructor(
-    private store: Store<fromModel.State>,
-    private windowService: WindowService
-  ) {}
+  constructor(private featureImportanceService: FeatureImportanceService) {}
 
-  onPerformanceMetricChanged(selectedPerformanceMetric: string) {
-    this.store.dispatch(
-      selectedPerformanceMetricChanged({ selectedPerformanceMetric })
-    );
+  onXAxisMetricChanged(index: number) {
+    this.featureImportanceService.xAxisSelectedFeatureChanged(index);
   }
 
-  onFairnessMetricChanged(selectedFairnessMetric: string) {
-    this.store.dispatch(
-      selectedFairnessMetricChanged({ selectedFairnessMetric })
-    );
+  onYAxisMetricChanged(index: number) {
+    this.featureImportanceService.yAxisSelectedFeatureChanged(index);
   }
 }

@@ -155,47 +155,24 @@ export const selectFeatureImportanceState = createSelector(
   (state) => state.featureImportance
 );
 
-// TODO: refactor this whole select by type pattern.
+// TODO: refactor the whole select by type pattern.
 // Can create an abstraction over it
-export const selectFeatureImportanceMetricNamesByType = (type: string) =>
-  createSelector(
-    selectFeatureImportanceState,
-    fromFeatureImportance.selectMetricNamesByType(type)
-  );
+export const selectFeatureImportanceMetricNames = createSelector(
+  selectFeatureImportanceState,
+  fromFeatureImportance.selectMetricNames
+);
 
-export const selectFeatureImportanceItemsByType = (type: string) =>
-  createSelector(
-    selectFeatureImportanceState,
-    fromFeatureImportance.selectItemsByType(type)
-  );
+export const selectFeatureImportanceFeatures = createSelector(
+  selectFeatureImportanceState,
+  fromFeatureImportance.selectFeatures
+);
 
-export const selectFeatureImportanceLoadingByType = (type: string) =>
-  createSelector(
-    selectFeatureImportanceState,
-    fromFeatureImportance.selectLoadingByType(type)
-  );
-
-export const selectFeatureImportanceSelectedByType = (type: string) =>
-  createSelector(
-    selectFeatureImportanceState,
-    fromFeatureImportance.selectSelectedByType(type)
-  );
-
-export const selectFeatureImportanceSelectedMetricsByType = (type: string) =>
-  createSelector(
-    selectFeatureImportanceSelectedByType(type),
-    selectFeatureImportanceItemsByType(type),
-    (selected, items) => items.find((i) => i.name === selected)
-  );
+export const selectFeatureImportanceLoading = createSelector(
+  selectFeatureImportanceState,
+  fromFeatureImportance.selectLoading
+);
 
 export const selectFeatureScatter = createSelector(
   selectFeatureImportanceState,
   fromFeatureImportance.selectFeatureScatter
-);
-
-export const selectFeatureScatterChart = createSelector(
-  selectFeatureScatter,
-  selectFeatureImportanceSelectedByType('performance'),
-  selectFeatureImportanceSelectedByType('fairness'),
-  featureScatterToMultiSeriesChart
 );

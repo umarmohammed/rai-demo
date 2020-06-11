@@ -1,19 +1,18 @@
-import { Component } from '@angular/core';
-import { Store } from '@ngrx/store';
-import * as fromModel from '../../model-state/reducers';
+import { Component, Input } from '@angular/core';
+import { ScatterChart } from 'src/app/core/models/chart';
 
 @Component({
   selector: 'feature-importance-scatter',
   template: `
-    <div *ngIf="!(loading$ | async)" class="scatter-container">
+    <div class="scatter-container">
       <ngx-charts-bubble-chart
-        [results]="(scatterChart$ | async).multi"
+        [results]="scatterChart.multi"
         [xAxis]="true"
         [yAxis]="true"
         [showXAxisLabel]="true"
         [showYAxisLabel]="true"
-        [xAxisLabel]="(scatterChart$ | async).xAxisLabel"
-        [yAxisLabel]="(scatterChart$ | async).yAxisLabel"
+        [xAxisLabel]="scatterChart.xAxisLabel"
+        [yAxisLabel]="scatterChart.yAxisLabel"
         [minRadius]="3"
         [roundDomains]="true"
       >
@@ -29,10 +28,5 @@ import * as fromModel from '../../model-state/reducers';
   ],
 })
 export class FeatureImportanceScatterComponent {
-  loading$ = this.store.select(
-    fromModel.selectFeatureImportanceLoadingByType('fairness')
-  );
-  scatterChart$ = this.store.select(fromModel.selectFeatureScatterChart);
-
-  constructor(private store: Store) {}
+  @Input() scatterChart: ScatterChart;
 }
