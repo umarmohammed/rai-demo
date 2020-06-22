@@ -9,8 +9,18 @@ import { NgxChartsModule } from '@swimlane/ngx-charts';
 import { OverviewPageComponent } from './containers/overview-page.component';
 import { AgGridModule } from 'ag-grid-angular';
 import { SharedModule } from '../shared/shared.module';
+import { OverviewModelComponent } from './containers/overview-model.component';
 
-export const routes: Routes = [{ path: '', component: OverviewPageComponent }];
+export const routes: Routes = [
+  {
+    path: '',
+    component: OverviewPageComponent,
+    children: [
+      { path: 'model', component: OverviewModelComponent },
+      { path: '', redirectTo: 'model', pathMatch: 'full' },
+    ],
+  },
+];
 
 @NgModule({
   declarations: [
@@ -18,6 +28,7 @@ export const routes: Routes = [{ path: '', component: OverviewPageComponent }];
     MetricOverviewComponent,
     MetricHistogramComponent,
     MetricAggregatesComponent,
+    OverviewModelComponent,
   ],
   imports: [
     CommonModule,
