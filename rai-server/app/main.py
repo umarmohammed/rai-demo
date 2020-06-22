@@ -7,6 +7,7 @@ from sklearn import metrics
 import json
 from functools import reduce
 from lime.lime_tabular import LimeTabularExplainer
+from sklearn.linear_model import LogisticRegression
 
 app = Flask(__name__)
 CORS(app)
@@ -320,7 +321,7 @@ def permuation_metrics(c, computeFairnessMetrics):
     return {**getMetrics(metricNames), "featureScatter": d.swapaxes(0, 1).to_dict()}
 
 
-def getStuffNeededForMetrics(modelAndData, selectedFeatures):
+def getStuffNeededForMetrics(modelAndData, selectedFeatures, baseline=None):
     def getGroups(X):
         gminKey = selectedFeatures and selectedFeatures.get('gmin')
         gmajKey = selectedFeatures and selectedFeatures.get('gmaj')
@@ -328,9 +329,20 @@ def getStuffNeededForMetrics(modelAndData, selectedFeatures):
 
     X = modelAndData["X"]
     y = modelAndData["y"]
-    model = modelAndData["model"]
+    model = modelAndData["model"] if baseline is None else baseline
     (gmin, gmaj) = getGroups(X)
     return (X, y, model, gmin, gmaj)
+
+
+def get_bootstrap_metrics(modelAndData, selectedFeatures, baseline=None):
+    (X, y, model, gmin, gmaj) = getStuffNeededForMetrics(
+        modelAndData, selectedFeatures, baseline)
+    c = bootstrap_magic(X=X, y=y, model=model, n_samples=100,
+                        refit=True, gmaj=gmaj, gmin=gmin)
+
+    computeFairnessMetrics = gmin is not None and gmaj is not None
+
+    return boostrap_metrics(X, y, gmin, model, c, computeFairnessMetrics)
 
 
 @app.route("/api/features", methods=["POST"])
@@ -343,14 +355,18 @@ def features():
 @app.route("/api/bootstrap", methods=["POST"])
 def bootstrap():
     file = request.files['file']
-    (X, y, model, gmin, gmaj) = getStuffNeededForMetrics(
-        load(file.stream), json.loads(request.form['data']))
-    c = bootstrap_magic(X=X, y=y, model=model, n_samples=100,
-                        refit=True, gmaj=gmaj, gmin=gmin)
 
-    computeFairnessMetrics = gmin is not None and gmin is not None
+    return get_bootstrap_metrics(load(file.stream), json.loads(request.form['data']))
 
-    return boostrap_metrics(X, y, gmin, model, c, computeFairnessMetrics)
+
+@app.route("/api/baseline", methods=["POST"])
+def baseline():
+    file = request.files['file']
+
+    baseline = LogisticRegression(
+        random_state=10, class_weight="balanced", C=0.0025)
+
+    return get_bootstrap_metrics(load(file.stream), json.loads(request.form['data']), baseline)
 
 
 @app.route("/api/permutation", methods=["POST"])
