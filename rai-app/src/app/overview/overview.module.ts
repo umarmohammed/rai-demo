@@ -10,6 +10,7 @@ import { OverviewPageComponent } from './containers/overview-page.component';
 import { AgGridModule } from 'ag-grid-angular';
 import { SharedModule } from '../shared/shared.module';
 import { OverviewModelComponent } from './containers/overview-model.component';
+import { OverviewComparisonComponent } from './containers/overview-comparison.component';
 
 export const routes: Routes = [
   {
@@ -17,6 +18,7 @@ export const routes: Routes = [
     component: OverviewPageComponent,
     children: [
       { path: 'model', component: OverviewModelComponent },
+      { path: 'comparison', component: OverviewComparisonComponent },
       { path: '', redirectTo: 'model', pathMatch: 'full' },
     ],
   },
@@ -29,6 +31,7 @@ export const routes: Routes = [
     MetricHistogramComponent,
     MetricAggregatesComponent,
     OverviewModelComponent,
+    OverviewComparisonComponent,
   ],
   imports: [
     CommonModule,
