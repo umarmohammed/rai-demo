@@ -116,6 +116,25 @@ export const selectOverviewLoadingByType = (type: string) =>
 export const selectOverviewSelectedByType = (type: string) =>
   createSelector(selectOverviewState, fromOverview.selectSelectedByType(type));
 
+export const selectBaselineState = createSelector(
+  selectModelState,
+  (state) => state.baseline
+);
+
+export const selectBaselineItems = createSelector(
+  selectBaselineState,
+  fromBaseline.selectItems
+);
+
+export const selectBaselineItemsByType = (type: string) =>
+  createSelector(selectBaselineItems, filterOverviewMetricsByType(type));
+
+export const selectBaselineLoadingByType = (type: string) =>
+  createSelector(selectBaselineState, fromBaseline.selectLoadingByType(type));
+
+export const selectBaselineSelectedByType = (type: string) =>
+  createSelector(selectBaselineState, fromBaseline.selectSelectedByType(type));
+
 export const selectInstancesState = createSelector(
   selectModelState,
   (state) => state.instances
