@@ -17,8 +17,18 @@ export const bootstrapLoadedSuccess = createAction(
   props<{ bootstrap: BootstrapResponse }>()
 );
 
+export const baselineLoadedSuccess = createAction(
+  '[Baseline API] Baseline Loaded Success',
+  props<{ bootstrap: BootstrapResponse }>()
+);
+
 export const bootstrapLoadedWithFairnessSuccess = createAction(
   '[Bootstrap API] Bootstrap Loaded With Fairness Success',
+  props<{ bootstrap: BootstrapResponse }>()
+);
+
+export const baselineLoadedWithFairnessSuccess = createAction(
+  '[Baseline API] Baseline Loaded With Fairness Success',
   props<{ bootstrap: BootstrapResponse }>()
 );
 

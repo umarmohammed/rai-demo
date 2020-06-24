@@ -7,8 +7,10 @@ import {
   bootstrapLoadedWithFairnessSuccess,
   permuationLoadedSuccess,
   permuationLoadedWithFairnessSuccess,
+  baselineLoadedSuccess,
+  baselineLoadedWithFairnessSuccess,
 } from '../connect-model/connect-model.actions';
-import { map, switchMap, withLatestFrom, tap, filter } from 'rxjs/operators';
+import { map, switchMap, withLatestFrom, filter } from 'rxjs/operators';
 import { fileToFormData } from '../connect-model/form-data';
 import { ModelService } from './model.service';
 import { protectedFeatureChanged } from '../core/options/options.actions';
@@ -48,6 +50,18 @@ export class ModelEffects {
     )
   );
 
+  loadBaseline$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(modelSelected),
+      map(fileToFormData),
+      switchMap((form) =>
+        this.modelService
+          .getBaseline(form)
+          .pipe(map((bootstrap) => baselineLoadedSuccess({ bootstrap })))
+      )
+    )
+  );
+
   loadBootstrapWithFairness$ = createEffect(() =>
     this.actions$.pipe(
       ofType(protectedFeatureChanged),
@@ -57,6 +71,23 @@ export class ModelEffects {
         this.modelService.getBootstrap(formData, features).pipe(
           map((bootstrap) =>
             bootstrapLoadedWithFairnessSuccess({
+              bootstrap,
+            })
+          )
+        )
+      )
+    )
+  );
+
+  loadBaselineWithFeatures$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(protectedFeatureChanged),
+      filter(protectedFeaturesSet),
+      withLatestFrom(this.store.select(fromModel.selectFormData)),
+      switchMap(([features, formData]) =>
+        this.modelService.getBaseline(formData, features).pipe(
+          map((bootstrap) =>
+            baselineLoadedWithFairnessSuccess({
               bootstrap,
             })
           )

@@ -3,6 +3,7 @@ import * as fromFeatures from './features.reducer';
 import * as fromOverview from './overview.reducer';
 import * as fromInstances from './instances.reducer';
 import * as fromFeatureImportance from './feature-importance.reducer';
+import * as fromBaseline from './baseline.reducer';
 import {
   Action,
   combineReducers,
@@ -12,7 +13,6 @@ import {
 import { filterOverviewMetricsByType } from 'src/app/core/models/overview-metric';
 import { fileToFormData } from 'src/app/connect-model/form-data';
 import { protectedFeaturesSet } from 'src/app/core/models/selected-features';
-import { featureScatterToMultiSeriesChart } from 'src/app/core/models/chart';
 
 export const modelFeatureKey = 'model';
 
@@ -22,6 +22,7 @@ export interface ModelState {
   [fromOverview.overviewFeatureKey]: fromOverview.State;
   [fromInstances.instancesFeatureKey]: fromInstances.State;
   [fromFeatureImportance.featureImportanceFeatureKey]: fromFeatureImportance.State;
+  [fromBaseline.baselineFeatureKey]: fromBaseline.State;
 }
 
 export interface State {
@@ -36,6 +37,7 @@ export function reducers(state: ModelState | undefined, action: Action) {
     [fromInstances.instancesFeatureKey]: fromInstances.reducer,
     [fromFeatureImportance.featureImportanceFeatureKey]:
       fromFeatureImportance.reducer,
+    [fromBaseline.baselineFeatureKey]: fromBaseline.reducer,
   })(state, action);
 }
 
