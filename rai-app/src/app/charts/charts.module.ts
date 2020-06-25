@@ -8,6 +8,7 @@ import { CustomBarVertical2DComponent } from './custom-bar-vertical-2d/custom-ba
 import { CustomBubbleSeriesComponent } from './custom-bubble-chart/custom-bubble-series.component';
 import { CustomBubbleChartComponent } from './custom-bubble-chart/custom-bubble-chart.component';
 import { BubbleCircleComponent } from './custom-bubble-chart/bubble-circle.component';
+import { ComboBarLabelComponent } from './combo-chart/combo-bar-label.component';
 
 @NgModule({
   imports: [NgxChartsModule],
@@ -19,6 +20,7 @@ import { BubbleCircleComponent } from './custom-bubble-chart/bubble-circle.compo
     CustomBarVertical2DComponent,
     CustomBubbleSeriesComponent,
     CustomBubbleChartComponent,
+    ComboBarLabelComponent,
     BubbleCircleComponent,
   ],
   exports: [
