@@ -12,6 +12,7 @@ import { Chart, blueScheme, orangeScheme } from 'src/app/core/models/chart';
         [yAxis]="true"
         [scheme]="blueScheme"
         [colorSchemeLine]="lineChartScheme"
+        [tooltipDisabled]="true"
       >
       </combo-chart-component>
     </div>
