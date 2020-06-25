@@ -1,5 +1,5 @@
 <ngx-charts-chart
-  [view]="[width, height]"
+  [view]="[width + legendSpacing, height]"
   [showLegend]="legend"
   [legendOptions]="legendOptions"
   [activeEntries]="activeEntries"
@@ -18,7 +18,6 @@
       [labelText]="xAxisLabel"
       [tickFormatting]="xAxisTickFormatting"
       (dimensionsChanged)="updateXAxisHeight($event)"
-      [attr.transform]="xAxisTransform"
     ></svg:g>
     <svg:g
       ngx-charts-y-axis
@@ -31,9 +30,19 @@
       [labelText]="yAxisLabel"
       [tickFormatting]="yAxisTickFormatting"
       (dimensionsChanged)="updateYAxisWidth($event)"
-      [ticks]="ticks"
     ></svg:g>
-
+    <svg:g
+      ngx-charts-y-axis
+      *ngIf="yAxis"
+      [yScale]="yScaleLine"
+      [dims]="dims"
+      [yOrient]="yOrientRight"
+      [showGridLines]="showGridLines"
+      [showLabel]="showRightYAxisLabel"
+      [labelText]="yAxisLabelRight"
+      [tickFormatting]="yRightAxisTickFormatting"
+      (dimensionsChanged)="updateYAxisWidth($event)"
+    ></svg:g>
     <svg:g
       ngx-combo-charts-series-vertical
       [xScale]="xScale"
@@ -47,7 +56,6 @@
       [activeEntries]="activeEntries"
       [animations]="animations"
       [noBarWhenZero]="noBarWhenZero"
-      [showDataLabel]="showDataLabel"
       (activate)="onActivate($event)"
       (deactivate)="onDeactivate($event)"
       (bandwidth)="updateLineWidth($event)"
@@ -68,7 +76,6 @@
           [curve]="curve"
           [rangeFillOpacity]="rangeFillOpacity"
           [animations]="animations"
-          [hasRange]="hasRange"
         />
       </svg:g>
 

@@ -14,11 +14,11 @@ import { curveLinear } from 'd3-shape';
 import { scaleBand, scaleLinear, scalePoint, scaleTime } from 'd3-scale';
 import {
   BaseChartComponent,
-  LineSeriesComponent,
   ViewDimensions,
   ColorHelper,
   calculateViewDimensions,
 } from '@swimlane/ngx-charts';
+import { LineSeriesComponent } from '@swimlane/ngx-charts';
 
 @Component({
   // tslint:disable-next-line: component-selector
@@ -56,9 +56,7 @@ export class ComboChartComponent extends BaseChartComponent {
   @Input() yRightAxisScaleFactor: any;
   @Input() rangeFillOpacity: number;
   @Input() animations: boolean = true;
-  @Input() showDataLabel: boolean = false;
   @Input() noBarWhenZero: boolean = true;
-  @Input() ticks: any;
 
   @Output() activate: EventEmitter<any> = new EventEmitter();
   @Output() deactivate: EventEmitter<any> = new EventEmitter();
@@ -82,7 +80,6 @@ export class ComboChartComponent extends BaseChartComponent {
   xAxisHeight: number = 0;
   yAxisWidth: number = 0;
   legendOptions: any;
-  hasRange: boolean; // whether the line has a min-max range around it
   scaleType = 'linear';
   xScaleLine;
   yScaleLine;
@@ -99,7 +96,6 @@ export class ComboChartComponent extends BaseChartComponent {
   legendSpacing = 0;
   bandwidth;
   barPadding = 8;
-  xAxisTransform = ''; // I added this as a hack
 
   trackBy(index, item): string {
     return item.name;
@@ -145,10 +141,8 @@ export class ComboChartComponent extends BaseChartComponent {
 
     this.setColors();
     this.legendOptions = this.getLegendOptions();
-    this.dims.xOffset = 46;
-    this.transform = `translate(${this.dims.xOffset} , ${this.margin[0]})`;
 
-    this.xAxisTransform = `translate(0,${10 - this.height / 2})`;
+    this.transform = `translate(${this.dims.xOffset} , ${this.margin[0]})`;
   }
 
   deactivateAll() {
@@ -301,9 +295,11 @@ export class ComboChartComponent extends BaseChartComponent {
         scale = scale.nice();
       }
     } else if (this.scaleType === 'ordinal') {
-      const bandwidthCorrect = this.results.length > 1 ? 0 : this.bandwidth / 2;
       scale = scalePoint()
-        .range([offset + bandwidthCorrect, width - offset - bandwidthCorrect])
+        .range([
+          offset + this.bandwidth / 2,
+          width - offset - this.bandwidth / 2,
+        ])
         .domain(domain);
     }
 
@@ -339,7 +335,6 @@ export class ComboChartComponent extends BaseChartComponent {
   }
 
   getYDomain() {
-    this.setHasRange();
     const values = this.results.map((d) => d.value);
     const min = Math.min(0, ...values);
     const max = Math.max(...values);
@@ -348,19 +343,6 @@ export class ComboChartComponent extends BaseChartComponent {
       return [Math.min(0, minMax.min), minMax.max];
     } else {
       return [min, max];
-    }
-  }
-
-  setHasRange() {
-    for (const results of this.lineChart) {
-      for (const d of results.series) {
-        if (d.min !== undefined) {
-          this.hasRange = true;
-        }
-        if (d.max !== undefined) {
-          this.hasRange = true;
-        }
-      }
     }
   }
 
@@ -414,7 +396,7 @@ export class ComboChartComponent extends BaseChartComponent {
   }
 
   updateYAxisWidth({ width }): void {
-    this.yAxisWidth = width;
+    this.yAxisWidth = width + 20;
     this.update();
   }
 
