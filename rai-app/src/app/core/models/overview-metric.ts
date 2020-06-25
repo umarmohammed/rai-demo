@@ -1,4 +1,8 @@
-import { Metric, metricArrayToGridArray } from './metric';
+import {
+  Metric,
+  metricArrayToGridArray,
+  renamedMetricArrayToGridArray,
+} from './metric';
 
 export interface OverviewMetric {
   name: string;
@@ -19,4 +23,14 @@ export function filterOverviewMetricsByType(type: string) {
 
 export function overviewMetricToGridArray(metric: OverviewMetric) {
   return { metric: metric.name, ...metricArrayToGridArray(metric.aggregates) };
+}
+
+export function renamedOverviewMetricToGridArray(
+  metric: OverviewMetric,
+  name: string
+): any {
+  return {
+    metric: metric.name,
+    ...renamedMetricArrayToGridArray(metric.aggregates, name),
+  };
 }

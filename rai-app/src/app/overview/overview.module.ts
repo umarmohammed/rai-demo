@@ -12,6 +12,7 @@ import { SharedModule } from '../shared/shared.module';
 import { OverviewModelComponent } from './containers/overview-model.component';
 import { OverviewComparisonComponent } from './containers/comparison/overview-comparison.component';
 import { MetricComparisonComponent } from './containers/comparison/metric-comparison.component';
+import { ComparisonAggregatesComponent } from './components/comparison/comparison-aggregates.component';
 
 export const routes: Routes = [
   {
@@ -34,6 +35,7 @@ export const routes: Routes = [
     OverviewModelComponent,
     OverviewComparisonComponent,
     MetricComparisonComponent,
+    ComparisonAggregatesComponent,
   ],
   imports: [
     CommonModule,
