@@ -3,8 +3,8 @@ import * as fromModel from '../../../model-state/reducers';
 import { Store } from '@ngrx/store';
 import { WindowService } from 'src/app/core/window.service';
 import {
-  comparePerformanceMetricSelected,
-  compareFairnessMetricSelected,
+  performanceMetricSelected,
+  fairnessMetricSelected,
 } from '../../overview.actions';
 
 @Component({
@@ -44,12 +44,10 @@ export class OverviewComparisonComponent {
   ) {}
 
   onPerformanceMetricSelected(selectedPerformance: string) {
-    this.store.dispatch(
-      comparePerformanceMetricSelected({ selectedPerformance })
-    );
+    this.store.dispatch(performanceMetricSelected({ selectedPerformance }));
   }
 
   onFairnessMetricSelected(selectedFairness: string) {
-    this.store.dispatch(compareFairnessMetricSelected({ selectedFairness }));
+    this.store.dispatch(fairnessMetricSelected({ selectedFairness }));
   }
 }

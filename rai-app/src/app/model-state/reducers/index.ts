@@ -132,9 +132,6 @@ export const selectBaselineItemsByType = (type: string) =>
 export const selectBaselineLoadingByType = (type: string) =>
   createSelector(selectBaselineState, fromBaseline.selectLoadingByType(type));
 
-export const selectBaselineSelectedByType = (type: string) =>
-  createSelector(selectBaselineState, fromBaseline.selectSelectedByType(type));
-
 export const selectInstancesState = createSelector(
   selectModelState,
   (state) => state.instances

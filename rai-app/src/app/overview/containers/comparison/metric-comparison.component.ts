@@ -51,7 +51,7 @@ export class MetricComparisonComponent {
     );
     this.histogram$ = this.selected$.pipe(map(overviewMetricToChart));
     this.lineChart$ = this.store
-      .select(fromModel.selectBaselineSelectedByType(this.type))
+      .select(fromModel.selectOverviewSelectedByType(this.type))
       .pipe(
         map(overviewMetricToChart),
         map((chart) => [chart])
