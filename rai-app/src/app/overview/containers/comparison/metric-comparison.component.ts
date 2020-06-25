@@ -5,7 +5,10 @@ import { OverviewMetric } from 'src/app/core/models/overview-metric';
 import { Chart, overviewMetricToChart } from 'src/app/core/models/chart';
 import { Store } from '@ngrx/store';
 import { map } from 'rxjs/operators';
-import { selectAggregatesComparisonByType } from 'src/app/model-state/comparison.selectors';
+import {
+  selectAggregatesComparisonByType,
+  selectBaselineSelectedByType,
+} from 'src/app/model-state/comparison.selectors';
 
 @Component({
   selector: 'rai-metric-comparison',
@@ -51,7 +54,7 @@ export class MetricComparisonComponent {
     );
     this.histogram$ = this.selected$.pipe(map(overviewMetricToChart));
     this.lineChart$ = this.store
-      .select(fromModel.selectOverviewSelectedByType(this.type))
+      .select(selectBaselineSelectedByType(this.type))
       .pipe(
         map(overviewMetricToChart),
         map((chart) => [chart])
