@@ -12,10 +12,10 @@ import { selectAggregatesComparisonByType } from 'src/app/model-state/comparison
   template: `<div class="container" *ngIf="!loading">
       <h2 class="center-text">{{ title }}</h2>
       <p class="center-text">{{ (selected$ | async).name }}</p>
-      <rai-metric-histogram
+      <rai-comparison-histogram
         class="histogram"
         [histogram]="histogram$ | async"
-      ></rai-metric-histogram>
+      ></rai-comparison-histogram>
       <rai-comparison-aggregates
         class="aggregates"
         (metricSelected)="metricSelected.emit($event)"

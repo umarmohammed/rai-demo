@@ -13,6 +13,7 @@ import { OverviewModelComponent } from './containers/overview-model.component';
 import { OverviewComparisonComponent } from './containers/comparison/overview-comparison.component';
 import { MetricComparisonComponent } from './containers/comparison/metric-comparison.component';
 import { ComparisonAggregatesComponent } from './components/comparison/comparison-aggregates.component';
+import { ComparisonHistogramComponent } from './components/comparison/comparison-histogram.component';
 
 export const routes: Routes = [
   {
@@ -36,6 +37,7 @@ export const routes: Routes = [
     OverviewComparisonComponent,
     MetricComparisonComponent,
     ComparisonAggregatesComponent,
+    ComparisonHistogramComponent,
   ],
   imports: [
     CommonModule,
