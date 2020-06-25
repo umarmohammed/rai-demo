@@ -9,6 +9,7 @@ import {
   permuationLoadedWithFairnessSuccess,
   baselineLoadedSuccess,
   baselineLoadedWithFairnessSuccess,
+  attacksLoadedSuccess,
 } from '../connect-model/connect-model.actions';
 import { map, switchMap, withLatestFrom, filter } from 'rxjs/operators';
 import { fileToFormData } from '../connect-model/form-data';
@@ -123,6 +124,18 @@ export class ModelEffects {
             })
           )
         )
+      )
+    )
+  );
+
+  loadAttacks$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(modelSelected),
+      withLatestFrom(this.store.select(fromModel.selectFormData)),
+      switchMap(([, formData]) =>
+        this.modelService
+          .getAttacks(formData)
+          .pipe(map((attack) => attacksLoadedSuccess({ attack })))
       )
     )
   );

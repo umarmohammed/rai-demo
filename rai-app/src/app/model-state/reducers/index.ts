@@ -4,6 +4,7 @@ import * as fromOverview from './overview.reducer';
 import * as fromInstances from './instances.reducer';
 import * as fromFeatureImportance from './feature-importance.reducer';
 import * as fromBaseline from './baseline.reducer';
+import * as fromAttack from './attack.reducer';
 import {
   Action,
   combineReducers,
@@ -23,6 +24,7 @@ export interface ModelState {
   [fromInstances.instancesFeatureKey]: fromInstances.State;
   [fromFeatureImportance.featureImportanceFeatureKey]: fromFeatureImportance.State;
   [fromBaseline.baselineFeatureKey]: fromBaseline.State;
+  [fromAttack.attackFeatureKey]: fromAttack.State;
 }
 
 export interface State {
@@ -38,6 +40,7 @@ export function reducers(state: ModelState | undefined, action: Action) {
     [fromFeatureImportance.featureImportanceFeatureKey]:
       fromFeatureImportance.reducer,
     [fromBaseline.baselineFeatureKey]: fromBaseline.reducer,
+    [fromAttack.attackFeatureKey]: fromAttack.reducer,
   })(state, action);
 }
 
@@ -212,3 +215,11 @@ export const selectSomethingLoadingOnFeaturesSet = createSelector(
     protectedFeaturesSet(protectedFeatures) &&
     (featuresLoading || overviewLoading)
 );
+
+export const selectAttackState = createSelector(
+  selectModelState,
+  (state) => state.attack
+);
+
+export const selectAttackItemsByType = (type: string) =>
+  createSelector(selectAttackState, fromAttack.selectItemsByType(type));

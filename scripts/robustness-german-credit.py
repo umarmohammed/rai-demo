@@ -1,4 +1,6 @@
 
+from art.attacks.evasion import FastGradientMethod
+from art.classifiers import SklearnClassifier
 from sklearn.neural_network import MLPClassifier
 from sklearn.linear_model import LogisticRegression
 from sklearn.ensemble import RandomForestClassifier
@@ -387,4 +389,50 @@ def explain():
 
     return explainer.explain_instance(X.iloc[0], rf.predict_proba, num_features=4)
 
+
 print(explain().as_list())
+
+# Adversarial
+
+pred_probs = rf.predict_proba(X).ravel()[1::2]
+
+# generate some contrarian examples from
+# borderline
+# adversarial attack method
+fgm = FastGradientMethod(SklearnClassifier(rf),
+                         norm=np.inf,
+                         eps=0.1,
+                         eps_step=0.1,
+                         targeted=True,
+                         num_random_init=0,
+                         batch_size=1,
+                         minimal=True)
+# get examples from the border
+thresh = 0.5
+pred_class = (pred_probs > thresh)
+pred_close_border = np.abs(pred_probs.copy() - thresh)
+bordertop10 = np.argsort(pred_close_border)[:10]
+z_border_examples = fgm.generate(
+    x=X.values[bordertop10, :], y=pred_class[bordertop10] == 0)
+
+
+# deep-in
+# adversarial attack method
+fgm = FastGradientMethod(SklearnClassifier(rf),
+                         norm=np.inf,
+                         eps=1.1,  # we may need to learn this one
+                         eps_step=0.1,
+                         targeted=True,
+                         num_random_init=0,
+                         batch_size=1,
+                         minimal=True)
+
+# get examples deep-in
+pred_class = (pred_probs > thresh)
+deepertop10 = np.argsort(pred_probs)[:10]
+z_deeper_examples = fgm.generate(
+    x=X.values[deepertop10, :], y=pred_class[deepertop10] == 0)
+
+print(rf.predict_proba(z_border_examples), rf.predict_proba(z_border_examples).ravel()[1::2] > thresh)
+
+print(pd.DataFrame(z_border_examples, columns=X.columns))

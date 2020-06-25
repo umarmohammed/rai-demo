@@ -8,6 +8,9 @@ import json
 from functools import reduce
 from lime.lime_tabular import LimeTabularExplainer
 from sklearn.linear_model import LogisticRegression
+from art.classifiers import SklearnClassifier
+from art.attacks.evasion import FastGradientMethod
+from art.attacks.evasion import HopSkipJump
 
 app = Flask(__name__)
 CORS(app)
@@ -345,6 +348,37 @@ def get_bootstrap_metrics(modelAndData, selectedFeatures, baseline=None):
     return boostrap_metrics(X, y, gmin, model, c, computeFairnessMetrics)
 
 
+def attack_values(X, y, model):
+    hsj = HopSkipJump(SklearnClassifier(model),
+                      targeted=True,
+                      norm=2,
+                      max_iter=50,
+                      max_eval=10000,
+                      init_eval=100,
+                      init_size=100
+                      )
+
+    pred_probs = model.predict_proba(X).ravel()[1::2]
+    thresh = 0.5
+    pred_class = (pred_probs > thresh)
+
+    def getAttacks(pred_probs):
+        def instanceTupleToDict(instanceTuple):
+            return {"id": instanceTuple[0], **instanceTuple[1]}
+
+        def instancesToList(df):
+            return [instanceTupleToDict(i) for i in df.swapaxes(0, 1).to_dict().items()]
+
+        top10 = np.argsort(pred_probs)[:10]
+        z_examples = hsj.generate(
+            x=X.values[top10, :], y=pred_class[top10] == 0)
+        originals_df = pd.DataFrame(X.values[top10, :], columns=X.columns)
+        z_examples_df = pd.DataFrame(z_examples, columns=X.columns)
+        return {"actualInstances": instancesToList(originals_df), "generatedInstances": instancesToList(z_examples_df)}
+
+    return {"borderlines": getAttacks(np.argsort(np.abs(pred_probs.copy() - thresh))[:10]), "inlines": getAttacks(np.argsort(pred_probs)[:10])}
+
+
 @app.route("/api/features", methods=["POST"])
 def features():
     file = request.files['file']
@@ -378,3 +412,11 @@ def permutation():
                           refit=True, gmaj=gmaj, gmin=gmin)
     computeFairnessMetrics = gmin is not None and gmin is not None
     return permuation_metrics(c, computeFairnessMetrics)
+
+
+@app.route("/api/attacks", methods=["POST"])
+def attacks():
+    file = request.files['file']
+    (X, y, model, _, _) = getStuffNeededForMetrics(
+        load(file.stream), json.loads(request.form['data']))
+    return attack_values(X, y, model)

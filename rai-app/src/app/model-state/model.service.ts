@@ -4,13 +4,15 @@ import { HttpClient } from '@angular/common/http';
 import { BootstrapResponse } from '../core/models/bootstrap-response';
 import { SelectedFeatures } from '../core/models/selected-features';
 import { PermutationResponse } from '../core/models/permutation-response';
+import { AttackResponse } from '../core/models/attack-response';
 
 @Injectable({ providedIn: 'root' })
 export class ModelService {
-  featuresUrl = `${environment.baseUrl}${'api/features'}`;
-  bootstrapUrl = `${environment.baseUrl}${'api/bootstrap'}`;
-  baselineUrl = `${environment.baseUrl}${'api/baseline'}`;
-  permutationUrl = `${environment.baseUrl}${'api/permutation'}`;
+  featuresUrl = `${environment.baseUrl}api/features`;
+  bootstrapUrl = `${environment.baseUrl}api/bootstrap`;
+  baselineUrl = `${environment.baseUrl}api/baseline`;
+  permutationUrl = `${environment.baseUrl}api/permutation`;
+  attacksUrl = `${environment.baseUrl}api/attacks`;
 
   constructor(private http: HttpClient) {}
 
@@ -26,6 +28,13 @@ export class ModelService {
     return this.http.post<PermutationResponse>(
       this.permutationUrl,
       this.createFeaturesToUpload(formData, features)
+    );
+  }
+
+  getAttacks(formData: FormData) {
+    return this.http.post<AttackResponse>(
+      this.attacksUrl,
+      this.createFeaturesToUpload(formData, null)
     );
   }
 
