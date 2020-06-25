@@ -1,24 +1,26 @@
 import { Component, Input } from '@angular/core';
-import { Chart, blueScheme } from 'src/app/core/models/chart';
+import { Chart, blueScheme, orangeScheme } from 'src/app/core/models/chart';
 
 @Component({
   selector: 'rai-comparison-histogram',
   template: `
     <div class="container">
-      <ngx-charts-bar-vertical
+      <combo-chart-component
         [results]="histogram.series"
+        [lineChart]="lineChartSeries"
         [xAxis]="true"
         [yAxis]="true"
         [scheme]="blueScheme"
-        [barPadding]="1"
-        [roundEdges]="false"
+        [colorSchemeLine]="lineChartScheme"
       >
-      </ngx-charts-bar-vertical>
+      </combo-chart-component>
     </div>
   `,
   styleUrls: ['comparison-histogram.component.scss'],
 })
 export class ComparisonHistogramComponent {
   @Input() histogram: Chart;
+  @Input() lineChartSeries: Chart[];
   blueScheme = blueScheme;
+  lineChartScheme = orangeScheme;
 }

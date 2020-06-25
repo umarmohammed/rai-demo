@@ -14,6 +14,7 @@ import { OverviewComparisonComponent } from './containers/comparison/overview-co
 import { MetricComparisonComponent } from './containers/comparison/metric-comparison.component';
 import { ComparisonAggregatesComponent } from './components/comparison/comparison-aggregates.component';
 import { ComparisonHistogramComponent } from './components/comparison/comparison-histogram.component';
+import { ChartsModule } from '../charts/charts.module';
 
 export const routes: Routes = [
   {
@@ -43,7 +44,7 @@ export const routes: Routes = [
     CommonModule,
     RouterModule.forChild(routes),
     MaterialModule,
-    NgxChartsModule,
+    ChartsModule,
     AgGridModule.withComponents([]),
     SharedModule,
   ],

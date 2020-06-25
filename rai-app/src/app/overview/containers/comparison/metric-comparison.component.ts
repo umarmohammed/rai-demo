@@ -15,6 +15,7 @@ import { selectAggregatesComparisonByType } from 'src/app/model-state/comparison
       <rai-comparison-histogram
         class="histogram"
         [histogram]="histogram$ | async"
+        [lineChartSeries]="lineChart$ | async"
       ></rai-comparison-histogram>
       <rai-comparison-aggregates
         class="aggregates"
@@ -36,6 +37,7 @@ export class MetricComparisonComponent {
 
   selected$: Observable<OverviewMetric>;
   histogram$: Observable<Chart>;
+  lineChart$: Observable<Chart[]>;
   items$: Observable<any[]>;
 
   constructor(private store: Store<fromModel.State>) {}
@@ -45,8 +47,14 @@ export class MetricComparisonComponent {
       selectAggregatesComparisonByType(this.type)
     );
     this.selected$ = this.store.select(
-      fromModel.selectBaselineSelectedByType(this.type)
+      fromModel.selectOverviewSelectedByType(this.type)
     );
     this.histogram$ = this.selected$.pipe(map(overviewMetricToChart));
+    this.lineChart$ = this.store
+      .select(fromModel.selectBaselineSelectedByType(this.type))
+      .pipe(
+        map(overviewMetricToChart),
+        map((chart) => [chart])
+      );
   }
 }
