@@ -5,7 +5,7 @@ import { Component } from '@angular/core';
   template: `<nav mat-tab-nav-bar>
       <a
         mat-tab-link
-        routerLink="model"
+        routerLink="overview"
         routerLinkActive
         #rla="routerLinkActive"
         [active]="rla.isActive"
@@ -14,7 +14,7 @@ import { Component } from '@angular/core';
       </a>
       <a
         mat-tab-link
-        routerLink="comparison"
+        routerLink="borderlines"
         routerLinkActive
         #rla1="routerLinkActive"
         [active]="rla1.isActive"
@@ -23,10 +23,10 @@ import { Component } from '@angular/core';
       </a>
       <a
         mat-tab-link
-        routerLink="comparison"
+        routerLink="inlines"
         routerLinkActive
-        #rla1="routerLinkActive"
-        [active]="rla1.isActive"
+        #rla2="routerLinkActive"
+        [active]="rla2.isActive"
       >
         Inlines
       </a>
