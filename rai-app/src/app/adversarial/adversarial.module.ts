@@ -6,6 +6,7 @@ import { AdversarialOverviewComponent } from './overview/adversarial-overview.co
 import { AdversarialAttacksWrapperComponent } from './attacks/adversarial-attacks-wrapper.component';
 import { CommonModule } from '@angular/common';
 import { AdversarialAttacksContainerComponent } from './attacks/adversarial-attacks-container.component';
+import { AdversarialAttacksExplanationComponent } from './attacks/adversarial-attacks-explanation.component';
 
 const routes: Routes = [
   {
@@ -25,6 +26,7 @@ const routes: Routes = [
     AdversarialPageComponent,
     AdversarialAttacksWrapperComponent,
     AdversarialAttacksContainerComponent,
+    AdversarialAttacksExplanationComponent,
   ],
   imports: [RouterModule.forChild(routes), MaterialModule, CommonModule],
 })

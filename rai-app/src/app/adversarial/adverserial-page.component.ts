@@ -34,5 +34,6 @@ import { Component } from '@angular/core';
     <div class="container">
       <router-outlet></router-outlet>
     </div>`,
+  styleUrls: ['adversarial-page.component.scss'],
 })
 export class AdversarialPageComponent {}

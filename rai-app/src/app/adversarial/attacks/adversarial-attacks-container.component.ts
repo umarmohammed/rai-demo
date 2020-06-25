@@ -3,7 +3,10 @@ import { Component, Input } from '@angular/core';
 @Component({
   selector: 'rai-adversarial-attacks-container',
   template: `<div class="container" *ngIf="!loading">
-      <div>Attack Container {{ type }}</div>
+      <rai-adversarial-attacks-explanation
+        class="lime-container"
+      ></rai-adversarial-attacks-explanation>
+      <div>Table for {{ type }}</div>
     </div>
     <!-- TODO create a wrapper component for this pattern -->
     <mat-spinner class="spinner" [class.show]="loading"></mat-spinner>`,
