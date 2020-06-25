@@ -221,5 +221,10 @@ export const selectAttackState = createSelector(
   (state) => state.attack
 );
 
+export const selectAttackStateLoading = createSelector(
+  selectAttackState,
+  fromAttack.selectLoading
+);
+
 export const selectAttackItemsByType = (type: string) =>
   createSelector(selectAttackState, fromAttack.selectItemsByType(type));

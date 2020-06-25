@@ -33,5 +33,7 @@ export function reducer(state: State | undefined, action: Action) {
   return attackReducer(state, action);
 }
 
+export const selectLoading = (state: State) => state.loading;
+
 export const selectItemsByType = (type: string) => (state: State) =>
   type === 'inlines' ? state.inlines : state.borderlines;
