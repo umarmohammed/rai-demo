@@ -25,6 +25,13 @@ const routes: Routes = [
         loadChildren: () =>
           import('./features/features.module').then((m) => m.FeaturesModule),
       },
+      {
+        path: 'adversarial',
+        loadChildren: () =>
+          import('./adversarial/adversarial.module').then(
+            (m) => m.AdversarialModule
+          ),
+      },
     ],
   },
   {

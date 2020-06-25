@@ -20,6 +20,9 @@ import { WindowService } from '../window.service';
         <a mat-button routerLinkActive="active" routerLink="/instances"
           >Instances</a
         >
+        <a mat-button routerLinkActive="active" routerLink="/adversarial"
+          >Adversarial</a
+        >
         <button
           color="primary"
           class="m-l-50"
