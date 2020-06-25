@@ -10,11 +10,13 @@ export const attackFeatureKey = 'attack';
 export interface State {
   borderlines: Adversarials;
   inlines: Adversarials;
+  columnNames: string[];
   loading: boolean;
 }
 
 export const initialState: State = {
   borderlines: null,
+  columnNames: null,
   inlines: null,
   loading: false,
 };
@@ -37,3 +39,5 @@ export const selectLoading = (state: State) => state.loading;
 
 export const selectItemsByType = (type: string) => (state: State) =>
   type === 'inlines' ? state.inlines : state.borderlines;
+
+export const selectColumnNames = (state: State) => state.columnNames;

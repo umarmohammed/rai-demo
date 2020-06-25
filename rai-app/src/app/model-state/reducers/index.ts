@@ -228,3 +228,8 @@ export const selectAttackStateLoading = createSelector(
 
 export const selectAttackItemsByType = (type: string) =>
   createSelector(selectAttackState, fromAttack.selectItemsByType(type));
+
+export const selectAttackStateColumnNames = createSelector(
+  selectAttackState,
+  fromAttack.selectColumnNames
+);

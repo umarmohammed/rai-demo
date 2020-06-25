@@ -376,7 +376,7 @@ def attack_values(X, y, model):
         z_examples_df = pd.DataFrame(z_examples, columns=X.columns)
         return {"actualInstances": instancesToList(originals_df), "generatedInstances": instancesToList(z_examples_df)}
 
-    return {"borderlines": getAttacks(np.argsort(np.abs(pred_probs.copy() - thresh))[:10]), "inlines": getAttacks(np.argsort(pred_probs)[:10])}
+    return {"borderlines": getAttacks(np.argsort(np.abs(pred_probs.copy() - thresh))[:10]), "inlines": getAttacks(np.argsort(pred_probs)[:10]), "columnNames": ['id'] + list(X.columns)}
 
 
 @app.route("/api/features", methods=["POST"])

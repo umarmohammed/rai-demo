@@ -50,15 +50,12 @@ export class AdversarialAttacksContainerComponent implements OnInit {
       fromModel.selectAttackItemsByType(this.type)
     );
 
-    // TODO should probably return from server
-    // and store in state
-    this.columnNames$ = this.adversarials$.pipe(
-      map((a) =>
-        ['id', ...Object.keys(a.actualInstances[0])].map((c) => ({
-          headerName: c,
-          field: c,
-        }))
-      )
-    );
+    this.columnNames$ = this.store
+      .select(fromModel.selectAttackStateColumnNames)
+      .pipe(
+        map((columnNames) =>
+          columnNames.map((c) => ({ headerName: c, field: c }))
+        )
+      );
   }
 }
