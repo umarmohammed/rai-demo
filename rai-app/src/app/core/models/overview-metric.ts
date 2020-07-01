@@ -5,6 +5,7 @@ import {
 } from './metric';
 
 export interface OverviewMetric {
+  key: string;
   name: string;
   histogram: Bin[];
   aggregates: Metric[];
@@ -30,7 +31,7 @@ export function renamedOverviewMetricToGridArray(
   name: string
 ): any {
   return {
-    metric: metric.name,
+    metric: metric.key,
     ...renamedMetricArrayToGridArray(metric.aggregates, name),
   };
 }

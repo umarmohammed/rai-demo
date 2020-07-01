@@ -2,12 +2,11 @@ import { Component, Input, Output, EventEmitter } from '@angular/core';
 import * as fromModel from '../../../model-state/reducers';
 import { Observable } from 'rxjs';
 import { OverviewMetric } from 'src/app/core/models/overview-metric';
-import { Chart, overviewMetricToChart } from 'src/app/core/models/chart';
+import { Chart } from 'src/app/core/models/chart';
 import { Store } from '@ngrx/store';
-import { map } from 'rxjs/operators';
 import {
   selectAggregatesComparisonByType,
-  selectBaselineSelectedByType,
+  selectComparisonCharts,
 } from 'src/app/model-state/comparison.selectors';
 
 @Component({
@@ -17,7 +16,6 @@ import {
       <p class="center-text">{{ (selected$ | async).name }}</p>
       <rai-comparison-histogram
         class="histogram"
-        [histogram]="histogram$ | async"
         [lineChartSeries]="lineChart$ | async"
       ></rai-comparison-histogram>
       <rai-comparison-aggregates
@@ -39,7 +37,6 @@ export class MetricComparisonComponent {
   @Output() metricSelected: EventEmitter<string> = new EventEmitter();
 
   selected$: Observable<OverviewMetric>;
-  histogram$: Observable<Chart>;
   lineChart$: Observable<Chart[]>;
   items$: Observable<any[]>;
 
@@ -52,12 +49,6 @@ export class MetricComparisonComponent {
     this.selected$ = this.store.select(
       fromModel.selectOverviewSelectedByType(this.type)
     );
-    this.histogram$ = this.selected$.pipe(map(overviewMetricToChart));
-    this.lineChart$ = this.store
-      .select(selectBaselineSelectedByType(this.type))
-      .pipe(
-        map(overviewMetricToChart),
-        map((chart) => [chart])
-      );
+    this.lineChart$ = this.store.select(selectComparisonCharts(this.type));
   }
 }

@@ -218,7 +218,10 @@ def permutation_magic(X, y, model, n_repeats, refit=False, gmaj=None, gmin=None)
     return {"metrics": df_all_metrics}
 
 
-def boostrap_metrics(X, y, gmin, model, c, computeFairnessMetrics):
+def boostrap_metrics(X, y, gmin, model, c, computeFairnessMetrics, baseline=None):
+    def getOverviewMetricName(metricName): 
+        return f"{'' if baseline is None else 'Baseline'} {metricName}".strip()
+
     categorical_features = [i for i, col in enumerate(X.columns) if "_" in col]
     class_names = ["good", "bad"]
     feature_names = X.columns
@@ -261,13 +264,13 @@ def boostrap_metrics(X, y, gmin, model, c, computeFairnessMetrics):
 
     def getMetrics():
         def metricsToList(metricType, metricDict):
-            return [{"name": i, "type": metricType} for i in list(metricDict.keys())]
+            return [{"key":i, "name": getOverviewMetricName(i), "type": metricType} for i in list(metricDict.keys())]
 
         return metricsToList("performance", perf_metrics) + (metricsToList("fairness", fair_metrics) if computeFairnessMetrics else [])
 
     def getOverview():
         agg = getAggregates()
-        return [{**i, "histogram": getMetricHistogram(i["name"]), "aggregates": getMetricAggregates(agg[i["name"]], i["name"])} for i in getMetrics()]
+        return [{**i, "histogram": getMetricHistogram(i["key"]), "aggregates": getMetricAggregates(agg[i["key"]], i["key"])} for i in getMetrics()]
 
     def getInstances():
 
@@ -345,7 +348,7 @@ def get_bootstrap_metrics(modelAndData, selectedFeatures, baseline=None):
 
     computeFairnessMetrics = gmin is not None and gmaj is not None
 
-    return boostrap_metrics(X, y, gmin, model, c, computeFairnessMetrics)
+    return boostrap_metrics(X, y, gmin, model, c, computeFairnessMetrics, baseline)
 
 
 def attack_values(X, y, model):

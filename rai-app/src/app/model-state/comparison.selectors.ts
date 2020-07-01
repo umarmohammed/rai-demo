@@ -4,6 +4,7 @@ import {
   renamedOverviewMetricToGridArray,
   OverviewMetric,
 } from '../core/models/overview-metric';
+import { overviewMetricToChart } from '../core/models/chart';
 
 const selectOverviewItemsByType = (type: string) =>
   createSelector(fromModel.selectOverviewItemsByType(type), modelFoo);
@@ -16,8 +17,19 @@ export const selectBaselineSelectedByType = (type: string) =>
     fromModel.selectOverviewSelectedByType(type),
     fromModel.selectBaselineItemsByType(type),
     (overviewSelected, baselineItems) =>
-      baselineItems.find((b) => b.name === overviewSelected.name)
+      baselineItems.find((b) => b.key === overviewSelected.key)
   );
+
+export const selectComparisonCharts = (type: string) =>
+  createSelector(
+    fromModel.selectOverviewSelectedByType(type),
+    selectBaselineSelectedByType(type),
+    getComparisonCharts
+  );
+
+function getComparisonCharts(...metrics: OverviewMetric[]) {
+  return metrics.map(overviewMetricToChart);
+}
 
 const foo = (name: string) => (metrics: OverviewMetric[]) =>
   metrics.map((metric) => renamedOverviewMetricToGridArray(metric, name));

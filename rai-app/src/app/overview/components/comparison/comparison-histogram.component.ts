@@ -5,22 +5,20 @@ import { Chart, blueScheme, orangeScheme } from 'src/app/core/models/chart';
   selector: 'rai-comparison-histogram',
   template: `
     <div class="container">
-      <combo-chart-component
-        [results]="histogram.series"
-        [lineChart]="lineChartSeries"
+      <ngx-charts-line-chart
         [xAxis]="true"
         [yAxis]="true"
-        [scheme]="blueScheme"
-        [colorSchemeLine]="lineChartScheme"
+        [results]="lineChartSeries"
+        [scheme]="lineChartScheme"
+        [legend]="true"
       >
-      </combo-chart-component>
+      </ngx-charts-line-chart>
     </div>
   `,
   styleUrls: ['comparison-histogram.component.scss'],
 })
 export class ComparisonHistogramComponent {
-  @Input() histogram: Chart;
+  @Input() baselineSeries: Chart[];
   @Input() lineChartSeries: Chart[];
-  blueScheme = blueScheme;
-  lineChartScheme = orangeScheme;
+  lineChartScheme = { domain: [blueScheme.domain[0], orangeScheme.domain[0]] };
 }
