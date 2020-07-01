@@ -23,7 +23,6 @@ import {
         (metricSelected)="metricSelected.emit($event)"
         [selected]="(selected$ | async).name"
         [rows]="items$ | async"
-        [highlight]="type === 'fairness'"
       ></rai-comparison-aggregates>
     </div>
     <mat-spinner class="spinner" [class.show]="loading"></mat-spinner>`,

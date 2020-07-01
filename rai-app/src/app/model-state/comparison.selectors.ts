@@ -42,12 +42,19 @@ export const selectAggregatesComparisonByType = (type: string) =>
   createSelector(
     selectOverviewItemsByType(type),
     selectBaselineItemsByType(type),
-    mergeMetrics
+    mergeMetrics(type)
   );
 
-const mergeMetrics = (x: any[], y: any[]) =>
-  x.map((metric) => ({
-    ...metric,
-
-    ...y.find((o) => o.metric === metric.metric),
-  }));
+const mergeMetrics = (type: string) => (x: any[], y: any[]) =>
+  x
+    .map((metric) => ({
+      ...metric,
+      ...y.find((o) => o.metric === metric.metric),
+    }))
+    .map((metric) => ({
+      ...metric,
+      isGood:
+        type === 'fairness'
+          ? metric.model_isFair
+          : metric.model_mean > metric.baseline_mean,
+    }));

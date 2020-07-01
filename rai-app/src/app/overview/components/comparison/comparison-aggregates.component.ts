@@ -4,7 +4,7 @@ import { AgGridEvent } from 'ag-grid-community';
 @Component({
   selector: 'rai-comparison-aggregates',
   template: `
-    <div [class.highlight]="highlight" class="grid-container">
+    <div class="highlight grid-container">
       <ag-grid-angular
         class="ag-theme-alpine grid"
         [rowData]="rows"
@@ -13,6 +13,7 @@ import { AgGridEvent } from 'ag-grid-community';
         [raiSelected]="selected"
         selectedProp="metric"
         (selectionChanged)="onSelectionChanged($event)"
+        [rowClassRules]="rowClassRules"
       >
       </ag-grid-angular>
     </div>
@@ -22,7 +23,6 @@ import { AgGridEvent } from 'ag-grid-community';
 export class ComparisonAggregatesComponent {
   @Input() rows: any[];
   @Input() selected: string;
-  @Input() highlight: boolean;
 
   @Output() metricSelected = new EventEmitter<string>();
 
@@ -92,6 +92,11 @@ export class ComparisonAggregatesComponent {
       valueFormatter: this.numberFormatter,
     },
   ];
+
+  rowClassRules = {
+    'fair-aggregate': (params) => params.data.isGood,
+    'unfair-aggregate': (params) => !params.data.isGood,
+  };
 
   onSelectionChanged(event: AgGridEvent) {
     this.metricSelected.next(event.api.getSelectedNodes()[0].data.metric);
