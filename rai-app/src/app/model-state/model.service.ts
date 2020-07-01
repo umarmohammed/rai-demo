@@ -5,6 +5,8 @@ import { BootstrapResponse } from '../core/models/bootstrap-response';
 import { SelectedFeatures } from '../core/models/selected-features';
 import { PermutationResponse } from '../core/models/permutation-response';
 import { AttackResponse } from '../core/models/attack-response';
+import { of } from 'rxjs';
+import { hardcoded } from '../shared/hard-coded';
 
 @Injectable({ providedIn: 'root' })
 export class ModelService {
@@ -39,11 +41,14 @@ export class ModelService {
   }
 
   private getOverview(url: string) {
+    const server = false;
     return (formData: FormData, features: SelectedFeatures = null) =>
-      this.http.post<BootstrapResponse>(
-        url,
-        this.createFeaturesToUpload(formData, features)
-      );
+      server
+        ? this.http.post<BootstrapResponse>(
+            url,
+            this.createFeaturesToUpload(formData, features)
+          )
+        : of(hardcoded[url]);
   }
 
   private createFeaturesToUpload(
