@@ -5,8 +5,12 @@ import { BootstrapResponse } from '../core/models/bootstrap-response';
 import { SelectedFeatures } from '../core/models/selected-features';
 import { PermutationResponse } from '../core/models/permutation-response';
 import { AttackResponse } from '../core/models/attack-response';
-import { of } from 'rxjs';
-import { hardcoded } from '../shared/hard-coded';
+import {
+  attackMock,
+  UseMock,
+  bootstrapMock,
+  baselineMock,
+} from '../mocks/mock';
 
 @Injectable({ providedIn: 'root' })
 export class ModelService {
@@ -22,9 +26,15 @@ export class ModelService {
     return this.http.post<string[]>(this.featuresUrl, formData);
   }
 
-  getBootstrap = this.getOverview(this.bootstrapUrl);
+  @UseMock(bootstrapMock)
+  getBootstrap(formData: FormData, features: SelectedFeatures = null) {
+    return this.getOverview(this.bootstrapUrl)(formData, features);
+  }
 
-  getBaseline = this.getOverview(this.baselineUrl);
+  @UseMock(baselineMock)
+  getBaseline(formData: FormData, features: SelectedFeatures = null) {
+    return this.getOverview(this.baselineUrl)(formData, features);
+  }
 
   getPermutation(formData: FormData, features: SelectedFeatures = null) {
     return this.http.post<PermutationResponse>(
@@ -33,6 +43,7 @@ export class ModelService {
     );
   }
 
+  @UseMock(attackMock)
   getAttacks(formData: FormData) {
     return this.http.post<AttackResponse>(
       this.attacksUrl,
@@ -41,14 +52,11 @@ export class ModelService {
   }
 
   private getOverview(url: string) {
-    const server = false;
     return (formData: FormData, features: SelectedFeatures = null) =>
-      server
-        ? this.http.post<BootstrapResponse>(
-            url,
-            this.createFeaturesToUpload(formData, features)
-          )
-        : of(hardcoded[url]);
+      this.http.post<BootstrapResponse>(
+        url,
+        this.createFeaturesToUpload(formData, features)
+      );
   }
 
   private createFeaturesToUpload(
