@@ -9,6 +9,7 @@ import { AdversarialAttacksContainerComponent } from './attacks/adversarial-atta
 import { AdversarialAttacksExplanationComponent } from './attacks/adversarial-attacks-explanation.component';
 import { AgGridModule } from 'ag-grid-angular';
 import { AdversarialAttacksGridComponent } from './attacks/adversarial-attacks-grid.component';
+import { AdversarialAttacksComparisonComponent } from './attacks/adversarial-attacks-comparison.component';
 
 const routes: Routes = [
   {
@@ -30,6 +31,7 @@ const routes: Routes = [
     AdversarialAttacksContainerComponent,
     AdversarialAttacksExplanationComponent,
     AdversarialAttacksGridComponent,
+    AdversarialAttacksComparisonComponent,
   ],
   imports: [
     RouterModule.forChild(routes),

@@ -6,18 +6,12 @@ import { Adversarials } from 'src/app/core/models/attack-response';
   template: `<div class="grid-container">
     <ag-grid-angular
       class="ag-theme-alpine grid"
-      [rowData]="adversarials.actualInstances"
-      [columnDefs]="columnNames"
-      rowSelection="single"
-    >
-    </ag-grid-angular>
-    <ag-grid-angular
-      class="ag-theme-alpine grid"
       [rowData]="adversarials.generatedInstances"
       [columnDefs]="columnNames"
       rowSelection="single"
     >
     </ag-grid-angular>
+    <rai-adversarial-attacks-comparison> </rai-adversarial-attacks-comparison>
   </div>`,
   styles: [
     `
