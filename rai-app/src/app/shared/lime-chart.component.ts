@@ -2,7 +2,7 @@ import { Component, Input, ChangeDetectionStrategy } from '@angular/core';
 import { Metric } from 'src/app/core/models/metric';
 
 @Component({
-  selector: 'rai-instance-lime-chart',
+  selector: 'rai-lime-chart',
   template: `<ngx-charts-bar-horizontal
     [results]="explanation"
     [yAxis]="true"
@@ -13,7 +13,7 @@ import { Metric } from 'src/app/core/models/metric';
   </ngx-charts-bar-horizontal>`,
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class InstanceLimeChartComponent {
+export class LimeChartComponent {
   @Input() explanation: Metric[];
 
   customColor = (results: Metric[]) => (name: string) =>

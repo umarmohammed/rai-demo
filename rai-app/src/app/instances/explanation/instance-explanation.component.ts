@@ -12,9 +12,7 @@ import { Metric } from 'src/app/core/models/metric';
     <rai-instance-probabilities
       [probabilities]="instance.predictProbablities"
     ></rai-instance-probabilities>
-    <rai-instance-lime-chart
-      [explanation]="instance.explanation"
-    ></rai-instance-lime-chart>
+    <rai-lime-chart [explanation]="instance.explanation"></rai-lime-chart>
   </div>`,
   styleUrls: ['instance-explanation.component.scss'],
 })

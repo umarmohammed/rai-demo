@@ -10,7 +10,6 @@ import { AgGridModule } from 'ag-grid-angular';
 import { InstanceExplanationComponent } from './explanation/instance-explanation.component';
 import { SharedModule } from '../shared/shared.module';
 import { InstanceProbabilitiesComponent } from './explanation/instance-probabilities.component';
-import { InstanceLimeChartComponent } from './explanation/instance-lime-chart.componen';
 import { NgxChartsModule } from '@swimlane/ngx-charts';
 import { InstanceDifficultiesComponent } from './explanation/instance-difficulties.component';
 
@@ -22,7 +21,6 @@ import { InstanceDifficultiesComponent } from './explanation/instance-difficulti
     InstancesRouteWrapperComponent,
     InstanceExplanationComponent,
     InstanceProbabilitiesComponent,
-    InstanceLimeChartComponent,
     InstanceDifficultiesComponent,
   ],
   imports: [
