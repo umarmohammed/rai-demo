@@ -385,7 +385,7 @@ def attack_values(X, y, model):
                     dp, model.predict_proba, num_features=4).as_list()
                 return [{"name": i[0], "value": i[1]} for i in exp]
 
-            return {i: getLimeProbs(df.iloc[i]) for i in range(0, 9)}
+            return {i: getLimeProbs(df.iloc[i]) for i in range(0, 10)}
 
         top10 = np.argsort(pred_probs)[:10]
         z_examples = hsj.generate(
