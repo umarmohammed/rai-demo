@@ -13,6 +13,10 @@ export interface Adversarial {
   generatedInstance: any;
 }
 
+export function createAdversarialGrid(adversarials: Adversarials, id: number) {
+  return adversarialToComparisonGrid(createAdversarial(adversarials, id));
+}
+
 export function createAdversarial(
   adversarials: Adversarials,
   id: number
@@ -23,4 +27,12 @@ export function createAdversarial(
       (item) => item.id === id
     ),
   };
+}
+
+export function adversarialToComparisonGrid(adversarial: Adversarial) {
+  return Object.keys(adversarial.actualInstance).map((feature) => ({
+    feature,
+    actual: adversarial.actualInstance[feature],
+    generated: adversarial.generatedInstance[feature],
+  }));
 }

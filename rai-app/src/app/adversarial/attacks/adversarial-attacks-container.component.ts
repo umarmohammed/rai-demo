@@ -8,6 +8,7 @@ import {
   inlineItemSelected,
   borderlineItemSelected,
 } from './adversarial-attacks-container.actions';
+import { gridNumberFormatter } from 'src/app/shared/number-utils';
 
 @Component({
   selector: 'rai-adversarial-attacks-container',
@@ -50,7 +51,7 @@ export class AdversarialAttacksContainerComponent implements OnInit {
   adversarials$: Observable<Adversarials>;
   columnNames$: Observable<any[]>;
   selectedId$: Observable<number>;
-  selectedAdversarial$: Observable<Adversarial>;
+  selectedAdversarial$: Observable<any[]>;
 
   constructor(private store: Store) {}
 
@@ -63,7 +64,11 @@ export class AdversarialAttacksContainerComponent implements OnInit {
       .select(fromModel.selectAttackStateColumnNames)
       .pipe(
         map((columnNames) =>
-          columnNames.map((c) => ({ headerName: c, field: c }))
+          columnNames.map((c) => ({
+            headerName: c,
+            field: c,
+            valueFormatter: gridNumberFormatter,
+          }))
         )
       );
 

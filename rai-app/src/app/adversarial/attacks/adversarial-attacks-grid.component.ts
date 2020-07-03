@@ -1,5 +1,5 @@
 import { Component, Input, Output, EventEmitter } from '@angular/core';
-import { Adversarials, Adversarial } from 'src/app/core/models/attack-response';
+import { Adversarials } from 'src/app/core/models/attack-response';
 import { AgGridEvent } from 'ag-grid-community';
 
 @Component({
@@ -16,7 +16,7 @@ import { AgGridEvent } from 'ag-grid-community';
     </ag-grid-angular>
     <rai-adversarial-attacks-comparison
       class="comparison"
-      [adversarial]="selectedAdversarial"
+      [items]="selectedAdversarial"
     >
     </rai-adversarial-attacks-comparison>
   </div>`,
@@ -29,6 +29,7 @@ import { AgGridEvent } from 'ag-grid-community';
       .grid {
         flex: 1;
         height: 100%;
+        margin: 0 10px;
       }
       .grid-container {
         height: 100%;
@@ -36,7 +37,8 @@ import { AgGridEvent } from 'ag-grid-community';
       }
 
       .comparison {
-        width: 200px;
+        width: 500px;
+        margin: 0 10px;
       }
     `,
   ],
@@ -45,7 +47,7 @@ export class AdversarialAttacksGridComponent {
   @Input() columnNames: string[];
   @Input() adversarials: Adversarials;
   @Input() selectedRowId: number;
-  @Input() selectedAdversarial: Adversarial;
+  @Input() selectedAdversarial: any[];
 
   @Output() selectionChanged = new EventEmitter<string>();
 

@@ -1,5 +1,6 @@
 import { Component, Input, Output, EventEmitter } from '@angular/core';
 import { AgGridEvent } from 'ag-grid-community';
+import { gridNumberFormatter } from 'src/app/shared/number-utils';
 
 @Component({
   selector: 'rai-comparison-aggregates',
@@ -34,62 +35,62 @@ export class ComparisonAggregatesComponent {
     {
       headerName: 'Mean Model',
       field: 'model_mean',
-      valueFormatter: this.numberFormatter,
+      valueFormatter: gridNumberFormatter,
     },
     {
       headerName: 'Mean Baseline',
       field: 'baseline_mean',
-      valueFormatter: this.numberFormatter,
+      valueFormatter: gridNumberFormatter,
     },
     {
       headerName: 'Median Model',
       field: 'model_median',
-      valueFormatter: this.numberFormatter,
+      valueFormatter: gridNumberFormatter,
     },
     {
       headerName: 'Median Baseline',
       field: 'baseline_median',
-      valueFormatter: this.numberFormatter,
+      valueFormatter: gridNumberFormatter,
     },
     {
       headerName: 'CI 5% Model',
       field: 'model_q05',
-      valueFormatter: this.numberFormatter,
+      valueFormatter: gridNumberFormatter,
     },
     {
       headerName: 'CI 5% Baseline',
       field: 'baseline_q05',
-      valueFormatter: this.numberFormatter,
+      valueFormatter: gridNumberFormatter,
     },
     {
       headerName: 'CI 95% Model',
       field: 'model_q95',
-      valueFormatter: this.numberFormatter,
+      valueFormatter: gridNumberFormatter,
     },
     {
       headerName: 'CI 95% Baseline',
       field: 'baseline_q95',
-      valueFormatter: this.numberFormatter,
+      valueFormatter: gridNumberFormatter,
     },
     {
       headerName: 'Std Model',
       field: 'model_std',
-      valueFormatter: this.numberFormatter,
+      valueFormatter: gridNumberFormatter,
     },
     {
       headerName: 'Std Baseline',
       field: 'baseline_std',
-      valueFormatter: this.numberFormatter,
+      valueFormatter: gridNumberFormatter,
     },
     {
       headerName: 'Mad Model',
       field: 'model_mad',
-      valueFormatter: this.numberFormatter,
+      valueFormatter: gridNumberFormatter,
     },
     {
       headerName: 'Mad Baseline',
       field: 'baseline_mad',
-      valueFormatter: this.numberFormatter,
+      valueFormatter: gridNumberFormatter,
     },
   ];
 
@@ -100,9 +101,5 @@ export class ComparisonAggregatesComponent {
 
   onSelectionChanged(event: AgGridEvent) {
     this.metricSelected.next(event.api.getSelectedNodes()[0].data.metric);
-  }
-
-  numberFormatter(params: any) {
-    return params.value.toFixed(4);
   }
 }
