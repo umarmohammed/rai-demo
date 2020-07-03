@@ -8,6 +8,7 @@ import { gridNumberFormatter } from 'src/app/shared/number-utils';
     [rowData]="items"
     rowSelection="single"
     [columnDefs]="columnDefs"
+    [rowClassRules]="rowClassRules"
   >
   </ag-grid-angular>`,
   styles: [
@@ -35,4 +36,9 @@ export class AdversarialAttacksComparisonComponent {
       valueFormatter: gridNumberFormatter,
     },
   ];
+
+  rowClassRules = {
+    'adversarial-diff': (params) =>
+      params.data.actual !== params.data.generated,
+  };
 }
