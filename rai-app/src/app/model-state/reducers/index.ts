@@ -14,6 +14,7 @@ import {
 import { filterOverviewMetricsByType } from 'src/app/core/models/overview-metric';
 import { fileToFormData } from 'src/app/connect-model/form-data';
 import { protectedFeaturesSet } from 'src/app/core/models/selected-features';
+import { createAdversarial } from 'src/app/core/models/attack-response';
 
 export const modelFeatureKey = 'model';
 
@@ -233,3 +234,16 @@ export const selectAttackStateColumnNames = createSelector(
   selectAttackState,
   fromAttack.selectColumnNames
 );
+
+export const selectAttackSelectedItemIdByType = (type: string) =>
+  createSelector(
+    selectAttackState,
+    fromAttack.selectSelectedItemIdByType(type)
+  );
+
+export const selectAttackSelectedItemByType = (type: string) =>
+  createSelector(
+    selectAttackItemsByType(type),
+    selectAttackSelectedItemIdByType(type),
+    createAdversarial
+  );

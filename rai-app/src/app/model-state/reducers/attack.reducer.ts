@@ -4,6 +4,10 @@ import {
   modelSelected,
   attacksLoadedSuccess,
 } from 'src/app/connect-model/connect-model.actions';
+import {
+  inlineItemSelected,
+  borderlineItemSelected,
+} from 'src/app/adversarial/attacks/adversarial-attacks-container.actions';
 
 export const attackFeatureKey = 'attack';
 
@@ -12,6 +16,8 @@ export interface State {
   inlines: Adversarials;
   columnNames: string[];
   loading: boolean;
+  selectedBorderlineId: number;
+  selectedInlineId: number;
 }
 
 export const initialState: State = {
@@ -19,6 +25,8 @@ export const initialState: State = {
   columnNames: null,
   inlines: null,
   loading: false,
+  selectedBorderlineId: 0,
+  selectedInlineId: 0,
 };
 
 const attackReducer = createReducer(
@@ -28,6 +36,14 @@ const attackReducer = createReducer(
     ...state,
     ...attack,
     loading: false,
+  })),
+  on(inlineItemSelected, (state, { selectedInlineId }) => ({
+    ...state,
+    selectedInlineId,
+  })),
+  on(borderlineItemSelected, (state, { selectedBorderlineId }) => ({
+    ...state,
+    selectedBorderlineId,
   }))
 );
 
@@ -41,3 +57,6 @@ export const selectItemsByType = (type: string) => (state: State) =>
   type === 'inlines' ? state.inlines : state.borderlines;
 
 export const selectColumnNames = (state: State) => state.columnNames;
+
+export const selectSelectedItemIdByType = (type: string) => (state: State) =>
+  type === 'inlines' ? state.selectedInlineId : state.selectedBorderlineId;

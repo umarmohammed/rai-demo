@@ -10,6 +10,7 @@ import { AdversarialAttacksExplanationComponent } from './attacks/adversarial-at
 import { AgGridModule } from 'ag-grid-angular';
 import { AdversarialAttacksGridComponent } from './attacks/adversarial-attacks-grid.component';
 import { AdversarialAttacksComparisonComponent } from './attacks/adversarial-attacks-comparison.component';
+import { SharedModule } from '../shared/shared.module';
 
 const routes: Routes = [
   {
@@ -38,6 +39,7 @@ const routes: Routes = [
     MaterialModule,
     CommonModule,
     AgGridModule.withComponents([]),
+    SharedModule,
   ],
 })
 export class AdversarialModule {}

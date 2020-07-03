@@ -1,9 +1,13 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { Observable } from 'rxjs';
-import { Adversarials } from 'src/app/core/models/attack-response';
+import { Adversarials, Adversarial } from 'src/app/core/models/attack-response';
 import { Store } from '@ngrx/store';
 import * as fromModel from '../../model-state/reducers';
 import { map } from 'rxjs/operators';
+import {
+  inlineItemSelected,
+  borderlineItemSelected,
+} from './adversarial-attacks-container.actions';
 
 @Component({
   selector: 'rai-adversarial-attacks-container',
@@ -14,6 +18,9 @@ import { map } from 'rxjs/operators';
       <rai-adversarial-attacks-grid
         [columnNames]="columnNames$ | async"
         [adversarials]="adversarials$ | async"
+        (selectionChanged)="onSelectionChanged($event)"
+        [selectedRowId]="selectedId$ | async"
+        [selectedAdversarial]="selectedAdversarial$ | async"
       ></rai-adversarial-attacks-grid>
     </div>
     <!-- TODO create a wrapper component for this pattern -->
@@ -42,6 +49,8 @@ export class AdversarialAttacksContainerComponent implements OnInit {
 
   adversarials$: Observable<Adversarials>;
   columnNames$: Observable<any[]>;
+  selectedId$: Observable<number>;
+  selectedAdversarial$: Observable<Adversarial>;
 
   constructor(private store: Store) {}
 
@@ -57,5 +66,22 @@ export class AdversarialAttacksContainerComponent implements OnInit {
           columnNames.map((c) => ({ headerName: c, field: c }))
         )
       );
+
+    this.selectedId$ = this.store.select(
+      fromModel.selectAttackSelectedItemIdByType(this.type)
+    );
+
+    this.selectedAdversarial$ = this.store.select(
+      fromModel.selectAttackSelectedItemByType(this.type)
+    );
+  }
+
+  onSelectionChanged(id: string) {
+    if (this.type === 'inlines') {
+      this.store.dispatch(inlineItemSelected({ selectedInlineId: +id }));
+      return;
+    }
+
+    this.store.dispatch(borderlineItemSelected({ selectedBorderlineId: +id }));
   }
 }
