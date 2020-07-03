@@ -1,6 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { Observable } from 'rxjs';
-import { Adversarials, Adversarial } from 'src/app/core/models/attack-response';
+import { Adversarials } from 'src/app/core/models/attack-response';
 import { Store } from '@ngrx/store';
 import * as fromModel from '../../model-state/reducers';
 import { map } from 'rxjs/operators';
@@ -9,11 +9,13 @@ import {
   borderlineItemSelected,
 } from './adversarial-attacks-container.actions';
 import { gridNumberFormatter } from 'src/app/shared/number-utils';
+import { Metric } from 'src/app/core/models/metric';
 
 @Component({
   selector: 'rai-adversarial-attacks-container',
   template: `<div class="container" *ngIf="!loading">
       <rai-adversarial-attacks-explanation
+        [explanation]="explanation$ | async"
         class="lime-container"
       ></rai-adversarial-attacks-explanation>
       <rai-adversarial-attacks-grid
@@ -52,6 +54,7 @@ export class AdversarialAttacksContainerComponent implements OnInit {
   columnNames$: Observable<any[]>;
   selectedId$: Observable<number>;
   selectedAdversarial$: Observable<any[]>;
+  explanation$: Observable<Metric[]>;
 
   constructor(private store: Store) {}
 
@@ -78,6 +81,10 @@ export class AdversarialAttacksContainerComponent implements OnInit {
 
     this.selectedAdversarial$ = this.store.select(
       fromModel.selectAttackSelectedItemByType(this.type)
+    );
+
+    this.explanation$ = this.store.select(
+      fromModel.selectAttackSelectedExplanationByType(this.type)
     );
   }
 

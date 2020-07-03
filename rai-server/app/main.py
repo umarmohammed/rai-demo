@@ -218,16 +218,20 @@ def permutation_magic(X, y, model, n_repeats, refit=False, gmaj=None, gmin=None)
     return {"metrics": df_all_metrics}
 
 
-def boostrap_metrics(X, y, gmin, model, c, computeFairnessMetrics, baseline=None):
-    def getOverviewMetricName(metricName): 
-        return f"{'' if baseline is None else 'Baseline'} {metricName}".strip()
-
+def getExplainer(X):
     categorical_features = [i for i, col in enumerate(X.columns) if "_" in col]
     class_names = ["good", "bad"]
     feature_names = X.columns
     train = X.values
-    explainer = LimeTabularExplainer(
+    return LimeTabularExplainer(
         train, class_names=class_names, feature_names=feature_names, categorical_features=categorical_features)
+
+
+def boostrap_metrics(X, y, gmin, model, c, computeFairnessMetrics, baseline=None):
+    def getOverviewMetricName(metricName):
+        return f"{'' if baseline is None else 'Baseline'} {metricName}".strip()
+
+    explainer = getExplainer(X)
 
     def getMetricHistogram(metric):
         def getMetricPivotTable():
@@ -264,7 +268,7 @@ def boostrap_metrics(X, y, gmin, model, c, computeFairnessMetrics, baseline=None
 
     def getMetrics():
         def metricsToList(metricType, metricDict):
-            return [{"key":i, "name": getOverviewMetricName(i), "type": metricType} for i in list(metricDict.keys())]
+            return [{"key": i, "name": getOverviewMetricName(i), "type": metricType} for i in list(metricDict.keys())]
 
         return metricsToList("performance", perf_metrics) + (metricsToList("fairness", fair_metrics) if computeFairnessMetrics else [])
 
@@ -365,6 +369,8 @@ def attack_values(X, y, model):
     thresh = 0.5
     pred_class = (pred_probs > thresh)
 
+    explainer = getExplainer(X)
+
     def getAttacks(pred_probs):
         def instanceTupleToDict(instanceTuple):
             return {"id": instanceTuple[0], **instanceTuple[1]}
@@ -372,12 +378,21 @@ def attack_values(X, y, model):
         def instancesToList(df):
             return [instanceTupleToDict(i) for i in df.swapaxes(0, 1).to_dict().items()]
 
+        def getExplanations(df):
+
+            def getLimeProbs(dp):
+                exp = explainer.explain_instance(
+                    dp, model.predict_proba, num_features=4).as_list()
+                return [{"name": i[0], "value": i[1]} for i in exp]
+
+            return {i: getLimeProbs(df.iloc[i]) for i in range(0, 9)}
+
         top10 = np.argsort(pred_probs)[:10]
         z_examples = hsj.generate(
             x=X.values[top10, :], y=pred_class[top10] == 0)
         originals_df = pd.DataFrame(X.values[top10, :], columns=X.columns)
         z_examples_df = pd.DataFrame(z_examples, columns=X.columns)
-        return {"actualInstances": instancesToList(originals_df), "generatedInstances": instancesToList(z_examples_df)}
+        return {"actualInstances": instancesToList(originals_df), "generatedInstances": instancesToList(z_examples_df), "explanations": getExplanations(z_examples_df)}
 
     return {"borderlines": getAttacks(np.argsort(np.abs(pred_probs.copy() - thresh))[:10]), "inlines": getAttacks(np.argsort(pred_probs)[:10]), "columnNames": ['id'] + list(X.columns)}
 

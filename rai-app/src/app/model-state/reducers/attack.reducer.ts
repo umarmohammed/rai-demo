@@ -60,3 +60,8 @@ export const selectColumnNames = (state: State) => state.columnNames;
 
 export const selectSelectedItemIdByType = (type: string) => (state: State) =>
   type === 'inlines' ? state.selectedInlineId : state.selectedBorderlineId;
+
+export const selectExplanationsByType = (type: string) => (state: State) =>
+  type === 'inlines'
+    ? state.inlines.explanations
+    : state.borderlines.explanations;

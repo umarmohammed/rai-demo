@@ -247,3 +247,13 @@ export const selectAttackSelectedItemByType = (type: string) =>
     selectAttackSelectedItemIdByType(type),
     createAdversarialGrid
   );
+
+export const selectAttackExplanationsByType = (type: string) =>
+  createSelector(selectAttackState, fromAttack.selectExplanationsByType(type));
+
+export const selectAttackSelectedExplanationByType = (type: string) =>
+  createSelector(
+    selectAttackExplanationsByType(type),
+    selectAttackSelectedItemIdByType(type),
+    (explanations, id) => explanations[id]
+  );

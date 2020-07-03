@@ -1,3 +1,5 @@
+import { Metric } from './metric';
+
 export interface AttackResponse {
   borderlines: Adversarials;
   inlines: Adversarials;
@@ -6,6 +8,7 @@ export interface AttackResponse {
 export interface Adversarials {
   actualInstances: any[];
   generatedInstances: any[];
+  explanations: { [key: number]: Metric[] };
 }
 
 export interface Adversarial {
