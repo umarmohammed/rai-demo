@@ -13,6 +13,7 @@ import { AdversarialAttacksComparisonComponent } from './attacks/adversarial-att
 import { SharedModule } from '../shared/shared.module';
 import { AdversarialAttacksComparisonProbsComponent } from './attacks/adversarial-attacks-comparison-probs.component';
 import { ChartsModule } from '../charts/charts.module';
+import { AdversarialAttacksCredibilitiesComponent } from './attacks/adversarial-attacks-credibilities.component';
 
 const routes: Routes = [
   {
@@ -36,6 +37,7 @@ const routes: Routes = [
     AdversarialAttacksGridComponent,
     AdversarialAttacksComparisonComponent,
     AdversarialAttacksComparisonProbsComponent,
+    AdversarialAttacksCredibilitiesComponent,
   ],
   imports: [
     RouterModule.forChild(routes),

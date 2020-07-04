@@ -5,10 +5,11 @@ import { AdversarialProbabilities } from 'src/app/core/models/attack-response';
 @Component({
   selector: 'rai-adversarial-attacks-explanation',
   template: `<div class="flex-container">
-    <ul>
-      <li>Similar to instance difficulty but replace with credibility</li>
-      <li>Predict Probabiliies comparison between generated and actual</li>
-    </ul>
+    <rai-adversarial-attacks-credibilities
+      [credibilities]="credibilities"
+      [selectedId]="selectedId"
+    >
+    </rai-adversarial-attacks-credibilities>
 
     <rai-adversarial-attacks-comparison-probs
       [probabilities]="probabilities"
@@ -24,6 +25,10 @@ import { AdversarialProbabilities } from 'src/app/core/models/attack-response';
         display: flex;
       }
 
+      rai-adversarial-attacks-credibilities {
+        width: 30%;
+      }
+
       rai-adversarial-attacks-comparison-probs {
         width: 30%;
       }
@@ -37,4 +42,6 @@ import { AdversarialProbabilities } from 'src/app/core/models/attack-response';
 export class AdversarialAttacksExplanationComponent {
   @Input() explanation: Metric[];
   @Input() probabilities: AdversarialProbabilities;
+  @Input() credibilities: Metric[];
+  @Input() selectedId: number;
 }

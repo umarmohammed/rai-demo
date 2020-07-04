@@ -72,3 +72,8 @@ export const selectPredictProbabilitiesByType = (type: string) => (
   type === 'inlines'
     ? state.inlines.predictProbabilities
     : state.borderlines.predictProbabilities;
+
+export const selectCredibilitiesByType = (type: string) => (state: State) =>
+  type === 'inlines'
+    ? state.inlines.credibilities
+    : state.borderlines.credibilities;

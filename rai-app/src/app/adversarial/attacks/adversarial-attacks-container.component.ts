@@ -20,7 +20,9 @@ import { Metric } from 'src/app/core/models/metric';
       <rai-adversarial-attacks-explanation
         [explanation]="explanation$ | async"
         [probabilities]="predictProbabilites$ | async"
+        [selectedId]="selectedId$ | async"
         class="lime-container"
+        [credibilities]="credibilities$ | async"
       ></rai-adversarial-attacks-explanation>
       <rai-adversarial-attacks-grid
         [columnNames]="columnNames$ | async"
@@ -60,6 +62,7 @@ export class AdversarialAttacksContainerComponent implements OnInit {
   selectedAdversarial$: Observable<any[]>;
   explanation$: Observable<Metric[]>;
   predictProbabilites$: Observable<AdversarialProbabilities>;
+  credibilities$: Observable<Metric[]>;
 
   constructor(private store: Store) {}
 
@@ -94,6 +97,10 @@ export class AdversarialAttacksContainerComponent implements OnInit {
 
     this.predictProbabilites$ = this.store.select(
       fromModel.selectAttackSelectedPredictProbaByType(this.type)
+    );
+
+    this.credibilities$ = this.store.select(
+      fromModel.selectAttackCredibilitiesByType(this.type)
     );
   }
 
