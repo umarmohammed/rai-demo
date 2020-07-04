@@ -436,3 +436,11 @@ z_deeper_examples = fgm.generate(
 print(rf.predict_proba(z_border_examples), rf.predict_proba(z_border_examples).ravel()[1::2] > thresh)
 
 print(pd.DataFrame(z_border_examples, columns=X.columns))
+
+
+from sklearn.ensemble import IsolationForest
+iso_for = IsolationForest(random_state=10, n_estimators=400)
+iso_for.fit(X)
+eps = 10.0**-16.0
+print(np.clip(1.0 - np.abs(iso_for.decision_function(X.values[deepertop10, :]) - iso_for.decision_function(z_deeper_examples))/(np.abs(iso_for.decision_function(z_deeper_examples)) + eps), 
+        0.0, 1.0))

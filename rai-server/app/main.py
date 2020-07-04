@@ -11,6 +11,7 @@ from sklearn.linear_model import LogisticRegression
 from art.classifiers import SklearnClassifier
 from art.attacks.evasion import FastGradientMethod
 from art.attacks.evasion import HopSkipJump
+from sklearn.ensemble import IsolationForest
 
 app = Flask(__name__)
 CORS(app)
@@ -371,6 +372,10 @@ def attack_values(X, y, model):
 
     explainer = getExplainer(X)
 
+    iso_for = IsolationForest(random_state=10, n_estimators=400)
+
+    iso_for.fit(X)
+
     def getAttacks(pred_probs):
         def instanceTupleToDict(instanceTuple):
             return {"id": instanceTuple[0], **instanceTuple[1]}
@@ -391,16 +396,22 @@ def attack_values(X, y, model):
             def probsToDictArray(probs):
                 return [{"name": "negative", "value": probs[0]}, {"name": "positive", "value": probs[1]}]
 
-            top10probs = model.predict_proba(X.values[top10,:])
+            top10probs = model.predict_proba(X.values[top10, :])
             z_probs = model.predict_proba(z_examples)
             return {i: {"actual": probsToDictArray(top10probs[i]), "generated": probsToDictArray(z_probs[i])} for i in range(0, 10)}
+
+        def getCredibilities():
+            eps = 10.0**-16.0
+            difficulties = np.clip(1.0 - np.abs(iso_for.decision_function(X.values[top10, :]) - iso_for.decision_function(z_examples))/(np.abs(iso_for.decision_function(z_examples)) + eps),
+                                   0.0, 1.0)
+            return [{"name": i, "value": difficulties[i]} for i in range(0, 10)]
 
         top10 = np.argsort(pred_probs)[:10]
         z_examples = hsj.generate(
             x=X.values[top10, :], y=pred_class[top10] == 0)
         originals_df = pd.DataFrame(X.values[top10, :], columns=X.columns)
         z_examples_df = pd.DataFrame(z_examples, columns=X.columns)
-        return {"actualInstances": instancesToList(originals_df), "generatedInstances": instancesToList(z_examples_df), "explanations": getExplanations(z_examples_df), "predictProbabilities": predictProbablities()}
+        return {"actualInstances": instancesToList(originals_df), "generatedInstances": instancesToList(z_examples_df), "explanations": getExplanations(z_examples_df), "predictProbabilities": predictProbablities(), "credibilities": getCredibilities()}
 
     return {"borderlines": getAttacks(np.argsort(np.abs(pred_probs.copy() - thresh))[:10]), "inlines": getAttacks(np.argsort(pred_probs)[:10]), "columnNames": ['id'] + list(X.columns)}
 
