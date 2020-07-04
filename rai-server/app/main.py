@@ -387,12 +387,20 @@ def attack_values(X, y, model):
 
             return {i: getLimeProbs(df.iloc[i]) for i in range(0, 10)}
 
+        def predictProbablities():
+            def probsToDictArray(probs):
+                return [{"name": "negative", "value": probs[0]}, {"name": "positive", "value": probs[1]}]
+
+            top10probs = model.predict_proba(X.values[top10,:])
+            z_probs = model.predict_proba(z_examples)
+            return {i: {"actual": probsToDictArray(top10probs[i]), "generated": probsToDictArray(z_probs[i])} for i in range(0, 10)}
+
         top10 = np.argsort(pred_probs)[:10]
         z_examples = hsj.generate(
             x=X.values[top10, :], y=pred_class[top10] == 0)
         originals_df = pd.DataFrame(X.values[top10, :], columns=X.columns)
         z_examples_df = pd.DataFrame(z_examples, columns=X.columns)
-        return {"actualInstances": instancesToList(originals_df), "generatedInstances": instancesToList(z_examples_df), "explanations": getExplanations(z_examples_df)}
+        return {"actualInstances": instancesToList(originals_df), "generatedInstances": instancesToList(z_examples_df), "explanations": getExplanations(z_examples_df), "predictProbabilities": predictProbablities()}
 
     return {"borderlines": getAttacks(np.argsort(np.abs(pred_probs.copy() - thresh))[:10]), "inlines": getAttacks(np.argsort(pred_probs)[:10]), "columnNames": ['id'] + list(X.columns)}
 
