@@ -13,6 +13,7 @@ import { Metric } from 'src/app/core/models/metric';
       [trimYAxisTicks]="false"
       [showDataLabel]="true"
       [scheme]="colorScheme"
+      [roundEdges]="false"
     >
     </ngx-charts-bar-horizontal>
   </div>`,

@@ -13,6 +13,7 @@ import { AdversarialProbabilities } from 'src/app/core/models/attack-response';
         [trimYAxisTicks]="false"
         [showDataLabel]="true"
         [scheme]="colorScheme"
+        [roundEdges]="false"
       >
       </ngx-charts-bar-horizontal>
     </div>
@@ -27,6 +28,7 @@ import { AdversarialProbabilities } from 'src/app/core/models/attack-response';
         [trimYAxisTicks]="false"
         [showDataLabel]="true"
         [scheme]="colorScheme"
+        [roundEdges]="false"
       >
       </ngx-charts-bar-horizontal>
     </div> `,

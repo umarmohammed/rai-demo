@@ -9,6 +9,7 @@ import { Metric } from 'src/app/core/models/metric';
     [customColors]="customColor(explanation)"
     [trimYAxisTicks]="false"
     [showDataLabel]="true"
+    [roundEdges]="false"
   >
   </ngx-charts-bar-horizontal>`,
   changeDetection: ChangeDetectionStrategy.OnPush,
