@@ -5,7 +5,7 @@ import { grayScheme, orangeScheme } from 'src/app/core/models/chart';
 @Component({
   selector: 'rai-adversarial-attacks-credibilities',
   template: ` <div class="container">
-    <h3 style="text-align:center;font-size: 1.7rem">Credibility</h3>
+    <h3 style="text-align:center;font-size: 1.3rem">Credibility</h3>
     <div class="chart-container">
       <ngx-charts-bar-horizontal
         [results]="credibilities"
