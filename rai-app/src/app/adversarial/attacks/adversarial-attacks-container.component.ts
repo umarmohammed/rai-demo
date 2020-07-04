@@ -1,6 +1,9 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { Observable } from 'rxjs';
-import { Adversarials } from 'src/app/core/models/attack-response';
+import {
+  Adversarials,
+  AdversarialProbabilities,
+} from 'src/app/core/models/attack-response';
 import { Store } from '@ngrx/store';
 import * as fromModel from '../../model-state/reducers';
 import { map } from 'rxjs/operators';
@@ -16,6 +19,7 @@ import { Metric } from 'src/app/core/models/metric';
   template: `<div class="container" *ngIf="!loading">
       <rai-adversarial-attacks-explanation
         [explanation]="explanation$ | async"
+        [probabilities]="predictProbabilites$ | async"
         class="lime-container"
       ></rai-adversarial-attacks-explanation>
       <rai-adversarial-attacks-grid
@@ -55,6 +59,7 @@ export class AdversarialAttacksContainerComponent implements OnInit {
   selectedId$: Observable<number>;
   selectedAdversarial$: Observable<any[]>;
   explanation$: Observable<Metric[]>;
+  predictProbabilites$: Observable<AdversarialProbabilities>;
 
   constructor(private store: Store) {}
 
@@ -85,6 +90,10 @@ export class AdversarialAttacksContainerComponent implements OnInit {
 
     this.explanation$ = this.store.select(
       fromModel.selectAttackSelectedExplanationByType(this.type)
+    );
+
+    this.predictProbabilites$ = this.store.select(
+      fromModel.selectAttackSelectedPredictProbaByType(this.type)
     );
   }
 

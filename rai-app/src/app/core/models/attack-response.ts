@@ -9,6 +9,12 @@ export interface Adversarials {
   actualInstances: any[];
   generatedInstances: any[];
   explanations: { [key: number]: Metric[] };
+  predictProbabilities: { [key: number]: AdversarialProbabilities };
+}
+
+export interface AdversarialProbabilities {
+  actual: Metric[];
+  generated: Metric[];
 }
 
 export interface Adversarial {

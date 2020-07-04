@@ -11,6 +11,8 @@ import { AgGridModule } from 'ag-grid-angular';
 import { AdversarialAttacksGridComponent } from './attacks/adversarial-attacks-grid.component';
 import { AdversarialAttacksComparisonComponent } from './attacks/adversarial-attacks-comparison.component';
 import { SharedModule } from '../shared/shared.module';
+import { AdversarialAttacksComparisonProbsComponent } from './attacks/adversarial-attacks-comparison-probs.component';
+import { ChartsModule } from '../charts/charts.module';
 
 const routes: Routes = [
   {
@@ -33,6 +35,7 @@ const routes: Routes = [
     AdversarialAttacksExplanationComponent,
     AdversarialAttacksGridComponent,
     AdversarialAttacksComparisonComponent,
+    AdversarialAttacksComparisonProbsComponent,
   ],
   imports: [
     RouterModule.forChild(routes),
@@ -40,6 +43,7 @@ const routes: Routes = [
     CommonModule,
     AgGridModule.withComponents([]),
     SharedModule,
+    ChartsModule,
   ],
 })
 export class AdversarialModule {}

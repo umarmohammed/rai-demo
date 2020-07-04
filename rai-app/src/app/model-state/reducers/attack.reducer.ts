@@ -65,3 +65,10 @@ export const selectExplanationsByType = (type: string) => (state: State) =>
   type === 'inlines'
     ? state.inlines.explanations
     : state.borderlines.explanations;
+
+export const selectPredictProbabilitiesByType = (type: string) => (
+  state: State
+) =>
+  type === 'inlines'
+    ? state.inlines.predictProbabilities
+    : state.borderlines.predictProbabilities;

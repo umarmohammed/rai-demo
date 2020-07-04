@@ -257,3 +257,16 @@ export const selectAttackSelectedExplanationByType = (type: string) =>
     selectAttackSelectedItemIdByType(type),
     (explanations, id) => explanations[id]
   );
+
+export const selectAttackPredictProbaByType = (type: string) =>
+  createSelector(
+    selectAttackState,
+    fromAttack.selectPredictProbabilitiesByType(type)
+  );
+
+export const selectAttackSelectedPredictProbaByType = (type: string) =>
+  createSelector(
+    selectAttackPredictProbaByType(type),
+    selectAttackSelectedItemIdByType(type),
+    (probs, id) => probs[id]
+  );
