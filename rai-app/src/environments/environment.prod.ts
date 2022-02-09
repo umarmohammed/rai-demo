@@ -1,5 +1,5 @@
 export const environment = {
-  baseUrl: 'http://18.200.95.121:8080/',
+  baseUrl: 'https://raihaiapi2.holisticai.com/',
   production: true,
   useMocks: false,
 };
